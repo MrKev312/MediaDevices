@@ -47,7 +47,7 @@ public class ItemViewModel(MediaFileSystemInfo item) : BaseViewModel, IExplorerI
 
 	public ImageSource Icon => IsDirectory ? imgFolder : imgFile;
 
-	public bool IsDirectory => item.Attributes.HasFlag(MediaFileAttributes.Directory) || item.Attributes.HasFlag(MediaFileAttributes.Object);
+	public bool IsDirectory => item.Attributes.HasFlag(MediaFileAttributes.Directory) || item.Attributes.HasFlag(MediaFileAttributes.FileObject);
 
 	public bool HasChildren => Children?.Any() ?? false;
 
@@ -55,7 +55,7 @@ public class ItemViewModel(MediaFileSystemInfo item) : BaseViewModel, IExplorerI
 	{
 		get
 		{
-			if (item.Attributes is MediaFileAttributes.Directory or MediaFileAttributes.Object)
+			if (item.Attributes is MediaFileAttributes.Directory or MediaFileAttributes.FileObject)
 			{
 				MediaDirectoryInfo dir = item as MediaDirectoryInfo;
 				List<ItemViewModel> children = dir.EnumerateFileSystemInfos().Select(i => new ItemViewModel(i)).ToList();

@@ -191,7 +191,7 @@ public abstract class ReadonlyUnitTest : UnitTest
 		Assert.AreEqual(infoDirectoryParentCreationTime, parent.CreationTime, "parent CreationTime");
 		Assert.AreEqual(infoDirectoryParentLastWriteTime, parent.LastWriteTime, "parent LastWriteTime");
 		Assert.AreEqual(infoDirectoryParentAuthoredTime, parent.DateAuthored, "parent DateAuthored");
-		Assert.IsTrue(parent.Attributes.HasFlag(MediaFileAttributes.Object), "parent Object");
+		Assert.IsTrue(parent.Attributes.HasFlag(MediaFileAttributes.FileObject), "parent Object");
 		Assert.IsFalse(parent.Attributes.HasFlag(MediaFileAttributes.Hidden), "parent Hidden");
 		Assert.IsFalse(parent.Attributes.HasFlag(MediaFileAttributes.System), "parent System");
 		Assert.IsFalse(parent.Attributes.HasFlag(MediaFileAttributes.DRMProtected), "parent DRMProtected");
@@ -202,7 +202,7 @@ public abstract class ReadonlyUnitTest : UnitTest
 		Assert.AreEqual(null, root.CreationTime, "root CreationTime");
 		Assert.AreEqual(null, root.LastWriteTime, "root LastWriteTime");
 		Assert.AreEqual(null, root.DateAuthored, "root DateAuthored");
-		Assert.IsTrue(root.Attributes.HasFlag(MediaFileAttributes.Object), "root Object");
+		Assert.IsTrue(root.Attributes.HasFlag(MediaFileAttributes.FileObject), "root Object");
 		Assert.IsFalse(root.Attributes.HasFlag(MediaFileAttributes.Hidden), "root Hidden");
 		Assert.IsFalse(root.Attributes.HasFlag(MediaFileAttributes.System), "root System");
 		Assert.IsFalse(root.Attributes.HasFlag(MediaFileAttributes.DRMProtected), "root DRMProtected");

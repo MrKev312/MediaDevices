@@ -21,7 +21,7 @@ public enum MediaFileAttributes
 	/// <summary>
 	/// The file is a object.
 	/// </summary>
-	Object = 0x04,
+	FileObject = 0x04,
 
 	/// <summary>
 	/// This file can be deleted.

@@ -178,7 +178,7 @@ public static class MediaDeviceExtentions
 			foreach (MediaFileSystemInfo fsi in dir.EnumerateFileSystemInfos("*", SearchOption.AllDirectories))
 			{
 				string path = Path.Combine(destination, GetLocalPath(source, fsi.FullName));
-				if (fsi.Attributes.HasFlag(MediaFileAttributes.Directory) || fsi.Attributes.HasFlag(MediaFileAttributes.Object))
+				if (fsi.Attributes.HasFlag(MediaFileAttributes.Directory) || fsi.Attributes.HasFlag(MediaFileAttributes.FileObject))
 				{
 					if (!Directory.Exists(path))
 					{

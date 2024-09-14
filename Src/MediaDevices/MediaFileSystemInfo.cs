@@ -107,7 +107,7 @@ public abstract class MediaFileSystemInfo
 					attributes = MediaFileAttributes.Directory;
 					break;
 				case ItemType.Object:
-					attributes = MediaFileAttributes.Object;
+					attributes = MediaFileAttributes.FileObject;
 					break;
 			}
 
