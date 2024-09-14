@@ -68,9 +68,7 @@ public class ItemViewModel(MediaFileSystemInfo item) : BaseViewModel, IExplorerI
 		}
 	}
 
-#pragma warning disable CS0067
-	public event EventHandler<RefreshEventArgs> Refresh;
-#pragma warning restore CS0067
+	public event EventHandler<RefreshEventArgs> Refresh = delegate { };
 
 	public void CreateFolder(string path) => throw new NotImplementedException();
 

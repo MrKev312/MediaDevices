@@ -16,7 +16,7 @@ internal sealed class Command
 		values.SetUnsignedIntegerValue(ref WPD.PROPERTY_COMMON_COMMAND_ID, commandKey.pid);
 	}
 
-	public static Command Create(PropertyKey commandKey) => new Command(commandKey);
+	public static Command Create(PropertyKey commandKey) => new(commandKey);
 
 	public void Add(PropertyKey key, Guid value) => values.SetGuidValue(ref key, ref value);
 

@@ -50,9 +50,9 @@ internal sealed class Item
 
 	public const string RootId = "DEVICE";
 
-	public static Item GetRoot(MediaDevice device) => new Item(device, RootId, @"\");
+	public static Item GetRoot(MediaDevice device) => new(device, RootId, @"\");
 
-	public static Item Create(MediaDevice device, string id, string path = null) => new Item(device, id, path);
+	public static Item Create(MediaDevice device, string id, string path = null) => new(device, id, path);
 
 	public static Item FindFolder(MediaDevice device, string path)
 	{
