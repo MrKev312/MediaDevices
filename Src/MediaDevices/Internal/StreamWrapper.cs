@@ -11,14 +11,16 @@ internal sealed class StreamWrapper(IStream stream, ulong size = 0) : Stream
 	private IStream stream = stream ?? throw new ArgumentNullException(nameof(stream));
 	private IntPtr pLength = Marshal.AllocHGlobal(16);
 
-	private void CheckDisposed() =>
+	private void CheckDisposed()
 #if NET7_0_OR_GREATER
-		ObjectDisposedException.ThrowIf(stream == null, stream);
+		=> ObjectDisposedException.ThrowIf(stream == null, stream);
 #else
+	{
 		if (stream == null)
 		{
 			throw new ObjectDisposedException("StreamWrapper");
 		}
+	}
 #endif
 
 
