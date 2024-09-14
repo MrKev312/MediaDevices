@@ -1,6 +1,6 @@
 ﻿using UsbMonitor;
 
-namespace MediaDeviceApp.View;
+namespace MediaDevicesApp.View;
 
 /// <summary>
 /// Interaction logic for MainView.xaml

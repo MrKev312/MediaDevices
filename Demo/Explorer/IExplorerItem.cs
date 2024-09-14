@@ -13,7 +13,7 @@ public interface IExplorerItem : IEquatable<IExplorerItem>
         string FullName { get; }
         string Link { get; }
         long Size { get; }
-        DateTime? Date { get; }
+        DateTime? CreationDate { get; }
         ExplorerItemType Type { get; }
         ImageSource Icon { get; }
         bool IsDirectory { get; }

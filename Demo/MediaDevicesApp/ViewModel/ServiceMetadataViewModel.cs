@@ -6,6 +6,6 @@ public class ServiceMetadataViewModel : ServiceBaseViewModel
 {
 	public ServiceMetadataViewModel()
 	{
-		services = MediaDeviceServices.Metadata;
+		availableServices = MediaDeviceServices.Metadata;
 	}
 }

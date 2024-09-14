@@ -10,8 +10,8 @@ using MediaDevicesApp.Mvvm;
 
 /* Unmerged change from project 'MediaDevicesApp (net7.0-windows)'
 Added:
-using MediaDeviceApp;
-using MediaDeviceApp.ViewModel;
+using MediaDevicesApp;
+using MediaDevicesApp.ViewModel;
 using MediaDevicesApp.ViewModel;
 */
 
@@ -52,7 +52,7 @@ public class ItemViewModel : BaseViewModel, IExplorerItem
 
 	public long Size { get { return (long)item.Length; } }
 
-	public DateTime? Date { get { return item.LastWriteTime; } }
+	public DateTime? CreationDate { get { return item.LastWriteTime; } }
 
 	public ExplorerItemType Type { get { return IsDirectory ? ExplorerItemType.Directory : ExplorerItemType.File; } }
 

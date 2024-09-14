@@ -6,7 +6,7 @@ public class ServiceStatusViewModel : ServiceBaseViewModel
 {
 	public ServiceStatusViewModel()
 	{
-		services = MediaDeviceServices.Status;
+		availableServices = MediaDeviceServices.Status;
 	}
 
 }

@@ -26,8 +26,8 @@ public class Explorer : Control
         }
 
         private Point dragStartPoint;
-        private bool isMouseDown = false;
-        private ExplorerItem selectedItem;
+        private bool isMouseDown;
+	private ExplorerItem selectedItem;
         private ProgresshWindow dlg;
 
         public override void OnApplyTemplate()

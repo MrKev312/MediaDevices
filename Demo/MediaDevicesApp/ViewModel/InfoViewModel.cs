@@ -2,6 +2,7 @@
 
 using MediaDevicesApp.Mvvm;
 
+using System.Globalization;
 using System.Linq;
 
 namespace MediaDevicesApp.ViewModel;
@@ -76,7 +77,7 @@ public class InfoViewModel : BaseViewModel
 	{
 		get
 		{
-			return device?.PowerLevel.ToString();
+			return device?.PowerLevel.ToString(CultureInfo.InvariantCulture);
 		}
 	}
 
@@ -148,7 +149,7 @@ public class InfoViewModel : BaseViewModel
 	{
 		get
 		{
-			return device?.NetworkIdentifier.ToString();
+			return device?.NetworkIdentifier.ToString(CultureInfo.InvariantCulture);
 		}
 	}
 
@@ -156,7 +157,7 @@ public class InfoViewModel : BaseViewModel
 	{
 		get
 		{
-			return device?.FunctionalUniqueId?.Select(b => b.ToString()).Aggregate((a, b) => $"{a},{b}");
+			return device?.FunctionalUniqueId?.Select(b => b.ToString(CultureInfo.InvariantCulture)).Aggregate((a, b) => $"{a},{b}");
 		}
 	}
 
@@ -164,7 +165,7 @@ public class InfoViewModel : BaseViewModel
 	{
 		get
 		{
-			return device?.ModelUniqueId?.Select(b => b.ToString()).Aggregate((a, b) => $"{a},{b}");
+			return device?.ModelUniqueId?.Select(b => b.ToString(CultureInfo.InvariantCulture)).Aggregate((a, b) => $"{a},{b}");
 		}
 	}
 

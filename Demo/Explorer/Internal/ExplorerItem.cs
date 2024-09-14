@@ -146,8 +146,8 @@ namespace ExplorerCtrl.Internal;
 
         }
 
-        private bool isInitialFilled = false;
-        protected ObservableCollection<ExplorerItem> children;
+        private bool isInitialFilled;
+	protected ObservableCollection<ExplorerItem> children;
         private CollectionViewSource folders;
         private CollectionViewSource files;
   
@@ -161,7 +161,7 @@ namespace ExplorerCtrl.Internal;
             SetValue(FullNameProperty, content.FullName);
             SetValue(LinkProperty, content.Link);
             SetValue(SizeProperty, content.Size);
-            SetValue(DateProperty, content.Date);
+            SetValue(DateProperty, content.CreationDate);
             SetValue(TypeProperty, content.Type);
             SetValue(IconProperty, content.Icon);
             SetValue(IsDirectoryProperty, content.IsDirectory);

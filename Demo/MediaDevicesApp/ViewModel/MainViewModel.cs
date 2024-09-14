@@ -11,7 +11,7 @@ public class MainViewModel : BaseViewModel
 {
 	private List<MediaDevice> devices;
 	private MediaDevice selectedDevice;
-	private bool usePrivateDevices = false;
+	private bool usePrivateDevices;
 	private bool canReset = true;
 
 	public DelegateCommand RefreshCommand { get; private set; }

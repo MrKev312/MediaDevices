@@ -26,7 +26,11 @@ public class ContentLocationViewModel : BaseViewModel
 		// needed for Nicon
 		try
 		{
+#if NET5_0_OR_GREATER
+			Contents = Enum.GetValues<ContentType>().Where(c => this.device?.GetContentLocations(c)?.Any() ?? false).ToList();
+#else
 			Contents = Enum.GetValues(typeof(ContentType)).Cast<ContentType>().Where(c => this.device?.GetContentLocations(c)?.Any() ?? false).ToList();
+#endif
 		}
 		catch
 		{

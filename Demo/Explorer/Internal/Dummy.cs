@@ -11,7 +11,7 @@ public class Dummy : IExplorerItem
 
         public IEnumerable<IExplorerItem> Children { get { return null; } }
 
-        public DateTime? Date { get { return null; } }
+        public DateTime? CreationDate { get { return null; } }
 
         public bool HasChildren { get { return false; } }
 

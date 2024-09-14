@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace MediaDeviceApp.View;
+namespace MediaDevicesApp.View;
 
 /// <summary>
 /// Interaction logic for VendorView.xaml

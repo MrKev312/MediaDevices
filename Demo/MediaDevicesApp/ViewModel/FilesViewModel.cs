@@ -5,6 +5,7 @@ using MediaDevicesApp.Mvvm;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Windows.Media;
@@ -15,7 +16,7 @@ namespace MediaDevicesApp.ViewModel;
 public class FilesViewModel : BaseViewModel
 {
 	MediaDevice device;
-	private Function selectedFunction;
+	private FileEnumerationType selectedFunction;
 	private string path = @"\";
 	private string filter = "*";
 	private bool useRecursive = true;
@@ -25,16 +26,15 @@ public class FilesViewModel : BaseViewModel
 
 	public DelegateCommand EnumerateCommand { get; private set; }
 
-	public enum Function
+	public enum FileEnumerationType
 	{
-		MediaDevice_EnumerateDirectories,
-		MediaDevice_EnumerateFiles,
-		MediaDevice_EnumerateFileSystemEntries,
+		MediaDeviceDirectories,
+		MediaDeviceFiles,
+		MediaDeviceFileSystemEntries,
 
-		MediaFileSystemInfo_EnumerateDirectories,
-		MediaFileSystemInfo_EnumerateFiles,
-		MediaFileSystemInfo_EnumerateFileSystemInfos,
-
+		MediaFileSystemInfoDirectories,
+		MediaFileSystemInfoFiles,
+		MediaFileSystemInfoFileSystemInfos
 	}
 
 	public class Info
@@ -52,7 +52,12 @@ public class FilesViewModel : BaseViewModel
 		{
 			Name = System.IO.Path.GetFileName(fullName);
 			FullName = fullName;
-			Image = fullName.EndsWith(System.IO.Path.DirectorySeparatorChar.ToString()) ? folderImages : fileImage;
+
+#if NET5_0_OR_GREATER
+			Image = fullName.EndsWith(System.IO.Path.DirectorySeparatorChar) ? folderImages : fileImage;
+#else
+			Image = fullName.EndsWith(System.IO.Path.DirectorySeparatorChar.ToString(CultureInfo.InvariantCulture), StringComparison.InvariantCulture) ? folderImages : fileImage;
+#endif
 		}
 
 		public Info(MediaFileSystemInfo info)
@@ -84,14 +89,19 @@ public class FilesViewModel : BaseViewModel
 		Files = null;
 	}
 
-
-
-	public List<Function> Functions
+	public static List<FileEnumerationType> FileEnumerationTypes
 	{
-		get { return Enum.GetValues(typeof(Function)).Cast<Function>().ToList(); }
+		get
+		{
+#if NET5_0_OR_GREATER
+			return [.. Enum.GetValues<FileEnumerationType>()];
+#else
+			return Enum.GetValues(typeof(FileEnumerationType)).Cast<FileEnumerationType>().ToList();
+#endif
+		}
 	}
 
-	public Function SelectedFunction
+	public FileEnumerationType SelectedFunction
 	{
 		get
 		{
@@ -193,42 +203,42 @@ public class FilesViewModel : BaseViewModel
 
 			switch (SelectedFunction)
 			{
-				case Function.MediaDevice_EnumerateDirectories:
+				case FileEnumerationType.MediaDeviceDirectories:
 					stopwatch.Start();
 					List<string> list1 = device.EnumerateDirectories(Path, Filter, searchOption).ToList();
 					stopwatch.Stop();
 					Files = list1.Select(f => new Info(f)).ToList();
 					break;
 
-				case Function.MediaDevice_EnumerateFiles:
+				case FileEnumerationType.MediaDeviceFiles:
 					stopwatch.Start();
 					List<string> list2 = device.EnumerateFiles(Path, Filter, searchOption).ToList();
 					stopwatch.Stop();
 					Files = list2.Select(f => new Info(f)).ToList();
 					break;
 
-				case Function.MediaDevice_EnumerateFileSystemEntries:
+				case FileEnumerationType.MediaDeviceFileSystemEntries:
 					stopwatch.Start();
 					List<string> list3 = device.EnumerateFileSystemEntries(Path, Filter, searchOption).ToList();
 					stopwatch.Stop();
 					Files = list3.Select(f => new Info(f)).ToList();
 					break;
 
-				case Function.MediaFileSystemInfo_EnumerateDirectories:
+				case FileEnumerationType.MediaFileSystemInfoDirectories:
 					stopwatch.Start();
 					List<MediaDirectoryInfo> list4 = device.GetDirectoryInfo(Path).EnumerateDirectories(Filter, searchOption).ToList();
 					stopwatch.Stop();
 					Files = list4.Select(f => new Info(f)).ToList();
 					break;
 
-				case Function.MediaFileSystemInfo_EnumerateFiles:
+				case FileEnumerationType.MediaFileSystemInfoFiles:
 					stopwatch.Start();
 					List<MediaFileInfo> list5 = device.GetDirectoryInfo(Path).EnumerateFiles(Filter, searchOption).ToList();
 					stopwatch.Stop();
 					Files = list5.Select(f => new Info(f)).ToList();
 					break;
 
-				case Function.MediaFileSystemInfo_EnumerateFileSystemInfos:
+				case FileEnumerationType.MediaFileSystemInfoFileSystemInfos:
 					stopwatch.Start();
 					List<MediaFileSystemInfo> list6 = device.GetDirectoryInfo(Path).EnumerateFileSystemInfos(Filter, searchOption).ToList();
 					stopwatch.Stop();
@@ -236,7 +246,7 @@ public class FilesViewModel : BaseViewModel
 					break;
 			}
 
-			Time = stopwatch.Elapsed.ToString(@"mm\:ss\.fffffff");
+			Time = stopwatch.Elapsed.ToString(@"mm\:ss\.fffffff", CultureInfo.InvariantCulture);
 		}
 	}
 }

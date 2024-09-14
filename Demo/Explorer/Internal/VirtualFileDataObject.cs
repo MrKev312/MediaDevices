@@ -208,7 +208,7 @@ internal sealed class VirtualFileDataObject : System.Runtime.InteropServices.Com
 									hr = result.Item2;
 				*/
 				medium.tymed = dataObject.FORMATETC.tymed;
-				Tuple<IntPtr, int> result = dataObject.GetData(); // Possible call to user code
+				(IntPtr, int) result = dataObject.GetData(); // Possible call to user code
 				hr = result.Item2;
 				if (NativeMethods.SUCCEEDED(hr))
 				{
@@ -369,7 +369,7 @@ internal sealed class VirtualFileDataObject : System.Runtime.InteropServices.Com
 					byte[] dataArray = data.ToArray();
 					IntPtr ptr = Marshal.AllocHGlobal(dataArray.Length);
 					Marshal.Copy(dataArray, 0, ptr, dataArray.Length);
-					return new Tuple<IntPtr, int>(ptr, NativeMethods.S_OK);
+					return (ptr, NativeMethods.S_OK);
 				},
 			});
 	}
@@ -422,7 +422,7 @@ internal sealed class VirtualFileDataObject : System.Runtime.InteropServices.Com
 					// Return an IntPtr for the IStream
 					ptr = Marshal.GetComInterfaceForObject(iStream, typeof(IStream));
 					Marshal.ReleaseComObject(iStream);
-					return new Tuple<IntPtr, int>(ptr, NativeMethods.S_OK);
+					return (ptr, NativeMethods.S_OK);
 				},
 			});
 	}
@@ -562,7 +562,7 @@ internal sealed class VirtualFileDataObject : System.Runtime.InteropServices.Com
 		*/
 		{
 			// Read the value and return it
-			Tuple<IntPtr, int> result = dataObject.GetData();
+			(IntPtr, int) result = dataObject.GetData();
 			if (NativeMethods.SUCCEEDED(result.Item2))
 
 			/* Unmerged change from project 'Explorer (net7.0-windows)'
@@ -698,7 +698,7 @@ internal sealed class VirtualFileDataObject : System.Runtime.InteropServices.Com
 	/// <summary>
 	/// Class representing the result of a SetData call.
 	/// </summary>
-	private class DataObject
+	private sealed class DataObject
 	{
 		/// <summary>
 		/// FORMATETC structure for the data.
@@ -708,45 +708,13 @@ internal sealed class VirtualFileDataObject : System.Runtime.InteropServices.Com
 		/// <summary>
 		/// Func returning the data as an IntPtr and an HRESULT success code.
 		/// </summary>
-		public Func<Tuple<IntPtr, int>> GetData { get; set; }
-	}
-
-	/// <summary>
-	/// Represents a 2-tuple, or pair.
-	/// </summary>
-	/// <remarks>
-	/// Minimal implementation of the .NET 4 Tuple class; remove if running on .NET 4.
-	/// </remarks>
-	/// <typeparam name="T1">The type of the tuple's first component.</typeparam>
-	/// <typeparam name="T2">The type of the tuple's second component.</typeparam>
-	private class Tuple<T1, T2>
-	{
-		/// <summary>
-		/// Gets the value of the current Tuple(T1, T2) object's first component.
-		/// </summary>
-		public T1 Item1 { get; private set; }
-
-		/// <summary>
-		/// Gets the value of the current Tuple(T1, T2) object's second component.
-		/// </summary>
-		public T2 Item2 { get; private set; }
-
-		/// <summary>
-		/// Initializes a new instance of the Tuple(T1, T2) class.
-		/// </summary>
-		/// <param name="item1">The value of the tuple's first component.</param>
-		/// <param name="item2">The value of the tuple's second component.</param>
-		public Tuple(T1 item1, T2 item2)
-		{
-			Item1 = item1;
-			Item2 = item2;
-		}
+		public Func<(IntPtr, int)> GetData { get; set; }
 	}
 
 	/// <summary>
 	/// Simple class that exposes a write-only IStream as a Stream.
 	/// </summary>
-	private class IStreamWrapper : Stream
+	private sealed class IStreamWrapper : Stream
 	{
 		/// <summary>
 		/// IStream instance being wrapped.
@@ -898,7 +866,7 @@ internal sealed class VirtualFileDataObject : System.Runtime.InteropServices.Com
 	/// <summary>
 	/// Contains the methods for generating visual feedback to the end user and for canceling or completing the drag-and-drop operation.
 	/// </summary>
-	private class DropSource : NativeMethods.IDropSource
+	private sealed class DropSource : NativeMethods.IDropSource
 	{
 		/// <summary>
 		/// Determines whether a drag-and-drop operation should continue.

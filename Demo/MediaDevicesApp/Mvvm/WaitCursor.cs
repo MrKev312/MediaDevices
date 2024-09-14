@@ -16,5 +16,7 @@ public class WaitCursor : IDisposable
 	public void Dispose()
 	{
 		Mouse.OverrideCursor = previousCursor;
+
+		GC.SuppressFinalize(this);
 	}
 }

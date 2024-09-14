@@ -9,13 +9,13 @@ namespace ExplorerCtrl.Internal;
 /// </summary>
 internal class DelegateCommand : ICommand
     {
-        private readonly Action execute = null;
-        private readonly Func<bool> canExecute = null;
+        private readonly Action execute;
+	private readonly Func<bool> canExecute;
 
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        public DelegateCommand(Action execute, Func<bool> canExecute = null)
+	/// <summary>
+	/// Constructor
+	/// </summary>
+	public DelegateCommand(Action execute, Func<bool> canExecute = null)
         {
             if (execute == null)
             {

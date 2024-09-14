@@ -9,20 +9,20 @@ namespace MediaDevicesApp.ViewModel;
 
 public abstract class ServiceBaseViewModel : BaseViewModel
 {
-	protected MediaDevice device;
-	protected MediaDeviceService selectedService;
-	protected MediaDeviceServices services = MediaDeviceServices.All;
+	protected MediaDevice device { get; private set; }
+	protected MediaDeviceServices availableServices { get; set; } = MediaDeviceServices.All;
 
 	public virtual void Update(MediaDevice device)
 	{
 		this.device = device;
 
-		Services = this.device?.GetServices(services)?.ToList();
+		AvailableDeviceServices = this.device?.GetServices(availableServices)?.ToList();
 		NotifyAllPropertiesChanged();
 	}
 
-	public List<MediaDeviceService> Services { get; private set; }
+	public List<MediaDeviceService> AvailableDeviceServices { get; private set; }
 
+	private MediaDeviceService selectedService;
 	public MediaDeviceService SelectedService
 	{
 		get
