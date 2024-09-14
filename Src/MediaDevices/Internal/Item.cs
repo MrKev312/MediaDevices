@@ -74,7 +74,7 @@ internal sealed class Item
 
 	public static Item FindItem(MediaDevice device, string path)
 	{
-		Item item = Item.GetRoot(device);
+		Item item = GetRoot(device);
 		if (path == @"\")
 		{
 			return item;
@@ -109,7 +109,7 @@ internal sealed class Item
 		string mediaObjectId = results.ToStrings().FirstOrDefault();
 
 		// return result item
-		return mediaObjectId == null ? null : Item.Create(device, mediaObjectId);
+		return mediaObjectId == null ? null : Create(device, mediaObjectId);
 		//return string.IsNullOrEmpty(mediaObjectId) ? null : Item.Create(device, mediaObjectId);
 	}
 
@@ -119,7 +119,7 @@ internal sealed class Item
 		Id = id;
 		this.path = path;
 
-		if (id == Item.RootId)
+		if (id == RootId)
 		{
 			Name = @"\";
 			FullName = @"\";
@@ -148,7 +148,7 @@ internal sealed class Item
 	{
 		this.device = device;
 		Id = id;
-		if (id == Item.RootId)
+		if (id == RootId)
 		{
 			Name = @"\";
 			FullName = @"\";
@@ -162,7 +162,7 @@ internal sealed class Item
 
 	public void Refresh()
 	{
-		if (Id != Item.RootId)
+		if (Id != RootId)
 		{
 			GetProperties();
 
@@ -346,7 +346,7 @@ internal sealed class Item
 
 				try
 				{
-					item = Item.Create(device, objectIds[index], FullName);
+					item = Create(device, objectIds[index], FullName);
 				}
 				catch (FileNotFoundException)
 				{
@@ -385,7 +385,7 @@ internal sealed class Item
 
 				try
 				{
-					item = Item.Create(device, objectIds[index], FullName);
+					item = Create(device, objectIds[index], FullName);
 				}
 				catch (FileNotFoundException)
 				{
@@ -443,7 +443,7 @@ internal sealed class Item
 					return null;
 				}
 
-				child = Item.Create(device, id, parent.FullName);
+				child = Create(device, id, parent.FullName);
 			}
 			else if (child.Type == ItemType.File)
 			{
@@ -482,7 +482,7 @@ internal sealed class Item
 
 	public string GetPath()
 	{
-		if (Id == Item.RootId)
+		if (Id == RootId)
 		{
 			return @"\";
 		}

@@ -215,7 +215,6 @@ public sealed class MediaDevice : IDisposable
 		DeviceId = deviceId;
 		IsCaseSensitive = false;
 
-
 		uint count = 256;
 		try
 		{
@@ -709,7 +708,6 @@ public sealed class MediaDevice : IDisposable
 		// need to restrict its identity, specify SECURITY_IMPERSONATION so that we work with all devices.
 		clientInfo.SetUnsignedIntegerValue(ref WPD.CLIENT_SECURITY_QUALITY_OF_SERVICE, (uint)Security.IMPERSONATION);
 
-
 		if (access != MediaDeviceAccess.Default)
 		{
 			clientInfo.SetUnsignedIntegerValue(ref WPD.CLIENT_DESIRED_ACCESS, (uint)access);
@@ -905,7 +903,7 @@ public sealed class MediaDevice : IDisposable
 			throw new DirectoryNotFoundException($"Director {path} not found.");
 		}
 
-		string pattern = MediaDevice.FilterToRegex(searchPattern);
+		string pattern = FilterToRegex(searchPattern);
 		return item.GetChildren(pattern, searchOption).Where(i => i.Type == ItemType.File).Select(i => i.FullName);
 	}
 
@@ -1246,7 +1244,6 @@ public sealed class MediaDevice : IDisposable
 		{
 			throw new ArgumentException("Invalid path", nameof(path));
 		}
-
 
 #if NET6_0_OR_GREATER
 		ArgumentNullException.ThrowIfNull(stream);
@@ -2314,7 +2311,6 @@ public sealed class MediaDevice : IDisposable
 				return services.Select(s => new MediaDeviceService(this, s));
 		}
 	}
-
 
 	#endregion
 

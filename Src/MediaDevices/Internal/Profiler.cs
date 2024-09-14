@@ -8,7 +8,6 @@ internal sealed class Profiler : IDisposable
 	private Stopwatch stopwatch;
 	private string title;
 
-
 	public Profiler(string title)
 	{
 		Start(title);

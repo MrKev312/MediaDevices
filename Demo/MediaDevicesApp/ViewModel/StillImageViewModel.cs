@@ -1,6 +1,6 @@
-﻿using MediaDeviceApp.Mvvm;
+﻿using MediaDevices;
 
-using MediaDevices;
+using MediaDevicesApp.Mvvm;
 
 using System;
 using System.Collections.Generic;
@@ -10,92 +10,92 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-namespace MediaDeviceApp.ViewModel;
+namespace MediaDevicesApp.ViewModel;
 
 public class StillImageViewModel : BaseViewModel
-    {
-        MediaDevice device;
-        private bool isStillImageSupported;
-        private List<string> stillImageFunctionalObjects;
-        private string selectedStillImageFunctionalObject;
-        private ImageSource stillImageSource;
-        
-        public DelegateCommand StillImageCommand { get; private set; }
+{
+	MediaDevice device;
+	private bool isStillImageSupported;
+	private List<string> stillImageFunctionalObjects;
+	private string selectedStillImageFunctionalObject;
+	private ImageSource stillImageSource;
 
-        public StillImageViewModel()
-        {
+	public DelegateCommand StillImageCommand { get; private set; }
+
+	public StillImageViewModel()
+	{
 		stillImageSource = new BitmapImage(new Uri("pack://application:,,,/Images/Folder.png"));
 		StillImageCommand = new DelegateCommand(OnStillImageCapture);
-        }
+	}
 
-        public void Update(MediaDevice device)
-        {
-            this.device = device;
-            IsStillImageSupported = this.device?.FunctionalCategories()?.Any(c => c == FunctionalCategory.StillImageCapture) ?? false;
-            StillImageFunctionalObjects = this.device?.FunctionalObjects(FunctionalCategory.StillImageCapture)?.ToList();
-        }
-        
-        public bool IsStillImageSupported
-        {
-            get
-            {
-                return isStillImageSupported;
-            }
-            set
-            {
-                isStillImageSupported = value;
-                NotifyPropertyChanged(nameof(IsStillImageSupported));
-            }
-        }
+	public void Update(MediaDevice device)
+	{
+		this.device = device;
+		IsStillImageSupported = this.device?.FunctionalCategories()?.Any(c => c == FunctionalCategory.StillImageCapture) ?? false;
+		StillImageFunctionalObjects = this.device?.FunctionalObjects(FunctionalCategory.StillImageCapture)?.ToList();
+	}
 
-        public List<string> StillImageFunctionalObjects
-        {
-            get
-            {
-                return stillImageFunctionalObjects;
-            }
-            set
-            {
-                if (stillImageFunctionalObjects != value)
-                {
-                    stillImageFunctionalObjects = value;
-                    NotifyPropertyChanged(nameof(StillImageFunctionalObjects));
-                }
-            }
-        }
+	public bool IsStillImageSupported
+	{
+		get
+		{
+			return isStillImageSupported;
+		}
+		set
+		{
+			isStillImageSupported = value;
+			NotifyPropertyChanged(nameof(IsStillImageSupported));
+		}
+	}
 
-        public string SelectedStillImageFunctionalObject
-        {
-            get { return selectedStillImageFunctionalObject; }
-            set
-            {
-                selectedStillImageFunctionalObject = value;
-                NotifyPropertyChanged(nameof(SelectedStillImageFunctionalObject));
-            }
-        }
+	public List<string> StillImageFunctionalObjects
+	{
+		get
+		{
+			return stillImageFunctionalObjects;
+		}
+		set
+		{
+			if (stillImageFunctionalObjects != value)
+			{
+				stillImageFunctionalObjects = value;
+				NotifyPropertyChanged(nameof(StillImageFunctionalObjects));
+			}
+		}
+	}
 
-        public ImageSource StillImageSource
-        {
-            get { return stillImageSource; }
-            set
-            {
-                stillImageSource = value;
-                NotifyPropertyChanged(nameof(StillImageSource));
-            }
-        }
+	public string SelectedStillImageFunctionalObject
+	{
+		get { return selectedStillImageFunctionalObject; }
+		set
+		{
+			selectedStillImageFunctionalObject = value;
+			NotifyPropertyChanged(nameof(SelectedStillImageFunctionalObject));
+		}
+	}
 
-        public void OnStillImageCapture()
-        {
-            device.ObjectAdded += OnStillImage;
-            
-            device.StillImageCaptureInitiate(selectedStillImageFunctionalObject);
-        }
+	public ImageSource StillImageSource
+	{
+		get { return stillImageSource; }
+		set
+		{
+			stillImageSource = value;
+			NotifyPropertyChanged(nameof(StillImageSource));
+		}
+	}
 
-        private void OnStillImage(object sender, ObjectAddedEventArgs e)
-        {
-            device.ObjectAdded -= OnStillImage;
+	public void OnStillImageCapture()
+	{
+		device.ObjectAdded += OnStillImage;
 
-            string fullName = e.ObjectFullFileName;
+		device.StillImageCaptureInitiate(selectedStillImageFunctionalObject);
+	}
+
+	private void OnStillImage(object sender, ObjectAddedEventArgs e)
+	{
+		device.ObjectAdded -= OnStillImage;
+
+		string fullName = e.ObjectFullFileName;
 		using MemoryStream mem = new();
 		e.ObjectFileStream.CopyTo(mem);
 		mem.Position = 0;
@@ -111,4 +111,4 @@ public class StillImageViewModel : BaseViewModel
 			StillImageSource = image;
 		});
 	}
-    }
+}

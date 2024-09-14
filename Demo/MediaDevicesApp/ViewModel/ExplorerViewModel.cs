@@ -1,37 +1,37 @@
-﻿using MediaDeviceApp.Mvvm;
+﻿using MediaDevices;
 
-using MediaDevices;
+using MediaDevicesApp.Mvvm;
 
 using System.Collections.Generic;
 
-namespace MediaDeviceApp.ViewModel;
+namespace MediaDevicesApp.ViewModel;
 
 public class ExplorerViewModel : BaseViewModel
-    {
-        MediaDevice device;
-        List<ItemViewModel> explorerRoot;
+{
+	MediaDevice device;
+	List<ItemViewModel> explorerRoot;
 
-        public ExplorerViewModel()
-        { }
+	public ExplorerViewModel()
+	{ }
 
-        public void Update(MediaDevice device)
-        {
-            this.device = device;
-            MediaDirectoryInfo root = null;
-            root = this.device?.GetRootDirectory();
-            ExplorerRoot = root != null ? [new(root)] : null;
-        }
+	public void Update(MediaDevice device)
+	{
+		this.device = device;
+		MediaDirectoryInfo root = null;
+		root = this.device?.GetRootDirectory();
+		ExplorerRoot = root != null ? [new(root)] : null;
+	}
 
-        public List<ItemViewModel> ExplorerRoot
-        {
-            get
-            {
-                return explorerRoot;
-            }
-            set
-            {
-                explorerRoot = value;
-                NotifyPropertyChanged(nameof(ExplorerRoot));
-            }
-        }
-    }
+	public List<ItemViewModel> ExplorerRoot
+	{
+		get
+		{
+			return explorerRoot;
+		}
+		set
+		{
+			explorerRoot = value;
+			NotifyPropertyChanged(nameof(ExplorerRoot));
+		}
+	}
+}

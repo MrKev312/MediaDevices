@@ -1,11 +1,11 @@
 ﻿using MediaDevices;
 
-namespace MediaDeviceApp.ViewModel;
+namespace MediaDevicesApp.ViewModel;
 
-    public class ServiceMetadataViewModel : ServiceBaseViewModel
-    {
-        public ServiceMetadataViewModel()
-        {
-            services = MediaDeviceServices.Metadata;
-        }
-    }
+public class ServiceMetadataViewModel : ServiceBaseViewModel
+{
+	public ServiceMetadataViewModel()
+	{
+		services = MediaDeviceServices.Metadata;
+	}
+}

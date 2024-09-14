@@ -1,64 +1,64 @@
-﻿using MediaDeviceApp.Mvvm;
+﻿using MediaDevices;
 
-using MediaDevices;
+using MediaDevicesApp.Mvvm;
 
-namespace MediaDeviceApp.ViewModel;
+namespace MediaDevicesApp.ViewModel;
 
 public class RootViewModel : BaseViewModel
-    {
-        MediaDevice device;
-        MediaDirectoryInfo root;
+{
+	MediaDevice device;
+	MediaDirectoryInfo root;
 
-        public RootViewModel()
-        {
-            
-        }
+	public RootViewModel()
+	{
 
-        public void Update(MediaDevice device)
-        {
-            this.device = device;
-            root = this.device?.GetRootDirectory();
-            NotifyAllPropertiesChanged();
-        }
+	}
 
-        public string Id
-        {
-            get
-            {
-                return root?.Id;
-            }
-        }
+	public void Update(MediaDevice device)
+	{
+		this.device = device;
+		root = this.device?.GetRootDirectory();
+		NotifyAllPropertiesChanged();
+	}
 
-        public string Name
-        {
-            get
-            {
-                return root?.Name;
-            }
-        }
+	public string Id
+	{
+		get
+		{
+			return root?.Id;
+		}
+	}
 
-        public string FullName
-        {
-            get
-            {
-                return root?.FullName;
-            }
-        }
+	public string Name
+	{
+		get
+		{
+			return root?.Name;
+		}
+	}
 
-        public ulong Length
-        {
-            get
-            {
-                return root?.Length ?? 0;
-            }
-        }
+	public string FullName
+	{
+		get
+		{
+			return root?.FullName;
+		}
+	}
 
-        public string Attributes
-        {
-            get
-            {
-                return root?.Attributes.ToString();
-            }
-        }
+	public ulong Length
+	{
+		get
+		{
+			return root?.Length ?? 0;
+		}
+	}
 
-    }
+	public string Attributes
+	{
+		get
+		{
+			return root?.Attributes.ToString();
+		}
+	}
+
+}

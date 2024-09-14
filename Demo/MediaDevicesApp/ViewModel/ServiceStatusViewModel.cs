@@ -1,12 +1,12 @@
 ﻿using MediaDevices;
 
-namespace MediaDeviceApp.ViewModel;
+namespace MediaDevicesApp.ViewModel;
 
-    public class ServiceStatusViewModel : ServiceBaseViewModel
-    {
-        public ServiceStatusViewModel()
-        {
-            services = MediaDeviceServices.Status;
-        }
+public class ServiceStatusViewModel : ServiceBaseViewModel
+{
+	public ServiceStatusViewModel()
+	{
+		services = MediaDeviceServices.Status;
+	}
 
-    }
+}
