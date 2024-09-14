@@ -933,15 +933,30 @@ internal sealed partial class VirtualFileDataObject : System.Runtime.InteropServ
 		[DllImport("ole32.dll", CharSet = CharSet.Auto, ExactSpelling = true, PreserveSig = false)]
 		public static extern void DoDragDrop(System.Runtime.InteropServices.ComTypes.IDataObject dataObject, IDropSource dropSource, int allowedEffects, int[] finalEffect);
 
+#if NET7_0_OR_GREATER
+		[LibraryImport("kernel32.dll")]
+		public static partial IntPtr GlobalLock(IntPtr hMem);
+#else
 		[DllImport("kernel32.dll")]
 		public static extern IntPtr GlobalLock(IntPtr hMem);
+#endif
 
 		[return: MarshalAs(UnmanagedType.Bool)]
+#if NET7_0_OR_GREATER
+		[LibraryImport("kernel32.dll")]
+		public static partial bool GlobalUnlock(IntPtr hMem);
+#else
 		[DllImport("kernel32.dll")]
 		public static extern bool GlobalUnlock(IntPtr hMem);
+#endif
 
+#if NET7_0_OR_GREATER
+		[LibraryImport("kernel32.dll")]
+		public static partial IntPtr GlobalSize(IntPtr handle);
+#else
 		[DllImport("kernel32.dll")]
 		public static extern IntPtr GlobalSize(IntPtr handle);
+#endif
 
 		/// <summary>
 		/// Returns true iff the HRESULT is a success code.
