@@ -40,8 +40,6 @@ public class HannspreeHSG1351UnitTest : WritableUnitTest
 		// Exists Test
 		//this.existingFile = @"\SD\DCIM\100CANON\IMG_2568.JPG";
 
-
-
 		//this.infoDirectoryName = "DCIM";
 		//this.infoDirectoryPath = @"\Internal Storage\DCIM";
 		//this.infoDirectoryCreationTime = new DateTime(2000, 1, 27, 19, 47, 54);

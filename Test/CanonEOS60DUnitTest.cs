@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MediaDevices;
+using MediaDevicesUnitTest.TestCases;
 
 namespace MediaDevicesUnitTest;
 
@@ -9,7 +10,6 @@ public class CanonEOS60DUnitTest : ReadonlyUnitTest
 {
 	public CanonEOS60DUnitTest()
 	{
-
 
 		// Device Test
 		deviceDescription = "Canon EOS 60D";
@@ -32,7 +32,6 @@ public class CanonEOS60DUnitTest : ReadonlyUnitTest
 
 		// Exists Test
 		existingFile = @"\SD\DCIM\100CANON\IMG_2568.JPG";
-
 
 		infoDirectoryName = "DCIM";
 		infoDirectoryPath = @"\Internal Storage\DCIM";

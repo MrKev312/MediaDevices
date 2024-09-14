@@ -42,16 +42,10 @@ public abstract class UnitTest
 	protected string FilePersistentUniqueId;
 	protected string FilePersistentUniqueIdPath;
 
-	private TestContext testContextInstance;
-
 	/// <summary>
 	/// Gets or sets the test context which provides information about and functionality for the current test run.
 	///</summary>
-	public TestContext TestContext
-	{
-		get { return testContextInstance; }
-		set { testContextInstance = value; }
-	}
+	public TestContext TestContext { get; set; }
 
 	public UnitTest()
 	{
@@ -247,7 +241,7 @@ public abstract class UnitTest
 	[Description("Architecture test.")]
 	public void ArchitectureTest()
 	{
-		int size = nint.Size;
+		int size = IntPtr.Size;
 		TestContext.WriteLine($"Pointer size if {size}");
 	}
 }

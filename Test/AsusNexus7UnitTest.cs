@@ -33,8 +33,6 @@ public class Nexus7UnitTest : WritableUnitTest
 		// Exists Test
 		//this.existingFile = @"\Internal storage\Ringtones\hangouts_message.ogg";
 
-
-
 		//this.infoDirectoryName = "Ringtones";
 		//this.infoDirectoryPath = @"\Internal storage\Ringtones";
 		//this.infoDirectoryCreationTime = null; 

@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MediaDevices;
+using MediaDevicesUnitTest.TestCases;
 
 namespace MediaDevicesUnitTest;
 
@@ -41,8 +42,6 @@ public class AppleiPhoneS3UnitTest : ReadonlyUnitTest
 
 		// Exists Test
 		existingFile = @"Internal Storage\DCIM\800AAAAA\IMG_0001.JPG";
-
-
 
 		infoDirectoryName = "DCIM";
 		infoDirectoryPath = @"\Internal Storage\DCIM";

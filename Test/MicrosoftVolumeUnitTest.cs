@@ -33,8 +33,6 @@ public class MicrosoftVolumeUnitTest : WritableUnitTest
 		// Exists Test
 		//this.existingFile = @"\Phone\Music\Artist\OMD";
 
-
-
 		//this.infoDirectoryName = "Pictures";
 		//this.infoDirectoryPath = @"\SD card\Pictures";
 		//this.infoDirectoryCreationTime = new DateTime(2014, 03, 21, 19, 02, 04);

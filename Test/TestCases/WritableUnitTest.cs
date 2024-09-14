@@ -13,12 +13,7 @@ namespace MediaDevicesUnitTest.TestCases;
 
 public abstract class WritableUnitTest : UnitTest
 {
-
-#if NETCOREAPP
-	protected readonly string testDataFolder = Path.GetFullPath(@".\..\..\..\..\TestData");
-#else
-        protected readonly string testDataFolder = Path.GetFullPath(@".\..\..\..\TestData");
-#endif
+	protected static string TestDataFolder => Path.GetFullPath(@".\TestData");
 
 	protected string workingFolder;
 	protected List<string> treeList =
@@ -48,7 +43,7 @@ public abstract class WritableUnitTest : UnitTest
 	{
 		treeListFull = treeList.Select(p => workingFolder + p).ToList();
 
-		string sourceFolder = Path.Combine(testDataFolder, "UploadTree");
+		string sourceFolder = Path.Combine(TestDataFolder, "UploadTree");
 
 		// create empty folders not checked in
 		Directory.CreateDirectory(Path.Combine(sourceFolder, @"Aaa\Abb\Add"));
@@ -161,7 +156,7 @@ public abstract class WritableUnitTest : UnitTest
 		Assert.IsNotNull(device, "Device");
 		device.Connect();
 
-		string sourceFile = Path.Combine(testDataFolder, "TestFile.txt");
+		string sourceFile = Path.Combine(TestDataFolder, "TestFile.txt");
 		string destFile = Path.Combine(workingFolder, "TestFile.txt");
 
 		bool exists1 = device.FileExists(destFile);
@@ -206,7 +201,7 @@ public abstract class WritableUnitTest : UnitTest
 	[Description("Download a file from the target.")]
 	public void DownloadFileTest()
 	{
-		string filePath = Path.Combine(testDataFolder, Path.GetFileName(FilePersistentUniqueIdPath));
+		string filePath = Path.Combine(TestDataFolder, Path.GetFileName(FilePersistentUniqueIdPath));
 		File.Delete(filePath);
 
 		IEnumerable<MediaDevice> devices = MediaDevice.GetDevices();
@@ -230,7 +225,7 @@ public abstract class WritableUnitTest : UnitTest
 	[Description("Download a file from the target.")]
 	public void DownloadIconTest()
 	{
-		string filePath = Path.Combine(testDataFolder, Path.GetFileName("MTPTestPic.jpg"));
+		string filePath = Path.Combine(TestDataFolder, Path.GetFileName("MTPTestPic.jpg"));
 		File.Delete(filePath);
 
 		IEnumerable<MediaDevice> devices = MediaDevice.GetDevices();
@@ -254,7 +249,7 @@ public abstract class WritableUnitTest : UnitTest
 	[Description("Download a file from the target.")]
 	public void DownloadThumbnailTest()
 	{
-		string filePath = Path.Combine(testDataFolder, Path.ChangeExtension(Path.GetFileName(FilePersistentUniqueIdPath), ".gif"));
+		string filePath = Path.Combine(TestDataFolder, Path.ChangeExtension(Path.GetFileName(FilePersistentUniqueIdPath), ".gif"));
 		File.Delete(filePath);
 
 		IEnumerable<MediaDevice> devices = MediaDevice.GetDevices();
@@ -283,7 +278,7 @@ public abstract class WritableUnitTest : UnitTest
 		Assert.IsNotNull(device, "Device");
 		device.Connect();
 
-		string sourceFolder = Path.Combine(testDataFolder, "UploadTree");
+		string sourceFolder = Path.Combine(TestDataFolder, "UploadTree");
 		string destFolder = Path.Combine(workingFolder, "UploadTree");
 
 		bool exists1 = device.DirectoryExists(destFolder);
@@ -292,7 +287,7 @@ public abstract class WritableUnitTest : UnitTest
 
 		device.UploadFolder(sourceFolder, destFolder);
 
-		string downloadFolder = Path.Combine(testDataFolder, "DownloadTree");
+		string downloadFolder = Path.Combine(TestDataFolder, "DownloadTree");
 
 		if (Directory.Exists(downloadFolder))
 			Directory.Delete(downloadFolder, true);
@@ -382,8 +377,6 @@ public abstract class WritableUnitTest : UnitTest
 		Assert.IsFalse(exists3, "exists3");
 	}
 
-
-
 	[TestMethod]
 	[Description("Writable PersistentUniqueId Test")]
 	public void WritablePersistentUniqueIdTest()
@@ -454,7 +447,7 @@ public abstract class WritableUnitTest : UnitTest
 		Assert.IsNotNull(device, "Device");
 		device.Connect();
 
-		string sourceFile = Path.Combine(testDataFolder, "TestFile.txt");
+		string sourceFile = Path.Combine(TestDataFolder, "TestFile.txt");
 		string destFile = Path.Combine(workingUnixFolder, @"Test:File.txt");
 
 		bool exists1 = device.FileExists(destFile);

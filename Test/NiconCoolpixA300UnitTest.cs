@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MediaDevices;
+using MediaDevicesUnitTest.TestCases;
 
 namespace MediaDevicesUnitTest;
 

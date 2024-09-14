@@ -1,22 +1,23 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MediaDevices;
+using MediaDevicesUnitTest.TestCases;
 
 namespace MediaDevicesUnitTest;
 
 [TestClass]
-public class AppleiPodNanoUnitTest : ReadonlyUnitTest
+public class CanonPowerShotSX30UnitTest : ReadonlyUnitTest
 {
-	public AppleiPodNanoUnitTest()
+	public CanonPowerShotSX30UnitTest()
 	{
 		// Device Test
-		deviceDescription = "iPod";
-		deviceFriendlyName = "AVALON";
-		deviceManufacture = "Apple";
-		deviceFirmwareVersion = "1.62";
-		deviceModel = "iPod";
-		deviceSerialNumber = "YM8382LQ5BD";
-		deviceDeviceType = DeviceType.Generic;
+		deviceDescription = "Canon PowerShot SX30 IS";
+		deviceFriendlyName = "Canon PowerShot SX30 IS";
+		deviceManufacture = "Canon Inc.";
+		deviceFirmwareVersion = "1-9.0.1.0";
+		deviceModel = "Canon PowerShot SX30 IS";
+		deviceSerialNumber = "03A7D5F390E344A39B4B43A463DB3882";
+		deviceDeviceType = DeviceType.Camera;
 		deviceTransport = DeviceTransport.USB;
 		devicePowerSource = PowerSource.Battery;
 
@@ -29,11 +30,7 @@ public class AppleiPodNanoUnitTest : ReadonlyUnitTest
 		contentLocations = [""];
 
 		// Exists Test
-		existingFile = @"Internal Storage\DCIM\800AAAAA\IMG_0001.JPG";
-
-
-
-
+		existingFile = @"\Wechselmedien\DCIM\101___06\IMG_0477.JPG";
 
 		infoDirectoryName = "DCIM";
 		infoDirectoryPath = @"\Internal Storage\DCIM";
