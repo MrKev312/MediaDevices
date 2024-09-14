@@ -1,0 +1,64 @@
+﻿using MediaDeviceApp.Mvvm;
+using MediaDevices;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace MediaDeviceApp.ViewModel;
+
+    public class VendorViewModel : BaseViewModel
+    {
+        MediaDevice device;
+        private string description;
+        private List<int> opCodes;
+
+        public VendorViewModel()
+        { }
+
+        public void Update(MediaDevice device)
+        {
+            this.device = device;
+            try
+            {
+                OpCodes = this.device.VendorOpcodes().ToList();
+                Description = this.device.VendorExtentionDescription();
+            }
+            catch
+            {
+                OpCodes = null;
+                Description = null;
+            }
+        }
+
+        public string Description
+        {
+            get
+            {
+                return description;
+            }
+            set
+            {
+                if (description != value)
+                {
+                    description = value;
+                    NotifyPropertyChanged(nameof(Description));
+                }
+            }
+        }
+
+        public List<int> OpCodes
+        {
+            get
+            {
+                return opCodes;
+            }
+            set
+            {
+                if (opCodes != value)
+                {
+                    opCodes = value;
+                    NotifyPropertyChanged(nameof(OpCodes));
+                }
+            }
+        }
+
+    }
