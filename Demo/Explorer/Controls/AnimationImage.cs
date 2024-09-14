@@ -7,89 +7,89 @@ using System.Windows.Media.Imaging;
 namespace ExplorerCtrl.Controls;
 
 public class AnimationImage : Image
-    {
-        private bool isInitialized;
-        private GifBitmapDecoder gifDecoder;
-        private Int32Animation animation;
+{
+	private bool isInitialized;
+	private GifBitmapDecoder gifDecoder;
+	private Int32Animation animation;
 
-        static AnimationImage()
-        {
-            VisibilityProperty.OverrideMetadata(typeof(AnimationImage), new FrameworkPropertyMetadata(OnVisibilityPropertyChanged));
-        }
-        
-        private static void OnVisibilityPropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
-        {
-            if ((Visibility)e.NewValue == Visibility.Visible)
-            {
-                ((AnimationImage)sender).StartAnimation();
-            }
-            else
-            {
-                ((AnimationImage)sender).StopAnimation();
-            }
-        }
+	static AnimationImage()
+	{
+		VisibilityProperty.OverrideMetadata(typeof(AnimationImage), new FrameworkPropertyMetadata(OnVisibilityPropertyChanged));
+	}
 
-        private static readonly DependencyProperty FrameIndexProperty =
-            DependencyProperty.Register("FrameIndex", typeof(int), typeof(AnimationImage), new UIPropertyMetadata(0, new PropertyChangedCallback(OnFrameIndexChange)));
+	private static void OnVisibilityPropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+	{
+		if ((Visibility)e.NewValue == Visibility.Visible)
+		{
+			((AnimationImage)sender).StartAnimation();
+		}
+		else
+		{
+			((AnimationImage)sender).StopAnimation();
+		}
+	}
+
+	private static readonly DependencyProperty FrameIndexProperty =
+		DependencyProperty.Register("FrameIndex", typeof(int), typeof(AnimationImage), new UIPropertyMetadata(0, new PropertyChangedCallback(OnFrameIndexChange)));
 
 #pragma warning disable IDE0051 // Remove unused private members
-        private int FrameIndex
+	private int FrameIndex
 #pragma warning restore IDE0051 // Remove unused private members
-        {
-            get { return (int)GetValue(FrameIndexProperty); }
-            set { SetValue(FrameIndexProperty, value); }
-        }
+	{
+		get { return (int)GetValue(FrameIndexProperty); }
+		set { SetValue(FrameIndexProperty, value); }
+	}
 
-        private static void OnFrameIndexChange(DependencyObject obj, DependencyPropertyChangedEventArgs ev)
-        {
-            ((Image)obj).Source = ((AnimationImage)obj).gifDecoder.Frames[(int)ev.NewValue];
-        }
-        
-        public new string Source
-        {
-            get { return (string)GetValue(SourceProperty); }
-            set { SetValue(SourceProperty, value); }
-        }
+	private static void OnFrameIndexChange(DependencyObject obj, DependencyPropertyChangedEventArgs ev)
+	{
+		((Image)obj).Source = ((AnimationImage)obj).gifDecoder.Frames[(int)ev.NewValue];
+	}
 
-        public new static readonly DependencyProperty SourceProperty =
-            DependencyProperty.Register("Source", typeof(string), typeof(AnimationImage), new UIPropertyMetadata(string.Empty, OnAnimationSourcePropertyChanged));
+	public new string Source
+	{
+		get { return (string)GetValue(SourceProperty); }
+		set { SetValue(SourceProperty, value); }
+	}
 
-        private static void OnAnimationSourcePropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
-        {
-            (sender as AnimationImage).Initialize();
-            (sender as AnimationImage).StartAnimation();
-        }
+	public new static readonly DependencyProperty SourceProperty =
+		DependencyProperty.Register("Source", typeof(string), typeof(AnimationImage), new UIPropertyMetadata(string.Empty, OnAnimationSourcePropertyChanged));
 
-        private void Initialize()
-        {
-            gifDecoder = new GifBitmapDecoder(new Uri("pack://application:,,," + Source), BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.Default);
+	private static void OnAnimationSourcePropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+	{
+		(sender as AnimationImage).Initialize();
+		(sender as AnimationImage).StartAnimation();
+	}
+
+	private void Initialize()
+	{
+		gifDecoder = new GifBitmapDecoder(new Uri("pack://application:,,," + Source), BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.Default);
 #pragma warning disable IDE0017 // Simplify object initialization
-            animation = new Int32Animation(0, gifDecoder.Frames.Count - 1, new Duration(new TimeSpan(0, 0, 0, gifDecoder.Frames.Count / 10, (int)((gifDecoder.Frames.Count / 10.0 - gifDecoder.Frames.Count / 10) * 1000))));
+		animation = new Int32Animation(0, gifDecoder.Frames.Count - 1, new Duration(new TimeSpan(0, 0, 0, gifDecoder.Frames.Count / 10, (int)((gifDecoder.Frames.Count / 10.0 - gifDecoder.Frames.Count / 10) * 1000))));
 #pragma warning restore IDE0017 // Simplify object initialization
-            animation.RepeatBehavior = RepeatBehavior.Forever;
-            base.Source = gifDecoder.Frames[0];
-            isInitialized = true;
-        }
+		animation.RepeatBehavior = RepeatBehavior.Forever;
+		base.Source = gifDecoder.Frames[0];
+		isInitialized = true;
+	}
 
-        /// <summary>
-        /// Starts the animation
-        /// </summary>
-        public void StartAnimation()
-        {
-            if (!isInitialized)
-            {
-                Initialize();
-            }
+	/// <summary>
+	/// Starts the animation
+	/// </summary>
+	public void StartAnimation()
+	{
+		if (!isInitialized)
+		{
+			Initialize();
+		}
 
-            BeginAnimation(FrameIndexProperty, animation);
-        }
+		BeginAnimation(FrameIndexProperty, animation);
+	}
 
-        /// <summary>
-        /// Stops the animation
-        /// </summary>
-        public void StopAnimation()
-        {
-            BeginAnimation(FrameIndexProperty, null);
-        }
+	/// <summary>
+	/// Stops the animation
+	/// </summary>
+	public void StopAnimation()
+	{
+		BeginAnimation(FrameIndexProperty, null);
+	}
 
-    }
+}

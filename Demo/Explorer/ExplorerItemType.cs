@@ -1,8 +1,8 @@
 ﻿namespace ExplorerCtrl;
 
 public enum ExplorerItemType
-    {
-        Directory,
-        Link,
-        File
-    }
+{
+	Directory,
+	Link,
+	File
+}
