@@ -15,7 +15,7 @@ public class FileDescriptor
 	/// <summary>
 	/// Gets or sets the (optional) length of the file.
 	/// </summary>
-	public Int64? Length { get; set; }
+	public long? Length { get; set; }
 
 	/// <summary>
 	/// Gets or sets the (optional) change time of the file.

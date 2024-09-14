@@ -10,7 +10,7 @@ namespace MediaDevices;
 /// </summary>
 public class MediaDeviceConnector : IConnectionRequestCallback
 {
-	private IPortableDeviceConnector connector;
+	private readonly IPortableDeviceConnector connector;
 
 	/// <summary>
 	/// Event signals if complete
@@ -20,33 +20,21 @@ public class MediaDeviceConnector : IConnectionRequestCallback
 	private MediaDeviceConnector()
 	{ }
 
-	internal MediaDeviceConnector(IPortableDeviceConnector connector)
-	{
-		this.connector = connector;
-	}
+	internal MediaDeviceConnector(IPortableDeviceConnector connector) => this.connector = connector;
 
 	/// <summary>
 	/// Connect to service
 	/// </summary>
-	public void Connect()
-	{
-		connector.Connect(this);
-	}
+	public void Connect() => connector.Connect(this);
 
 	/// <summary>
 	/// Disconnect from service
 	/// </summary>
-	public void Disconnect()
-	{
-		connector.Disconnect(this);
-	}
+	public void Disconnect() => connector.Disconnect(this);
 
 	/// <summary>
 	/// On completed
 	/// </summary>
 	/// <param name="hrStatus">Status</param>
-	public void OnComplete([In, MarshalAs(UnmanagedType.Error)] int hrStatus)
-	{
-		Complete?.Invoke(this, new CompleteEventArgs(hrStatus));
-	}
+	public void OnComplete([In, MarshalAs(UnmanagedType.Error)] int hrStatus) => Complete?.Invoke(this, new CompleteEventArgs(hrStatus));
 }

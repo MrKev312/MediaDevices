@@ -13,8 +13,5 @@ public class LongToMBStringConverter : IValueConverter
 		return $"{k:N0} MB";
 	}
 
-	public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-	{
-		throw new NotImplementedException();
-	}
+	public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => throw new NotImplementedException();
 }

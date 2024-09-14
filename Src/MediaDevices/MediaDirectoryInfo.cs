@@ -18,21 +18,12 @@ public class MediaDirectoryInfo : MediaFileSystemInfo
 	/// <summary>
 	/// Refreshes the state of the object.
 	/// </summary>
-	public override void Refresh()
-	{
-		base.Refresh();
-	}
+	public override void Refresh() => base.Refresh();
 
 	/// <summary>
 	/// Gets the parent directory of a specified subdirectory.
 	/// </summary>
-	public MediaDirectoryInfo Parent
-	{
-		get
-		{
-			return ParentDirectoryInfo;
-		}
-	}
+	public MediaDirectoryInfo Parent => ParentDirectoryInfo;
 
 	/// <summary>
 	/// Creates a subdirectory or subdirectories on the specified path. The specified path is relative to this instance of the DirectoryInfo class.

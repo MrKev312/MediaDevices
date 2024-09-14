@@ -4,9 +4,6 @@ namespace MediaDevicesApp.ViewModel;
 
 public class ServiceStatusViewModel : ServiceBaseViewModel
 {
-	public ServiceStatusViewModel()
-	{
-		availableServices = MediaDeviceServices.Status;
-	}
+	public ServiceStatusViewModel() => availableServices = MediaDeviceServices.Status;
 
 }

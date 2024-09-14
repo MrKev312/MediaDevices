@@ -42,10 +42,7 @@ public class ContentLocationViewModel : BaseViewModel
 
 	public bool IsContentLocationSupported
 	{
-		get
-		{
-			return isContentLocationSupported;
-		}
+		get => isContentLocationSupported;
 		set
 		{
 			isContentLocationSupported = value;
@@ -60,10 +57,7 @@ public class ContentLocationViewModel : BaseViewModel
 
 	public List<ContentType> Contents
 	{
-		get
-		{
-			return contents;
-		}
+		get => contents;
 		set
 		{
 			contents = value;
@@ -73,10 +67,7 @@ public class ContentLocationViewModel : BaseViewModel
 
 	public ContentType SelectedContent
 	{
-		get
-		{
-			return selectedContent;
-		}
+		get => selectedContent;
 		set
 		{
 			selectedContent = value;

@@ -6,7 +6,7 @@ namespace MediaDevices.Internal;
 
 internal sealed class Command
 {
-	private IPortableDeviceValues values;
+	private readonly IPortableDeviceValues values;
 	private IPortableDeviceValues result;
 
 	private Command(PropertyKey commandKey)
@@ -16,30 +16,15 @@ internal sealed class Command
 		values.SetUnsignedIntegerValue(ref WPD.PROPERTY_COMMON_COMMAND_ID, commandKey.pid);
 	}
 
-	public static Command Create(PropertyKey commandKey)
-	{
-		return new Command(commandKey);
-	}
+	public static Command Create(PropertyKey commandKey) => new Command(commandKey);
 
-	public void Add(PropertyKey key, Guid value)
-	{
-		values.SetGuidValue(ref key, ref value);
-	}
+	public void Add(PropertyKey key, Guid value) => values.SetGuidValue(ref key, ref value);
 
-	public void Add(PropertyKey key, int value)
-	{
-		values.SetSignedIntegerValue(ref key, value);
-	}
+	public void Add(PropertyKey key, int value) => values.SetSignedIntegerValue(ref key, value);
 
-	public void Add(PropertyKey key, uint value)
-	{
-		values.SetUnsignedIntegerValue(ref key, value);
-	}
+	public void Add(PropertyKey key, uint value) => values.SetUnsignedIntegerValue(ref key, value);
 
-	public void Add(PropertyKey key, IPortableDevicePropVariantCollection value)
-	{
-		values.SetIPortableDevicePropVariantCollectionValue(ref key, value);
-	}
+	public void Add(PropertyKey key, IPortableDevicePropVariantCollection value) => values.SetIPortableDevicePropVariantCollectionValue(ref key, value);
 
 	public void Add(PropertyKey key, IEnumerable<int> values)
 	{
@@ -53,10 +38,7 @@ internal sealed class Command
 		this.values.SetIPortableDevicePropVariantCollectionValue(ref key, col);
 	}
 
-	public void Add(PropertyKey key, string value)
-	{
-		values.SetStringValue(ref key, value);
-	}
+	public void Add(PropertyKey key, string value) => values.SetStringValue(ref key, value);
 
 	//public void Add(PropertyKey key, byte[] buffer, int size)
 	//{
@@ -133,8 +115,5 @@ internal sealed class Command
 	}
 
 	[Conditional("COMTRACE")]
-	public void WriteResults()
-	{
-		ComTrace.WriteObject(result);
-	}
+	public void WriteResults() => ComTrace.WriteObject(result);
 }

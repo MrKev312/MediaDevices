@@ -11,7 +11,9 @@ using System.Windows.Media;
 namespace ExplorerCtrl.Internal;
 
 [DebuggerDisplay("{Type} - {FullName}")]
-internal class ExplorerItem : DependencyObject, IEquatable<ExplorerItem>
+#pragma warning disable CA1067 // Override Object.Equals(object) when implementing IEquatable<T> as this cannot be done on a DependencyObject
+internal sealed class ExplorerItem : DependencyObject, IEquatable<ExplorerItem>
+#pragma warning restore CA1067 // Override Object.Equals(object) when implementing IEquatable<T> as this cannot be done on a DependencyObject
 {
 	public static readonly DependencyProperty NameProperty;
 	public static readonly DependencyProperty FullNameProperty;
@@ -52,74 +54,74 @@ internal class ExplorerItem : DependencyObject, IEquatable<ExplorerItem>
 
 	public string Name
 	{
-		get { return (string)GetValue(NameProperty); }
-		set { SetValue(NameProperty, value); }
+		get => (string)GetValue(NameProperty);
+		set => SetValue(NameProperty, value);
 	}
 
 	public string FullName
 	{
-		get { return (string)GetValue(FullNameProperty); }
-		set { SetValue(FullNameProperty, value); }
+		get => (string)GetValue(FullNameProperty);
+		set => SetValue(FullNameProperty, value);
 	}
 
 	public ExplorerItemType Type
 	{
-		get { return (ExplorerItemType)GetValue(TypeProperty); }
-		set { SetValue(TypeProperty, value); }
+		get => (ExplorerItemType)GetValue(TypeProperty);
+		set => SetValue(TypeProperty, value);
 	}
 
 	public long Size
 	{
-		get { return (long)GetValue(SizeProperty); }
-		set { SetValue(SizeProperty, value); }
+		get => (long)GetValue(SizeProperty);
+		set => SetValue(SizeProperty, value);
 	}
 
 	public bool IsDirectory
 	{
-		get { return (bool)GetValue(IsDirectoryProperty); }
-		set { SetValue(IsDirectoryProperty, value); }
+		get => (bool)GetValue(IsDirectoryProperty);
+		set => SetValue(IsDirectoryProperty, value);
 	}
 
 	public IEnumerable<ExplorerItem> Children
 	{
-		get { return (IEnumerable<ExplorerItem>)GetValue(ChildrenProperty); }
-		set { SetValue(ChildrenProperty, value); }
+		get => (IEnumerable<ExplorerItem>)GetValue(ChildrenProperty);
+		set => SetValue(ChildrenProperty, value);
 	}
 
 	public ICollectionView Folders
 	{
-		get { return (ICollectionView)GetValue(FoldersProperty); }
-		set { SetValue(FoldersProperty, value); }
+		get => (ICollectionView)GetValue(FoldersProperty);
+		set => SetValue(FoldersProperty, value);
 	}
 
 	public ICollectionView Files
 	{
-		get { return (ICollectionView)GetValue(FilesProperty); }
-		set { SetValue(FilesProperty, value); }
+		get => (ICollectionView)GetValue(FilesProperty);
+		set => SetValue(FilesProperty, value);
 	}
 
 	public IExplorerItem Content
 	{
-		get { return (IExplorerItem)GetValue(ContentProperty); }
-		set { SetValue(ContentProperty, value); }
+		get => (IExplorerItem)GetValue(ContentProperty);
+		set => SetValue(ContentProperty, value);
 	}
 
 	public bool IsExpanded
 	{
-		get { return (bool)GetValue(IsExpandedProperty); }
-		set { SetValue(IsExpandedProperty, value); }
+		get => (bool)GetValue(IsExpandedProperty);
+		set => SetValue(IsExpandedProperty, value);
 	}
 
 	public bool IsSelectedInTree
 	{
-		get { return (bool)GetValue(IsSelectedInTreeProperty); }
-		set { SetValue(IsSelectedInTreeProperty, value); }
+		get => (bool)GetValue(IsSelectedInTreeProperty);
+		set => SetValue(IsSelectedInTreeProperty, value);
 	}
 
 	public bool IsSelectedInList
 	{
-		get { return (bool)GetValue(IsSelectedInListProperty); }
-		set { SetValue(IsSelectedInListProperty, value); }
+		get => (bool)GetValue(IsSelectedInListProperty);
+		set => SetValue(IsSelectedInListProperty, value);
 	}
 
 	private static void OnIsExpandedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -147,10 +149,9 @@ internal class ExplorerItem : DependencyObject, IEquatable<ExplorerItem>
 	}
 
 	private bool isInitialFilled;
-	protected ObservableCollection<ExplorerItem> children;
-	private CollectionViewSource folders;
-	private CollectionViewSource files;
-
+	private readonly ObservableCollection<ExplorerItem> children;
+	private readonly CollectionViewSource folders;
+	private readonly CollectionViewSource files;
 
 	public ExplorerItem(IExplorerItem content, ExplorerItem parent)
 	{
@@ -188,17 +189,14 @@ internal class ExplorerItem : DependencyObject, IEquatable<ExplorerItem>
 
 	internal ExplorerItem Parent { get; private set; }
 
-	public void OnRefresh(object sender, RefreshEventArgs e)
-	{
-		Refresh(e.Recursive);
-	}
+	public void OnRefresh(object sender, RefreshEventArgs e) => Refresh(e.Recursive);
 
 	public void Refresh(bool recursive)
 	{
 		if (!isInitialFilled)
 		{
 			children.Clear();
-			Content.Children?.Select(i => new ExplorerItem(i, this)).ToList().ForEach(e => children.Add(e));
+			Content.Children?.Select(i => new ExplorerItem(i, this)).ToList().ForEach(children.Add);
 			isInitialFilled = true;
 		}
 		else
@@ -219,10 +217,7 @@ internal class ExplorerItem : DependencyObject, IEquatable<ExplorerItem>
 
 	#region  IEquatable<ExplorerItem>
 
-	public virtual bool Equals(ExplorerItem other)
-	{
-		return other.Content == Content;
-	}
+	public bool Equals(ExplorerItem other) => other.Content == Content;
 
 	#endregion
 }

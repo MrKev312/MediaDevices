@@ -7,30 +7,11 @@ using System.Linq;
 
 namespace MediaDevicesApp.ViewModel;
 
-public class ContentViewModel : BaseViewModel
+public class ContentViewModel(MediaDeviceServiceContent content) : BaseViewModel
 {
-	private readonly MediaDeviceServiceContent content;
+	public string Name { get; private set; } = content.Name;
 
-	public ContentViewModel(MediaDeviceServiceContent content)
-	{
-		this.content = content;
-		Name = content.Name;
-	}
-	public string Name { get; private set; }
+	public List<ContentViewModel> Contents => content?.GetContent()?.Select(c => new ContentViewModel(c)).ToList();
 
-	public List<ContentViewModel> Contents
-	{
-		get
-		{
-			return content?.GetContent()?.Select(c => new ContentViewModel(c)).ToList();
-		}
-	}
-
-	public IEnumerable<KeyValuePair<string, string>> Properties
-	{
-		get
-		{
-			return content?.GetAllProperties()?.ToList();
-		}
-	}
+	public IEnumerable<KeyValuePair<string, string>> Properties => content?.GetAllProperties()?.ToList();
 }

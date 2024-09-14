@@ -4,15 +4,9 @@ using System.Windows.Data;
 
 namespace ExplorerCtrl.Converter;
 
-internal class DebugConverter : IValueConverter
+internal sealed class DebugConverter : IValueConverter
 {
-	public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-	{
-		return value;
-	}
+	public object Convert(object value, Type targetType, object parameter, CultureInfo culture) => value;
 
-	public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-	{
-		return value;
-	}
+	public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => value;
 }

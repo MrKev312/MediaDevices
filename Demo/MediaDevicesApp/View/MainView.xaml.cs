@@ -6,9 +6,6 @@ namespace MediaDevicesApp.View;
 /// Interaction logic for MainView.xaml
 /// </summary>
 public partial class MainView : UsbMonitorWindow
-    {
-        public MainView()
-        {
-            InitializeComponent();
-        }
-    }
+{
+	public MainView() => InitializeComponent();
+}

@@ -6,9 +6,6 @@ namespace MediaDevicesApp.View;
 /// Interaction logic for RootView.xaml
 /// </summary>
 public partial class RootView : UserControl
-    {
-        public RootView()
-        {
-            InitializeComponent();
-        }
-    }
+{
+	public RootView() => InitializeComponent();
+}

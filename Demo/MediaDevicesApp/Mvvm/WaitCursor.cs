@@ -5,7 +5,7 @@ namespace MediaDevicesApp.Mvvm;
 
 public class WaitCursor : IDisposable
 {
-	private Cursor previousCursor;
+	private readonly Cursor previousCursor;
 
 	public WaitCursor()
 	{

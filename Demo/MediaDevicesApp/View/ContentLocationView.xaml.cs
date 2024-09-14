@@ -6,9 +6,6 @@ namespace MediaDevicesApp.View;
 /// Interaction logic for ContentLocationView.xaml
 /// </summary>
 public partial class ContentLocationView : UserControl
-    {
-        public ContentLocationView()
-        {
-            InitializeComponent();
-        }
-    }
+{
+	public ContentLocationView() => InitializeComponent();
+}

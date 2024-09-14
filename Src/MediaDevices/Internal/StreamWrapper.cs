@@ -6,14 +6,12 @@ using System.Runtime.InteropServices.ComTypes;
 
 namespace MediaDevices.Internal;
 
-internal sealed class StreamWrapper : Stream
+internal sealed class StreamWrapper(IStream stream, ulong size = 0) : Stream
 {
-	private IStream stream;
-	private IntPtr pLength;
-	private readonly ulong size;
+	private IStream stream = stream ?? throw new ArgumentNullException(nameof(stream));
+	private IntPtr pLength = Marshal.AllocHGlobal(16);
 
-	private void CheckDisposed()
-	{
+	private void CheckDisposed() =>
 #if NET7_0_OR_GREATER
 		ObjectDisposedException.ThrowIf(stream == null, stream);
 #else
@@ -22,7 +20,7 @@ internal sealed class StreamWrapper : Stream
 			throw new ObjectDisposedException("StreamWrapper");
 		}
 #endif
-	}
+
 
 	protected override void Dispose(bool disposing)
 	{
@@ -41,41 +39,13 @@ internal sealed class StreamWrapper : Stream
 		base.Dispose(disposing);
 	}
 
-	public StreamWrapper(IStream stream, ulong size = 0)
-	{
-		this.stream = stream ?? throw new ArgumentNullException(nameof(stream));
-		pLength = Marshal.AllocHGlobal(16);
-		this.size = size;
-	}
+	public override bool CanRead => true;
 
-	public override bool CanRead
-	{
-		get
-		{
-			return true;
-		}
-	}
+	public override bool CanSeek => false;
 
-	public override bool CanSeek
-	{
-		get
-		{
-			return false;
-		}
-	}
+	public override bool CanWrite => true;
 
-	public override bool CanWrite
-	{
-		get
-		{
-			return true;
-		}
-	}
-
-	public override void Flush()
-	{
-		stream.Commit(0);
-	}
+	public override void Flush() => stream.Commit(0);
 
 	public override long Length
 	{
@@ -88,14 +58,8 @@ internal sealed class StreamWrapper : Stream
 
 	public override long Position
 	{
-		get
-		{
-			return Seek(0, SeekOrigin.Current);
-		}
-		set
-		{
-			Seek(value, SeekOrigin.Begin);
-		}
+		get => Seek(0, SeekOrigin.Current);
+		set => Seek(value, SeekOrigin.Begin);
 	}
 
 	public override int Read(byte[] buffer, int offset, int count)
@@ -134,10 +98,7 @@ internal sealed class StreamWrapper : Stream
 		return 0;
 	}
 
-	public override long Seek(long offset, SeekOrigin origin)
-	{
-		throw new NotImplementedException("Seek not implemented");
-	}
+	public override long Seek(long offset, SeekOrigin origin) => throw new NotImplementedException("Seek not implemented");
 
 	public override void SetLength(long value)
 	{

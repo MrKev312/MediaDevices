@@ -7,8 +7,5 @@ namespace MediaDevicesApp.View;
 /// </summary>
 public partial class CapabilityView : UserControl
 {
-	public CapabilityView()
-	{
-		InitializeComponent();
-	}
+	public CapabilityView() => InitializeComponent();
 }

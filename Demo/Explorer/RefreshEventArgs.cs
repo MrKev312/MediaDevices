@@ -2,12 +2,7 @@
 
 namespace ExplorerCtrl;
 
-public class RefreshEventArgs : EventArgs
+public class RefreshEventArgs(bool recursive) : EventArgs
 {
-	public RefreshEventArgs(bool recursive)
-	{
-		Recursive = recursive;
-	}
-
-	public bool Recursive { get; private set; }
+	public bool Recursive { get; private set; } = recursive;
 }

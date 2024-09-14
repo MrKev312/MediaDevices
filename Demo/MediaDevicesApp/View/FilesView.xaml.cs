@@ -6,9 +6,6 @@ namespace MediaDevicesApp.View;
 /// Interaction logic for FilesView.xaml
 /// </summary>
 public partial class FilesView : UserControl
-    {
-        public FilesView()
-        {
-            InitializeComponent();
-        }
-    }
+{
+	public FilesView() => InitializeComponent();
+}

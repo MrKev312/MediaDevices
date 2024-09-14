@@ -6,9 +6,6 @@ namespace MediaDevicesApp.View;
 /// Interaction logic for StorageView.xaml
 /// </summary>
 public partial class StorageView : UserControl
-    {
-        public StorageView()
-        {
-            InitializeComponent();
-        }
-    }
+{
+	public StorageView() => InitializeComponent();
+}

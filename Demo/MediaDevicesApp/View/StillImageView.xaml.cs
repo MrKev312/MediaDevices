@@ -6,9 +6,6 @@ namespace MediaDevicesApp.View;
 /// Interaction logic for StillImageView.xaml
 /// </summary>
 public partial class StillImageView : UserControl
-    {
-        public StillImageView()
-        {
-            InitializeComponent();
-        }
-    }
+{
+	public StillImageView() => InitializeComponent();
+}

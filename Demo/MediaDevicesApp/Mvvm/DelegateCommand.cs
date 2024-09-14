@@ -27,26 +27,17 @@ public class DelegateCommand : ICommand
 	/// <summary>
 	///     Method to determine if the command can be executed
 	/// </summary>
-	public bool CanExecute(object parameter)
-	{
-		return canExecute();
-	}
+	public bool CanExecute(object parameter) => canExecute();
 
 	/// <summary>
 	///     Execution of the command
 	/// </summary>
-	public void Execute(object parameter)
-	{
-		execute();
-	}
+	public void Execute(object parameter) => execute();
 
 	/// <summary>
 	///     Raises the CanExecuteChaged event
 	/// </summary>
-	public static void RaiseCanExecuteChanged()
-	{
-		CommandManager.InvalidateRequerySuggested();
-	}
+	public static void RaiseCanExecuteChanged() => CommandManager.InvalidateRequerySuggested();
 
 	/// <summary>
 	///     Protected virtual method to raise CanExecuteChanged event
@@ -61,13 +52,7 @@ public class DelegateCommand : ICommand
 	/// </summary>
 	public event EventHandler CanExecuteChanged
 	{
-		add
-		{
-			CommandManager.RequerySuggested += value;
-		}
-		remove
-		{
-			CommandManager.RequerySuggested -= value;
-		}
+		add => CommandManager.RequerySuggested += value;
+		remove => CommandManager.RequerySuggested -= value;
 	}
 }

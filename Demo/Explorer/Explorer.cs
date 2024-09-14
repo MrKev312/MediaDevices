@@ -20,10 +20,7 @@ namespace ExplorerCtrl;
 
 public class Explorer : Control
 {
-	static Explorer()
-	{
-		DefaultStyleKeyProperty.OverrideMetadata(typeof(Explorer), new FrameworkPropertyMetadata(typeof(Explorer)));
-	}
+	static Explorer() => DefaultStyleKeyProperty.OverrideMetadata(typeof(Explorer), new FrameworkPropertyMetadata(typeof(Explorer)));
 
 	private Point dragStartPoint;
 	private bool isMouseDown;
@@ -58,8 +55,8 @@ public class Explorer : Control
 
 	public IEnumerable<IExplorerItem> ItemsSource
 	{
-		get { return (IEnumerable<IExplorerItem>)GetValue(ItemsSourceProperty); }
-		set { SetValue(ItemsSourceProperty, value); }
+		get => (IEnumerable<IExplorerItem>)GetValue(ItemsSourceProperty);
+		set => SetValue(ItemsSourceProperty, value);
 	}
 
 	private static void OnItemsSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -126,8 +123,8 @@ public class Explorer : Control
 
 	internal ObservableCollection<ExplorerItem> InternalItemsSource
 	{
-		get { return (ObservableCollection<ExplorerItem>)GetValue(InternalItemsSourceProperty); }
-		set { SetValue(InternalItemsSourceProperty, value); }
+		get => (ObservableCollection<ExplorerItem>)GetValue(InternalItemsSourceProperty);
+		set => SetValue(InternalItemsSourceProperty, value);
 	}
 
 	public static readonly DependencyProperty SelectedItemProperty =
@@ -135,8 +132,8 @@ public class Explorer : Control
 
 	internal ExplorerItem SelectedItem
 	{
-		get { return (ExplorerItem)GetValue(SelectedItemProperty); }
-		set { SetValue(SelectedItemProperty, value); }
+		get => (ExplorerItem)GetValue(SelectedItemProperty);
+		set => SetValue(SelectedItemProperty, value);
 	}
 
 	public static readonly DependencyProperty SelectedValueProperty =
@@ -144,8 +141,8 @@ public class Explorer : Control
 
 	public IExplorerItem SelectedValue
 	{
-		get { return (IExplorerItem)GetValue(SelectedValueProperty); }
-		set { SetValue(SelectedValueProperty, value); }
+		get => (IExplorerItem)GetValue(SelectedValueProperty);
+		set => SetValue(SelectedValueProperty, value);
 	}
 
 	public static readonly DependencyProperty SelectedItemsProperty =
@@ -153,8 +150,8 @@ public class Explorer : Control
 
 	public object SelectedItems
 	{
-		get { return GetValue(SelectedItemsProperty); }
-		set { SetValue(SelectedItemsProperty, value); }
+		get => GetValue(SelectedItemsProperty);
+		set => SetValue(SelectedItemsProperty, value);
 	}
 
 	public static readonly DependencyProperty FolderContextMenuProperty =
@@ -162,8 +159,8 @@ public class Explorer : Control
 
 	public ContextMenu FolderContextMenu
 	{
-		get { return (ContextMenu)GetValue(FolderContextMenuProperty); }
-		set { SetValue(FolderContextMenuProperty, value); }
+		get => (ContextMenu)GetValue(FolderContextMenuProperty);
+		set => SetValue(FolderContextMenuProperty, value);
 	}
 
 	public static readonly DependencyProperty FileContextMenuProperty =
@@ -171,8 +168,8 @@ public class Explorer : Control
 
 	public ContextMenu FileContextMenu
 	{
-		get { return (ContextMenu)GetValue(FileContextMenuProperty); }
-		set { SetValue(FileContextMenuProperty, value); }
+		get => (ContextMenu)GetValue(FileContextMenuProperty);
+		set => SetValue(FileContextMenuProperty, value);
 	}
 
 	public static readonly DependencyProperty ListContextMenuProperty =
@@ -180,8 +177,8 @@ public class Explorer : Control
 
 	public ContextMenu ListContextMenu
 	{
-		get { return (ContextMenu)GetValue(ListContextMenuProperty); }
-		set { SetValue(ListContextMenuProperty, value); }
+		get => (ContextMenu)GetValue(ListContextMenuProperty);
+		set => SetValue(ListContextMenuProperty, value);
 	}
 
 	#endregion
@@ -193,8 +190,8 @@ public class Explorer : Control
 
 	internal ICollectionView ListItems
 	{
-		get { return (ICollectionView)GetValue(ListItemsProperty); }
-		set { SetValue(ListItemsProperty, value); }
+		get => (ICollectionView)GetValue(ListItemsProperty);
+		set => SetValue(ListItemsProperty, value);
 	}
 	#endregion
 
@@ -221,10 +218,14 @@ public class Explorer : Control
 
 	private void OnDrag(object sender, DragEventArgs e)
 	{
+#if NET6_0_OR_GREATER
+		ArgumentNullException.ThrowIfNull(e);
+#else
 		if (e == null)
 		{
 			throw new ArgumentNullException(nameof(e));
 		}
+#endif
 
 		bool isCorrect = true;
 		if (e.Data.GetDataPresent(DataFormats.FileDrop, true))
@@ -243,13 +244,16 @@ public class Explorer : Control
 		e.Handled = true;
 	}
 
-
 	private void OnDrop(object sender, DragEventArgs e)
 	{
+#if NET6_0_OR_GREATER
+		ArgumentNullException.ThrowIfNull(e);
+#else
 		if (e == null)
 		{
 			throw new ArgumentNullException(nameof(e));
 		}
+#endif
 
 		if (e.Data.GetDataPresent(DataFormats.FileDrop))
 		{
@@ -323,8 +327,6 @@ public class Explorer : Control
 		e.Handled = true;
 	}
 
-	//bool isDrag = false;
-	private DataGridRow downRow;
 	private void OnMouseDown(object sender, MouseButtonEventArgs e)
 	{
 		if (e.ClickCount != 1)
@@ -343,12 +345,11 @@ public class Explorer : Control
 
 		// do not select during drag & drop
 		DataGridRow row = FindVisualParent<DataGridRow>(e.OriginalSource);
-		if (row is DataGridRow)
+		if (row is not null)
 		{
 			if (dataGrid.SelectedItems.Contains(row.Item))
 			{
 				e.Handled = true;
-				downRow = row;
 			}
 		}
 
@@ -388,7 +389,7 @@ public class Explorer : Control
 			virtualFileDataObject.SetData(files);
 
 			dlg = new ProgresshWindow() { Owner = Window.GetWindow(this) };
-			VirtualFileDataObject.DoDragDrop(dataGrid, virtualFileDataObject, DragDropEffects.Copy);
+			VirtualFileDataObject.DoDragDrop(virtualFileDataObject, DragDropEffects.Copy);
 
 			isMouseDown = false;
 		}
@@ -397,15 +398,9 @@ public class Explorer : Control
 	private int numOfFiles;
 	private int copyIndex;
 
-	private void Start(VirtualFileDataObject o)
-	{
-		MTAInvoke(() => dlg.Show());
-	}
+	private void Start(VirtualFileDataObject o) => MTAInvoke(dlg.Show);
 
-	private void Stop(VirtualFileDataObject o)
-	{
-		MTAInvoke(() => dlg.Hide());
-	}
+	private void Stop(VirtualFileDataObject o) => MTAInvoke(dlg.Hide);
 
 	private void Pull(Stream stream, FileDescriptor fileDescriptor)
 	{
@@ -543,17 +538,11 @@ public class Explorer : Control
 		}
 	}
 
-	protected static void Invoke(Action callback)
-	{
-		Application.Current.Dispatcher.Invoke(callback);
-	}
+	protected static void Invoke(Action callback) => Application.Current.Dispatcher.Invoke(callback);
 
 	protected static void MTAInvoke(Action callback)
 	{
-		Thread thread = new(() =>
-		{
-			Application.Current.Dispatcher.Invoke(callback);
-		});
+		Thread thread = new(() => Application.Current.Dispatcher.Invoke(callback));
 		thread.SetApartmentState(ApartmentState.STA);
 		thread.Start();
 		//thread.Join();
@@ -561,11 +550,15 @@ public class Explorer : Control
 
 	public static string GetRelPath(string path, string rootPath)
 	{
-		if (!path.ToLower().StartsWith(rootPath.ToLower()))
+		if (!path.StartsWith(rootPath, StringComparison.InvariantCultureIgnoreCase))
 		{
-			throw new ApplicationException(string.Format("{0} not root path of {1}", rootPath, path));
+			throw new ArgumentException($"{rootPath} is not the root path of {path}");
 		}
 
+#if NETCOREAPP3_0_OR_GREATER
+		return path[(rootPath.Length + 1)..];
+#else
 		return path.Substring(rootPath.Length + 1);
+#endif
 	}
 }

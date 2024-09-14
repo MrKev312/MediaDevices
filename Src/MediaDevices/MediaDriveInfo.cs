@@ -9,9 +9,9 @@ namespace MediaDevices;
 /// </summary>
 public sealed class MediaDriveInfo
 {
-	private MediaDevice device;
-	private string objectId;
-	private MediaStorageInfo info;
+	private readonly MediaDevice device;
+	private readonly string objectId;
+	private readonly MediaStorageInfo info;
 
 	internal MediaDriveInfo(MediaDevice device, string objectId)
 	{
@@ -87,16 +87,10 @@ public sealed class MediaDriveInfo
 	/// <summary>
 	/// Eject the drive.
 	/// </summary>
-	public void Eject()
-	{
-		device.InternalEject(objectId);
-	}
+	public void Eject() => device.InternalEject(objectId);
 
 	/// <summary>
 	/// Format the drive.
 	/// </summary>
-	public void Format()
-	{
-		device.Format(objectId);
-	}
+	public void Format() => device.Format(objectId);
 }

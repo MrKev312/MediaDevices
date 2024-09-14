@@ -39,8 +39,8 @@ public class FilesViewModel : BaseViewModel
 
 	public class Info
 	{
-		private static BitmapImage fileImage;
-		private static BitmapImage folderImages;
+		private static readonly BitmapImage fileImage;
+		private static readonly BitmapImage folderImages;
 
 		static Info()
 		{
@@ -78,10 +78,7 @@ public class FilesViewModel : BaseViewModel
 		public ImageSource Image { get; private set; }
 	}
 
-	public FilesViewModel()
-	{
-		EnumerateCommand = new DelegateCommand(OnEnumerate);
-	}
+	public FilesViewModel() => EnumerateCommand = new DelegateCommand(OnEnumerate);
 
 	public void Update(MediaDevice device)
 	{
@@ -89,24 +86,17 @@ public class FilesViewModel : BaseViewModel
 		Files = null;
 	}
 
-	public static List<FileEnumerationType> FileEnumerationTypes
-	{
-		get
-		{
+	public static List<FileEnumerationType> FileEnumerationTypes =>
 #if NET5_0_OR_GREATER
-			return [.. Enum.GetValues<FileEnumerationType>()];
+			[.. Enum.GetValues<FileEnumerationType>()];
 #else
-			return Enum.GetValues(typeof(FileEnumerationType)).Cast<FileEnumerationType>().ToList();
+			Enum.GetValues(typeof(FileEnumerationType)).Cast<FileEnumerationType>().ToList();
 #endif
-		}
-	}
+
 
 	public FileEnumerationType SelectedFunction
 	{
-		get
-		{
-			return selectedFunction;
-		}
+		get => selectedFunction;
 		set
 		{
 			selectedFunction = value;
@@ -116,10 +106,7 @@ public class FilesViewModel : BaseViewModel
 
 	public string Path
 	{
-		get
-		{
-			return path;
-		}
+		get => path;
 		set
 		{
 			path = value;
@@ -129,10 +116,7 @@ public class FilesViewModel : BaseViewModel
 
 	public string Filter
 	{
-		get
-		{
-			return filter;
-		}
+		get => filter;
 		set
 		{
 			filter = value;
@@ -142,10 +126,7 @@ public class FilesViewModel : BaseViewModel
 
 	public bool UseRecursive
 	{
-		get
-		{
-			return useRecursive;
-		}
+		get => useRecursive;
 		set
 		{
 			useRecursive = value;
@@ -155,10 +136,7 @@ public class FilesViewModel : BaseViewModel
 
 	public long NumOfFiles
 	{
-		get
-		{
-			return numOfFiles;
-		}
+		get => numOfFiles;
 		set
 		{
 			numOfFiles = value;
@@ -168,10 +146,7 @@ public class FilesViewModel : BaseViewModel
 
 	public string Time
 	{
-		get
-		{
-			return time;
-		}
+		get => time;
 		set
 		{
 			time = value;
@@ -181,10 +156,7 @@ public class FilesViewModel : BaseViewModel
 
 	public List<Info> Files
 	{
-		get
-		{
-			return files;
-		}
+		get => files;
 		set
 		{
 			files = value;

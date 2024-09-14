@@ -8,15 +8,9 @@ internal sealed class Profiler : IDisposable
 	private Stopwatch stopwatch;
 	private string title;
 
-	public Profiler(string title)
-	{
-		Start(title);
-	}
+	public Profiler(string title) => Start(title);
 
-	public void Dispose()
-	{
-		Stop();
-	}
+	public void Dispose() => Stop();
 
 	[Conditional("PROFILING")]
 	private void Start(string title)

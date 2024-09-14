@@ -9,7 +9,7 @@ namespace MediaDevicesUnitTest;
 [TestClass]
 public class AmazonKindlePaperwhiteUnitTest : WritableUnitTest
 {
-	private string deviceLetter = "E";
+	private readonly string deviceLetter = "E";
 
 	public AmazonKindlePaperwhiteUnitTest()
 	{

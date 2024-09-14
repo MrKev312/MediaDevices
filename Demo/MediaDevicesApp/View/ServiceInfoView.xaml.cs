@@ -6,9 +6,6 @@ namespace MediaDevicesApp.View;
 /// Interaction logic for ServiceInfoView.xaml
 /// </summary>
 public partial class ServiceInfoView : UserControl
-    {
-        public ServiceInfoView()
-        {
-            InitializeComponent();
-        }
-    }
+{
+	public ServiceInfoView() => InitializeComponent();
+}

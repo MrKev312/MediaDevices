@@ -21,44 +21,14 @@ public class RootViewModel : BaseViewModel
 		NotifyAllPropertiesChanged();
 	}
 
-	public string Id
-	{
-		get
-		{
-			return root?.Id;
-		}
-	}
+	public string Id => root?.Id;
 
-	public string Name
-	{
-		get
-		{
-			return root?.Name;
-		}
-	}
+	public string Name => root?.Name;
 
-	public string FullName
-	{
-		get
-		{
-			return root?.FullName;
-		}
-	}
+	public string FullName => root?.FullName;
 
-	public ulong Length
-	{
-		get
-		{
-			return root?.Length ?? 0;
-		}
-	}
+	public ulong Length => root?.Length ?? 0;
 
-	public string Attributes
-	{
-		get
-		{
-			return root?.Attributes.ToString();
-		}
-	}
+	public string Attributes => root?.Attributes.ToString();
 
 }

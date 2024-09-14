@@ -12,7 +12,7 @@ public static class MediaDeviceConnectors
 
 	#region static
 
-	private static IEnumPortableDeviceConnectors connectors;
+	private static readonly IEnumPortableDeviceConnectors connectors;
 
 	static MediaDeviceConnectors()
 	{

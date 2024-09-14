@@ -10,8 +10,8 @@ namespace MediaDevices.Internal;
 
 internal static class ComTrace
 {
-	private static List<FieldInfo> pkeyFields;
-	private static List<FieldInfo> guidFields;
+	private static readonly List<FieldInfo> pkeyFields;
+	private static readonly List<FieldInfo> guidFields;
 
 	static ComTrace()
 	{
@@ -19,23 +19,16 @@ internal static class ComTrace
 		guidFields = typeof(WPD).GetFields().Where(f => f.FieldType == typeof(Guid)).ToList();
 	}
 
-	public static FieldInfo FindPropertyKeyField(PropertyKey key)
-	{
+	public static FieldInfo FindPropertyKeyField(PropertyKey key) =>
 		//return pkeyFields.SingleOrDefault(i => ((PropertyKey)i.GetValue(null)) == key);
-		return pkeyFields.FirstOrDefault(i => ((PropertyKey)i.GetValue(null)) == key);
-	}
+		pkeyFields.FirstOrDefault(i => ((PropertyKey)i.GetValue(null)) == key);
 
-	public static FieldInfo FindGuidField(Guid guid)
-	{
+	public static FieldInfo FindGuidField(Guid guid) =>
 		//return guidFields.SingleOrDefault(i => ((Guid)i.GetValue(null)) == guid);
-		return guidFields.FirstOrDefault(i => ((Guid)i.GetValue(null)) == guid);
-	}
+		guidFields.FirstOrDefault(i => ((Guid)i.GetValue(null)) == guid);
 
 	[Conditional("COMTRACE")]
-	public static void WriteObject(IPortableDeviceValues values)
-	{
-		InternalWriteObject(values);
-	}
+	public static void WriteObject(IPortableDeviceValues values) => InternalWriteObject(values);
 
 	[Conditional("COMTRACE")]
 	public static void WriteObject(IPortableDeviceProperties deviceProperties, string objectId)

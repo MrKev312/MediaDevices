@@ -6,9 +6,6 @@ namespace MediaDevicesApp.View;
 /// Interaction logic for SmsView.xaml
 /// </summary>
 public partial class SmsView : UserControl
-    {
-        public SmsView()
-        {
-            InitializeComponent();
-        }
-    }
+{
+	public SmsView() => InitializeComponent();
+}

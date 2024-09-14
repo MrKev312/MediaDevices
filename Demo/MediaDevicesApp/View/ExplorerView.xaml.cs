@@ -6,9 +6,6 @@ namespace MediaDevicesApp.View;
 /// Interaction logic for ExplorerView.xaml
 /// </summary>
 public partial class ExplorerView : UserControl
-    {
-        public ExplorerView()
-        {
-            InitializeComponent();
-        }
-    }
+{
+	public ExplorerView() => InitializeComponent();
+}

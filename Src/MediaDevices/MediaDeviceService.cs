@@ -154,19 +154,13 @@ public class MediaDeviceService : IDisposable
 	/// Info of the service
 	/// </summary>
 	/// <returns>String with the info</returns>
-	public override string ToString()
-	{
-		return $"{Name} : {ServiceName} : {ServiceVersion}";
-	}
+	public override string ToString() => $"{Name} : {ServiceName} : {ServiceVersion}";
 
 	/// <summary>
 	/// Get content of the service
 	/// </summary>
 	/// <returns>List of content services</returns>
-	public IEnumerable<MediaDeviceServiceContent> GetContent()
-	{
-		return GetContent("DEVICE");
-	}
+	public IEnumerable<MediaDeviceServiceContent> GetContent() => GetContent("DEVICE");
 
 	internal IEnumerable<MediaDeviceServiceContent> GetContent(string objectID)
 	{
@@ -217,10 +211,7 @@ public class MediaDeviceService : IDisposable
 	/// Get all properties
 	/// </summary>
 	/// <returns>List of properties</returns>
-	public IEnumerable<KeyValuePair<string, string>> GetAllProperties()
-	{
-		return GetAllProperties(ServiceObjectID);
-	}
+	public IEnumerable<KeyValuePair<string, string>> GetAllProperties() => GetAllProperties(ServiceObjectID);
 
 	/// <summary>
 	/// Get supported methods

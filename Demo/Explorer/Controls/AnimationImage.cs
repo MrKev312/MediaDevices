@@ -12,10 +12,7 @@ public class AnimationImage : Image
 	private GifBitmapDecoder gifDecoder;
 	private Int32Animation animation;
 
-	static AnimationImage()
-	{
-		VisibilityProperty.OverrideMetadata(typeof(AnimationImage), new FrameworkPropertyMetadata(OnVisibilityPropertyChanged));
-	}
+	static AnimationImage() => VisibilityProperty.OverrideMetadata(typeof(AnimationImage), new FrameworkPropertyMetadata(OnVisibilityPropertyChanged));
 
 	private static void OnVisibilityPropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
 	{
@@ -32,26 +29,15 @@ public class AnimationImage : Image
 	private static readonly DependencyProperty FrameIndexProperty =
 		DependencyProperty.Register("FrameIndex", typeof(int), typeof(AnimationImage), new UIPropertyMetadata(0, new PropertyChangedCallback(OnFrameIndexChange)));
 
-#pragma warning disable IDE0051 // Remove unused private members
-	private int FrameIndex
-#pragma warning restore IDE0051 // Remove unused private members
-	{
-		get { return (int)GetValue(FrameIndexProperty); }
-		set { SetValue(FrameIndexProperty, value); }
-	}
-
-	private static void OnFrameIndexChange(DependencyObject obj, DependencyPropertyChangedEventArgs ev)
-	{
-		((Image)obj).Source = ((AnimationImage)obj).gifDecoder.Frames[(int)ev.NewValue];
-	}
+	private static void OnFrameIndexChange(DependencyObject obj, DependencyPropertyChangedEventArgs ev) => ((Image)obj).Source = ((AnimationImage)obj).gifDecoder.Frames[(int)ev.NewValue];
 
 	public new string Source
 	{
-		get { return (string)GetValue(SourceProperty); }
-		set { SetValue(SourceProperty, value); }
+		get => (string)GetValue(SourceProperty);
+		set => SetValue(SourceProperty, value);
 	}
 
-	public new static readonly DependencyProperty SourceProperty =
+	public static new readonly DependencyProperty SourceProperty =
 		DependencyProperty.Register("Source", typeof(string), typeof(AnimationImage), new UIPropertyMetadata(string.Empty, OnAnimationSourcePropertyChanged));
 
 	private static void OnAnimationSourcePropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
@@ -63,10 +49,10 @@ public class AnimationImage : Image
 	private void Initialize()
 	{
 		gifDecoder = new GifBitmapDecoder(new Uri("pack://application:,,," + Source), BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.Default);
-#pragma warning disable IDE0017 // Simplify object initialization
-		animation = new Int32Animation(0, gifDecoder.Frames.Count - 1, new Duration(new TimeSpan(0, 0, 0, gifDecoder.Frames.Count / 10, (int)((gifDecoder.Frames.Count / 10.0 - gifDecoder.Frames.Count / 10) * 1000))));
-#pragma warning restore IDE0017 // Simplify object initialization
-		animation.RepeatBehavior = RepeatBehavior.Forever;
+		animation = new Int32Animation(0, gifDecoder.Frames.Count - 1, new Duration(new TimeSpan(0, 0, 0, gifDecoder.Frames.Count / 10, (int)(((gifDecoder.Frames.Count / 10.0) - (gifDecoder.Frames.Count / 10)) * 1000))))
+		{
+			RepeatBehavior = RepeatBehavior.Forever
+		};
 		base.Source = gifDecoder.Frames[0];
 		isInitialized = true;
 	}
@@ -87,9 +73,5 @@ public class AnimationImage : Image
 	/// <summary>
 	/// Stops the animation
 	/// </summary>
-	public void StopAnimation()
-	{
-		BeginAnimation(FrameIndexProperty, null);
-	}
-
+	public void StopAnimation() => BeginAnimation(FrameIndexProperty, null);
 }

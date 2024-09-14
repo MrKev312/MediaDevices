@@ -18,50 +18,20 @@ public class ServiceInfoViewModel : ServiceBaseViewModel
 		}
 	}
 
-	public List<string> SupportedMethods
-	{
-		get
-		{
-			return SelectedService?.GetSupportedMethods()?.Select(c => c.ToString()).ToList();
-		}
-	}
+	public List<string> SupportedMethods => SelectedService?.GetSupportedMethods()?.Select(c => c.ToString()).ToList();
 
-	public List<string> SupportedCommands
-	{
-		get
-		{
-			return SelectedService?.GetSupportedCommands()?.Select(c => c.ToString()).ToList();
-		}
-	}
+	public List<string> SupportedCommands => SelectedService?.GetSupportedCommands()?.Select(c => c.ToString()).ToList();
 
-	public List<string> SupportedEvents
-	{
-		get
-		{
-			return SelectedService?.GetSupportedEvents()?.Select(c => c.ToString()).ToList();
-		}
-	}
+	public List<string> SupportedEvents => SelectedService?.GetSupportedEvents()?.Select(c => c.ToString()).ToList();
 
-	public List<string> SupportedFormats
-	{
-		get
-		{
-			return SelectedService?.GetSupportedFormats()?.Select(c => c.ToString()).ToList();
-		}
-	}
+	public List<string> SupportedFormats => SelectedService?.GetSupportedFormats()?.Select(c => c.ToString()).ToList();
 
-	public List<ContentViewModel> Contents
-	{
-		get
-		{
-			return SelectedService?.GetContent()?.Select(c => new ContentViewModel(c)).ToList();
-		}
-	}
+	public List<ContentViewModel> Contents => SelectedService?.GetContent()?.Select(c => new ContentViewModel(c)).ToList();
 
 	private ContentViewModel selectedContent;
 	public ContentViewModel SelectedContent
 	{
-		get { return selectedContent; }
+		get => selectedContent;
 		set { selectedContent = value; NotifyPropertyChanged(nameof(SelectedContent)); }
 	}
 }

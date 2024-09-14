@@ -16,10 +16,7 @@ public class SmsViewModel : BaseViewModel
 
 	public DelegateCommand SendTextSMSCommand { get; private set; }
 
-	public SmsViewModel()
-	{
-		SendTextSMSCommand = new DelegateCommand(OnSendTextSMS);
-	}
+	public SmsViewModel() => SendTextSMSCommand = new DelegateCommand(OnSendTextSMS);
 
 	public void Update(MediaDevice device)
 	{
@@ -30,10 +27,7 @@ public class SmsViewModel : BaseViewModel
 
 	public bool IsSmsSupported
 	{
-		get
-		{
-			return isSmsSupported;
-		}
+		get => isSmsSupported;
 		set
 		{
 			isSmsSupported = value;
@@ -43,10 +37,7 @@ public class SmsViewModel : BaseViewModel
 
 	public List<string> SmsFunctionalObjects
 	{
-		get
-		{
-			return smsFunctionalObjects;
-		}
+		get => smsFunctionalObjects;
 		set
 		{
 			smsFunctionalObjects = value;
@@ -56,10 +47,7 @@ public class SmsViewModel : BaseViewModel
 
 	public string SelectedSmsFunctionalObject
 	{
-		get
-		{
-			return selectedSmsFunctionalObject;
-		}
+		get => selectedSmsFunctionalObject;
 		set
 		{
 			selectedSmsFunctionalObject = value;
@@ -71,9 +59,6 @@ public class SmsViewModel : BaseViewModel
 
 	public string SmsText { get; set; }
 
-	private void OnSendTextSMS()
-	{
-		device?.SendTextSMS(SelectedSmsFunctionalObject, SmsRecipient, SmsText);
-	}
+	private void OnSendTextSMS() => device?.SendTextSMS(SelectedSmsFunctionalObject, SmsRecipient, SmsText);
 
 }

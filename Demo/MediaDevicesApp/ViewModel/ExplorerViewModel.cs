@@ -24,10 +24,7 @@ public class ExplorerViewModel : BaseViewModel
 
 	public List<ItemViewModel> ExplorerRoot
 	{
-		get
-		{
-			return explorerRoot;
-		}
+		get => explorerRoot;
 		set
 		{
 			explorerRoot = value;

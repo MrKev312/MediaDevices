@@ -4,6 +4,9 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
+#if NET8_0_OR_GREATER
+using System.Runtime.InteropServices.Marshalling;
+#endif
 using System.Windows;
 
 // http://dlaa.me/blog/post/9917797
@@ -14,7 +17,7 @@ namespace ExplorerCtrl.Internal;
 /// Class implementing drag/drop and clipboard support for virtual files.
 /// Also offers an alternate interface to the IDataObject interface.
 /// </summary>
-internal sealed class VirtualFileDataObject : System.Runtime.InteropServices.ComTypes.IDataObject, IAsyncOperation
+internal sealed partial class VirtualFileDataObject : System.Runtime.InteropServices.ComTypes.IDataObject, IAsyncOperation
 {
 	/// <summary>
 	/// Gets or sets a value indicating whether the data object can be used asynchronously.
@@ -24,32 +27,32 @@ internal sealed class VirtualFileDataObject : System.Runtime.InteropServices.Com
 	/// <summary>
 	/// Identifier for CFSTR_FILECONTENTS.
 	/// </summary>
-	private static short FILECONTENTS = (short)DataFormats.GetDataFormat(NativeMethods.CFSTR_FILECONTENTS).Id;
+	private static readonly short FILECONTENTS = (short)DataFormats.GetDataFormat(NativeMethods.CFSTR_FILECONTENTS).Id;
 
 	/// <summary>
 	/// Identifier for CFSTR_FILEDESCRIPTORW.
 	/// </summary>
-	private static short FILEDESCRIPTORW = (short)DataFormats.GetDataFormat(NativeMethods.CFSTR_FILEDESCRIPTORW).Id;
+	private static readonly short FILEDESCRIPTORW = (short)DataFormats.GetDataFormat(NativeMethods.CFSTR_FILEDESCRIPTORW).Id;
 
 	/// <summary>
 	/// Identifier for CFSTR_PASTESUCCEEDED.
 	/// </summary>
-	private static short PASTESUCCEEDED = (short)DataFormats.GetDataFormat(NativeMethods.CFSTR_PASTESUCCEEDED).Id;
+	private static readonly short PASTESUCCEEDED = (short)DataFormats.GetDataFormat(NativeMethods.CFSTR_PASTESUCCEEDED).Id;
 
 	/// <summary>
 	/// Identifier for CFSTR_PERFORMEDDROPEFFECT.
 	/// </summary>
-	private static short PERFORMEDDROPEFFECT = (short)DataFormats.GetDataFormat(NativeMethods.CFSTR_PERFORMEDDROPEFFECT).Id;
+	private static readonly short PERFORMEDDROPEFFECT = (short)DataFormats.GetDataFormat(NativeMethods.CFSTR_PERFORMEDDROPEFFECT).Id;
 
 	/// <summary>
 	/// Identifier for CFSTR_PREFERREDDROPEFFECT.
 	/// </summary>
-	private static short PREFERREDDROPEFFECT = (short)DataFormats.GetDataFormat(NativeMethods.CFSTR_PREFERREDDROPEFFECT).Id;
+	private static readonly short PREFERREDDROPEFFECT = (short)DataFormats.GetDataFormat(NativeMethods.CFSTR_PREFERREDDROPEFFECT).Id;
 
 	/// <summary>
 	/// In-order list of registered data objects.
 	/// </summary>
-	private List<DataObject> _dataObjects = [];
+	private readonly List<DataObject> _dataObjects = [];
 
 	/// <summary>
 	/// Tracks whether an asynchronous operation is ongoing.
@@ -59,22 +62,19 @@ internal sealed class VirtualFileDataObject : System.Runtime.InteropServices.Com
 	/// <summary>
 	/// Stores the user-specified start action.
 	/// </summary>
-	private Action<VirtualFileDataObject> _startAction;
+	private readonly Action<VirtualFileDataObject> _startAction;
 
 	/// <summary>
 	/// Stores the user-specified end action.
 	/// </summary>
-	private Action<VirtualFileDataObject> _endAction;
+	private readonly Action<VirtualFileDataObject> _endAction;
 
-	private Action<Stream, FileDescriptor> _streamContents;
+	private readonly Action<Stream, FileDescriptor> _streamContents;
 
 	/// <summary>
 	/// Initializes a new instance of the VirtualFileDataObject class.
 	/// </summary>
-	public VirtualFileDataObject()
-	{
-		IsAsynchronous = true;
-	}
+	public VirtualFileDataObject() => IsAsynchronous = true;
 
 	/// <summary>
 	/// Initializes a new instance of the VirtualFileDataObject class.
@@ -161,10 +161,7 @@ internal sealed class VirtualFileDataObject : System.Runtime.InteropServices.Com
 	/// <param name="formatIn">A pointer to a FORMATETC structure that defines the format, medium, and target device that the caller would like to use to retrieve data in a subsequent call such as GetData.</param>
 	/// <param name="formatOut">When this method returns, contains a pointer to a FORMATETC structure that contains the most general information possible for a specific rendering, making it canonically equivalent to formatetIn.</param>
 	/// <returns>HRESULT success code.</returns>
-	int System.Runtime.InteropServices.ComTypes.IDataObject.GetCanonicalFormatEtc(ref FORMATETC formatIn, out FORMATETC formatOut)
-	{
-		throw new NotImplementedException();
-	}
+	int System.Runtime.InteropServices.ComTypes.IDataObject.GetCanonicalFormatEtc(ref FORMATETC formatIn, out FORMATETC formatOut) => throw new NotImplementedException();
 
 	/// <summary>
 	/// Obtains data from a source data object.
@@ -233,10 +230,7 @@ internal sealed class VirtualFileDataObject : System.Runtime.InteropServices.Com
 	/// </summary>
 	/// <param name="format">A pointer to a FORMATETC structure that defines the format, medium, and target device to use when passing the data.</param>
 	/// <param name="medium">A STGMEDIUM that defines the storage medium containing the data being transferred.</param>
-	void System.Runtime.InteropServices.ComTypes.IDataObject.GetDataHere(ref FORMATETC format, ref STGMEDIUM medium)
-	{
-		throw new NotImplementedException();
-	}
+	void System.Runtime.InteropServices.ComTypes.IDataObject.GetDataHere(ref FORMATETC format, ref STGMEDIUM medium) => throw new NotImplementedException();
 
 	/// <summary>
 	/// Determines whether the data object is capable of rendering the data described in the FORMATETC structure.
@@ -510,8 +504,8 @@ internal sealed class VirtualFileDataObject : System.Runtime.InteropServices.Com
 	/// </summary>
 	public DragDropEffects? PasteSucceeded
 	{
-		get { return GetDropEffect(PASTESUCCEEDED); }
-		set { SetData(PASTESUCCEEDED, BitConverter.GetBytes((UInt32)value)); }
+		get => GetDropEffect(PASTESUCCEEDED);
+		set => SetData(PASTESUCCEEDED, BitConverter.GetBytes((uint)value));
 	}
 
 	/// <summary>
@@ -519,8 +513,8 @@ internal sealed class VirtualFileDataObject : System.Runtime.InteropServices.Com
 	/// </summary>
 	public DragDropEffects? PerformedDropEffect
 	{
-		get { return GetDropEffect(PERFORMEDDROPEFFECT); }
-		set { SetData(PERFORMEDDROPEFFECT, BitConverter.GetBytes((UInt32)value)); }
+		get => GetDropEffect(PERFORMEDDROPEFFECT);
+		set => SetData(PERFORMEDDROPEFFECT, BitConverter.GetBytes((uint)value));
 	}
 
 	/// <summary>
@@ -528,8 +522,8 @@ internal sealed class VirtualFileDataObject : System.Runtime.InteropServices.Com
 	/// </summary>
 	public DragDropEffects? PreferredDropEffect
 	{
-		get { return GetDropEffect(PREFERREDDROPEFFECT); }
-		set { SetData(PREFERREDDROPEFFECT, BitConverter.GetBytes((UInt32)value)); }
+		get => GetDropEffect(PREFERREDDROPEFFECT);
+		set => SetData(PREFERREDDROPEFFECT, BitConverter.GetBytes((uint)value));
 	}
 
 	/// <summary>
@@ -605,19 +599,13 @@ internal sealed class VirtualFileDataObject : System.Runtime.InteropServices.Com
 	/// Called by a drop source to specify whether the data object supports asynchronous data extraction.
 	/// </summary>
 	/// <param name="fDoOpAsync">A Boolean value that is set to VARIANT_TRUE to indicate that an asynchronous operation is supported, or VARIANT_FALSE otherwise.</param>
-	void IAsyncOperation.SetAsyncMode(int fDoOpAsync)
-	{
-		IsAsynchronous = !(NativeMethods.VARIANT_FALSE == fDoOpAsync);
-	}
+	void IAsyncOperation.SetAsyncMode(int fDoOpAsync) => IsAsynchronous = !(NativeMethods.VARIANT_FALSE == fDoOpAsync);
 
 	/// <summary>
 	/// Called by a drop target to determine whether the data object supports asynchronous data extraction.
 	/// </summary>
 	/// <param name="pfIsOpAsync">A Boolean value that is set to VARIANT_TRUE to indicate that an asynchronous operation is supported, or VARIANT_FALSE otherwise.</param>
-	void IAsyncOperation.GetAsyncMode(out int pfIsOpAsync)
-	{
-		pfIsOpAsync = IsAsynchronous ? NativeMethods.VARIANT_TRUE : NativeMethods.VARIANT_FALSE;
-	}
+	void IAsyncOperation.GetAsyncMode(out int pfIsOpAsync) => pfIsOpAsync = IsAsynchronous ? NativeMethods.VARIANT_TRUE : NativeMethods.VARIANT_FALSE;
 
 	/// <summary>
 	/// Called by a drop target to indicate that asynchronous data extraction is starting.
@@ -633,10 +621,7 @@ internal sealed class VirtualFileDataObject : System.Runtime.InteropServices.Com
 	/// Called by the drop source to determine whether the target is extracting data asynchronously.
 	/// </summary>
 	/// <param name="pfInAsyncOp">Set to VARIANT_TRUE if data extraction is being handled asynchronously, or VARIANT_FALSE otherwise.</param>
-	void IAsyncOperation.InOperation(out int pfInAsyncOp)
-	{
-		pfInAsyncOp = _inOperation ? NativeMethods.VARIANT_TRUE : NativeMethods.VARIANT_FALSE;
-	}
+	void IAsyncOperation.InOperation(out int pfInAsyncOp) => pfInAsyncOp = _inOperation ? NativeMethods.VARIANT_TRUE : NativeMethods.VARIANT_FALSE;
 
 	/// <summary>
 	/// Notifies the data object that that asynchronous data extraction has ended.
@@ -714,69 +699,44 @@ internal sealed class VirtualFileDataObject : System.Runtime.InteropServices.Com
 	/// <summary>
 	/// Simple class that exposes a write-only IStream as a Stream.
 	/// </summary>
-	private sealed class IStreamWrapper : Stream
+	/// <remarks>
+	/// Initializes a new instance of the IStreamWrapper class.
+	/// </remarks>
+	/// <param name="iStream">IStream instance to wrap.</param>
+	private sealed class IStreamWrapper(IStream iStream) : Stream
 	{
-		/// <summary>
-		/// IStream instance being wrapped.
-		/// </summary>
-		private IStream _iStream;
-
-		/// <summary>
-		/// Initializes a new instance of the IStreamWrapper class.
-		/// </summary>
-		/// <param name="iStream">IStream instance to wrap.</param>
-		public IStreamWrapper(IStream iStream)
-		{
-			_iStream = iStream;
-		}
-
 		/// <summary>
 		/// Gets a value indicating whether the current stream supports reading.
 		/// </summary>
-		public override bool CanRead
-		{
-			get { return false; }
-		}
+		public override bool CanRead => false;
 
 		/// <summary>
 		/// Gets a value indicating whether the current stream supports seeking.
 		/// </summary>
-		public override bool CanSeek
-		{
-			get { return false; }
-		}
+		public override bool CanSeek => false;
 
 		/// <summary>
 		/// Gets a value indicating whether the current stream supports writing.
 		/// </summary>
-		public override bool CanWrite
-		{
-			get { return true; }
-		}
+		public override bool CanWrite => true;
 
 		/// <summary>
 		/// Clears all buffers for this stream and causes any buffered data to be written to the underlying device.
 		/// </summary>
-		public override void Flush()
-		{
-			throw new NotImplementedException();
-		}
+		public override void Flush() => throw new NotImplementedException();
 
 		/// <summary>
 		/// Gets the length in bytes of the stream.
 		/// </summary>
-		public override long Length
-		{
-			get { throw new NotImplementedException(); }
-		}
+		public override long Length => throw new NotImplementedException();
 
 		/// <summary>
 		/// Gets or sets the position within the current stream.
 		/// </summary>
 		public override long Position
 		{
-			get { throw new NotImplementedException(); }
-			set { throw new NotImplementedException(); }
+			get => throw new NotImplementedException();
+			set => throw new NotImplementedException();
 		}
 
 		/// <summary>
@@ -786,10 +746,7 @@ internal sealed class VirtualFileDataObject : System.Runtime.InteropServices.Com
 		/// <param name="offset">The zero-based byte offset in buffer at which to begin storing the data read from the current stream.</param>
 		/// <param name="count">The maximum number of bytes to be read from the current stream.</param>
 		/// <returns>The total number of bytes read into the buffer. This can be less than the number of bytes requested if that many bytes are not currently available, or zero (0) if the end of the stream has been reached.</returns>
-		public override int Read(byte[] buffer, int offset, int count)
-		{
-			throw new NotImplementedException();
-		}
+		public override int Read(byte[] buffer, int offset, int count) => throw new NotImplementedException();
 
 		/// <summary>
 		/// Sets the position within the current stream.
@@ -797,19 +754,13 @@ internal sealed class VirtualFileDataObject : System.Runtime.InteropServices.Com
 		/// <param name="offset">A byte offset relative to the origin parameter.</param>
 		/// <param name="origin">A value of type SeekOrigin indicating the reference point used to obtain the new position.</param>
 		/// <returns>The new position within the current stream.</returns>
-		public override long Seek(long offset, SeekOrigin origin)
-		{
-			throw new NotImplementedException();
-		}
+		public override long Seek(long offset, SeekOrigin origin) => throw new NotImplementedException();
 
 		/// <summary>
 		/// Sets the length of the current stream.
 		/// </summary>
 		/// <param name="value">The desired length of the current stream in bytes.</param>
-		public override void SetLength(long value)
-		{
-			throw new NotImplementedException();
-		}
+		public override void SetLength(long value) => throw new NotImplementedException();
 
 		/// <summary>
 		/// Writes a sequence of bytes to the current stream and advances the current position within this stream by the number of bytes written.
@@ -822,12 +773,12 @@ internal sealed class VirtualFileDataObject : System.Runtime.InteropServices.Com
 			if (offset == 0)
 			{
 				// Optimize common case to avoid creating extra buffers
-				_iStream.Write(buffer, count, IntPtr.Zero);
+				iStream.Write(buffer, count, IntPtr.Zero);
 			}
 			else
 			{
 				// Easy way to provide the relevant byte[]
-				_iStream.Write(buffer.Skip(offset).ToArray(), count, IntPtr.Zero);
+				iStream.Write(buffer.Skip(offset).ToArray(), count, IntPtr.Zero);
 			}
 		}
 	}
@@ -835,14 +786,13 @@ internal sealed class VirtualFileDataObject : System.Runtime.InteropServices.Com
 	/// <summary>
 	/// Initiates a drag-and-drop operation.
 	/// </summary>
-	/// <param name="dragSource">A reference to the dependency object that is the source of the data being dragged.</param>
 	/// <param name="dataObject">A data object that contains the data being dragged.</param>
 	/// <param name="allowedEffects">One of the DragDropEffects values that specifies permitted effects of the drag-and-drop operation.</param>
 	/// <returns>One of the DragDropEffects values that specifies the final effect that was performed during the drag-and-drop operation.</returns>
 	/// <remarks>
 	/// Call this method instead of System.Windows.DragDrop.DoDragDrop because this method handles IDataObject better.
 	/// </remarks>
-	public static DragDropEffects DoDragDrop(DependencyObject dragSource, System.Runtime.InteropServices.ComTypes.IDataObject dataObject, DragDropEffects allowedEffects)
+	public static DragDropEffects DoDragDrop(System.Runtime.InteropServices.ComTypes.IDataObject dataObject, DragDropEffects allowedEffects)
 	{
 		int[] finalEffect = new int[1];
 		try
@@ -866,7 +816,10 @@ internal sealed class VirtualFileDataObject : System.Runtime.InteropServices.Com
 	/// <summary>
 	/// Contains the methods for generating visual feedback to the end user and for canceling or completing the drag-and-drop operation.
 	/// </summary>
-	private sealed class DropSource : NativeMethods.IDropSource
+#if NET8_0_OR_GREATER
+	[GeneratedComClass]
+#endif
+	private sealed partial class DropSource : NativeMethods.IDropSource
 	{
 		/// <summary>
 		/// Determines whether a drag-and-drop operation should continue.
@@ -895,16 +848,13 @@ internal sealed class VirtualFileDataObject : System.Runtime.InteropServices.Com
 		/// </summary>
 		/// <param name="dwEffect">The DROPEFFECT value returned by the most recent call to IDropTarget::DragEnter, IDropTarget::DragOver, or IDropTarget::DragLeave. </param>
 		/// <returns>This method returns S_OK on success.</returns>
-		public int GiveFeedback(uint dwEffect)
-		{
-			return NativeMethods.DRAGDROP_S_USEDEFAULTCURSORS;
-		}
+		public int GiveFeedback(uint dwEffect) => NativeMethods.DRAGDROP_S_USEDEFAULTCURSORS;
 	}
 
 	/// <summary>
 	/// Provides access to Win32-level constants, structures, and functions.
 	/// </summary>
-	private static class NativeMethods
+	public static partial class NativeMethods
 	{
 		public const int DRAGDROP_S_DROP = 0x00040100;
 		public const int DRAGDROP_S_CANCEL = 0x00040101;
@@ -935,33 +885,37 @@ internal sealed class VirtualFileDataObject : System.Runtime.InteropServices.Com
 		[StructLayout(LayoutKind.Sequential)]
 		public struct FILEGROUPDESCRIPTOR
 		{
-			public UInt32 cItems;
+			public uint cItems;
 			// Followed by 0 or more FILEDESCRIPTORs
 		}
 
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 		public struct FILEDESCRIPTOR
 		{
-			public UInt32 dwFlags;
+			public uint dwFlags;
 			public Guid clsid;
-			public Int32 sizelcx;
-			public Int32 sizelcy;
-			public Int32 pointlx;
-			public Int32 pointly;
-			public UInt32 dwFileAttributes;
+			public int sizelcx;
+			public int sizelcy;
+			public int pointlx;
+			public int pointly;
+			public uint dwFileAttributes;
 			public System.Runtime.InteropServices.ComTypes.FILETIME ftCreationTime;
 			public System.Runtime.InteropServices.ComTypes.FILETIME ftLastAccessTime;
 			public System.Runtime.InteropServices.ComTypes.FILETIME ftLastWriteTime;
-			public UInt32 nFileSizeHigh;
-			public UInt32 nFileSizeLow;
+			public uint nFileSizeHigh;
+			public uint nFileSizeLow;
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 260)]
 			public string cFileName;
 		}
 
+#if NET8_0_OR_GREATER
+		[GeneratedComInterface]
+#else
 		[ComImport]
+#endif
 		[Guid("00000121-0000-0000-C000-000000000046")]
 		[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-		public interface IDropSource
+		public partial interface IDropSource
 		{
 			[PreserveSig]
 			int QueryContinueDrag(int fEscapePressed, uint grfKeyState);
@@ -994,10 +948,7 @@ internal sealed class VirtualFileDataObject : System.Runtime.InteropServices.Com
 		/// </summary>
 		/// <param name="hr">HRESULT to check.</param>
 		/// <returns>True iff a success code.</returns>
-		public static bool SUCCEEDED(int hr)
-		{
-			return 0 <= hr;
-		}
+		public static bool SUCCEEDED(int hr) => 0 <= hr;
 	}
 }
 
@@ -1012,9 +963,9 @@ internal sealed class VirtualFileDataObject : System.Runtime.InteropServices.Com
 [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 internal interface IAsyncOperation
 {
-	void SetAsyncMode([In] Int32 fDoOpAsync);
-	void GetAsyncMode([Out] out Int32 pfIsOpAsync);
+	void SetAsyncMode([In] int fDoOpAsync);
+	void GetAsyncMode([Out] out int pfIsOpAsync);
 	void StartOperation([In] IBindCtx pbcReserved);
-	void InOperation([Out] out Int32 pfInAsyncOp);
-	void EndOperation([In] Int32 hResult, [In] IBindCtx pbcReserved, [In] UInt32 dwEffects);
+	void InOperation([Out] out int pfInAsyncOp);
+	void EndOperation([In] int hResult, [In] IBindCtx pbcReserved, [In] uint dwEffects);
 }

@@ -7,10 +7,7 @@ namespace MediaDevices;
 /// </summary>
 public class CompleteEventArgs : EventArgs
 {
-	internal CompleteEventArgs(int hrStatus)
-	{
-		Status = hrStatus;
-	}
+	internal CompleteEventArgs(int hrStatus) => Status = hrStatus;
 
 	/// <summary>
 	/// Status

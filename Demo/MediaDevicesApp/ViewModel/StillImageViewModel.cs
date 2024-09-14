@@ -37,10 +37,7 @@ public class StillImageViewModel : BaseViewModel
 
 	public bool IsStillImageSupported
 	{
-		get
-		{
-			return isStillImageSupported;
-		}
+		get => isStillImageSupported;
 		set
 		{
 			isStillImageSupported = value;
@@ -50,10 +47,7 @@ public class StillImageViewModel : BaseViewModel
 
 	public List<string> StillImageFunctionalObjects
 	{
-		get
-		{
-			return stillImageFunctionalObjects;
-		}
+		get => stillImageFunctionalObjects;
 		set
 		{
 			if (stillImageFunctionalObjects != value)
@@ -66,7 +60,7 @@ public class StillImageViewModel : BaseViewModel
 
 	public string SelectedStillImageFunctionalObject
 	{
-		get { return selectedStillImageFunctionalObject; }
+		get => selectedStillImageFunctionalObject;
 		set
 		{
 			selectedStillImageFunctionalObject = value;
@@ -76,7 +70,7 @@ public class StillImageViewModel : BaseViewModel
 
 	public ImageSource StillImageSource
 	{
-		get { return stillImageSource; }
+		get => stillImageSource;
 		set
 		{
 			stillImageSource = value;

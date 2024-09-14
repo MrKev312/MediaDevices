@@ -18,10 +18,7 @@ internal sealed class PropVariantFacade : IDisposable
 	// cannot be a property because it will be filled by reference
 	public PropVariant Value;
 
-	public PropVariantFacade()
-	{
-		Value = new PropVariant();
-	}
+	public PropVariantFacade() => Value = new PropVariant();
 
 	public void Dispose()
 	{
@@ -44,10 +41,7 @@ internal sealed class PropVariantFacade : IDisposable
 		}
 	}
 
-	public PropVariantType VariantType
-	{
-		get { return Value.vt; }
-	}
+	public PropVariantType VariantType => Value.vt;
 
 	public string ToDebugString()
 	{
@@ -237,7 +231,7 @@ internal sealed class PropVariantFacade : IDisposable
 	}
 
 #if !NETCOREAPP
-        [HandleProcessCorruptedStateExceptions]
+	[HandleProcessCorruptedStateExceptions]
 #endif
 	[SecurityCritical]
 	public byte[] ToByteArray()
@@ -339,7 +333,7 @@ internal sealed class PropVariantFacade : IDisposable
 		return val.ToUlong();
 	}
 
-	public static implicit operator Byte[](PropVariantFacade val)
+	public static implicit operator byte[](PropVariantFacade val)
 	{
 		return val.ToByteArray();
 	}

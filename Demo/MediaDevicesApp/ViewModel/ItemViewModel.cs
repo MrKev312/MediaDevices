@@ -17,12 +17,10 @@ using MediaDevicesApp.ViewModel;
 
 namespace MediaDevicesApp.ViewModel;
 
-public class ItemViewModel : BaseViewModel, IExplorerItem
+public class ItemViewModel(MediaFileSystemInfo item) : BaseViewModel, IExplorerItem
 {
-	private static ImageSource imgFolder;
-	private static ImageSource imgFile;
-
-	private MediaFileSystemInfo item;
+	private static readonly ImageSource imgFolder;
+	private static readonly ImageSource imgFile;
 
 	static ItemViewModel()
 	{
@@ -30,37 +28,28 @@ public class ItemViewModel : BaseViewModel, IExplorerItem
 		imgFile = new BitmapImage(new Uri("pack://application:,,,/Images/File.png"));
 	}
 
-	public ItemViewModel(MediaFileSystemInfo item)
-	{
-		this.item = item;
-		//this.Refresh += (o, a) => this.item.Refresh();
-	}
-
 	public string Name
 	{
-		get
-		{
-			return item.Name;
-		}
+		get => item.Name;
 		set
 		{ }
 	}
 
-	public string FullName { get { return item.FullName; } }
+	public string FullName => item.FullName;
 
-	public string Link { get { return null; } }
+	public string Link => null;
 
-	public long Size { get { return (long)item.Length; } }
+	public long Size => (long)item.Length;
 
-	public DateTime? CreationDate { get { return item.LastWriteTime; } }
+	public DateTime? CreationDate => item.LastWriteTime;
 
-	public ExplorerItemType Type { get { return IsDirectory ? ExplorerItemType.Directory : ExplorerItemType.File; } }
+	public ExplorerItemType Type => IsDirectory ? ExplorerItemType.Directory : ExplorerItemType.File;
 
-	public ImageSource Icon { get { return IsDirectory ? imgFolder : imgFile; } }
+	public ImageSource Icon => IsDirectory ? imgFolder : imgFile;
 
-	public bool IsDirectory { get { return item.Attributes.HasFlag(MediaFileAttributes.Directory) || item.Attributes.HasFlag(MediaFileAttributes.Object); } }
+	public bool IsDirectory => item.Attributes.HasFlag(MediaFileAttributes.Directory) || item.Attributes.HasFlag(MediaFileAttributes.Object);
 
-	public bool HasChildren { get { return Children?.Any() ?? false; } }
+	public bool HasChildren => Children?.Any() ?? false;
 
 	public IEnumerable<IExplorerItem> Children
 	{
@@ -83,23 +72,11 @@ public class ItemViewModel : BaseViewModel, IExplorerItem
 	public event EventHandler<RefreshEventArgs> Refresh;
 #pragma warning restore CS0067
 
-	public void CreateFolder(string path)
-	{
-		throw new NotImplementedException();
-	}
+	public void CreateFolder(string path) => throw new NotImplementedException();
 
-	public bool Equals(IExplorerItem other)
-	{
-		return FullName == other.FullName;
-	}
+	public bool Equals(IExplorerItem other) => FullName == other.FullName;
 
-	public void Pull(string path, Stream stream)
-	{
-		throw new NotImplementedException();
-	}
+	public void Pull(string path, Stream stream) => throw new NotImplementedException();
 
-	public void Push(Stream stream, string path)
-	{
-		throw new NotImplementedException();
-	}
+	public void Push(Stream stream, string path) => throw new NotImplementedException();
 }

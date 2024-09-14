@@ -61,10 +61,7 @@ public class MainViewModel : BaseViewModel
 
 	public bool UsePrivateDevices
 	{
-		get
-		{
-			return usePrivateDevices;
-		}
+		get => usePrivateDevices;
 		set
 		{
 			if (usePrivateDevices != value)
@@ -105,13 +102,13 @@ public class MainViewModel : BaseViewModel
 
 	public List<MediaDevice> Devices
 	{
-		get { return devices; }
+		get => devices;
 		set { devices = value; NotifyPropertyChanged(nameof(Devices)); }
 	}
 
 	public MediaDevice SelectedDevice
 	{
-		get { return selectedDevice; }
+		get => selectedDevice;
 		set
 		{
 			if (value != selectedDevice)
@@ -182,7 +179,7 @@ public class MainViewModel : BaseViewModel
 
 	public bool CanReset
 	{
-		get { return canReset; }
+		get => canReset;
 		set { canReset = value; NotifyPropertyChanged(nameof(CanReset)); }
 
 	}

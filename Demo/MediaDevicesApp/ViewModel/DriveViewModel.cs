@@ -30,10 +30,7 @@ public class DriveViewModel : BaseViewModel
 
 	public List<MediaDriveInfo> Drives
 	{
-		get
-		{
-			return drives;
-		}
+		get => drives;
 		set
 		{
 			if (drives != value)
@@ -46,10 +43,7 @@ public class DriveViewModel : BaseViewModel
 
 	public MediaDriveInfo SelectedDrive
 	{
-		get
-		{
-			return selectedDrive;
-		}
+		get => selectedDrive;
 		set
 		{
 			if (selectedDrive != value)
@@ -60,13 +54,7 @@ public class DriveViewModel : BaseViewModel
 		}
 	}
 
-	private void OnEject()
-	{
-		SelectedDrive?.Eject();
-	}
+	private void OnEject() => SelectedDrive?.Eject();
 
-	private void OnFormat()
-	{
-		SelectedDrive?.Format();
-	}
+	private void OnFormat() => SelectedDrive?.Format();
 }

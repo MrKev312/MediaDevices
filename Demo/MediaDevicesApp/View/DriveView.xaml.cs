@@ -6,9 +6,6 @@ namespace MediaDevicesApp.View;
 /// Interaction logic for DriveView.xaml
 /// </summary>
 public partial class DriveView : UserControl
-    {
-        public DriveView()
-        {
-            InitializeComponent();
-        }
-    }
+{
+	public DriveView() => InitializeComponent();
+}

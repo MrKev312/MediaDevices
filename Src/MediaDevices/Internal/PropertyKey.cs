@@ -22,8 +22,5 @@ internal struct PropertyKey
 		PropertyKey pk = (PropertyKey)obj;
 		return fmtid == pk.fmtid && pid == pk.pid;
 	}
-	public override int GetHashCode()
-	{
-		return fmtid.GetHashCode() ^ pid.GetHashCode();
-	}
+	public override int GetHashCode() => fmtid.GetHashCode() ^ pid.GetHashCode();
 }

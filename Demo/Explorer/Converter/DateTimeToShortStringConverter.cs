@@ -5,7 +5,7 @@ using System.Windows.Data;
 namespace ExplorerCtrl.Converter;
 
 [ValueConversion(typeof(DateTime?), typeof(string))]
-internal class DateTimeToShortStringConverter : IValueConverter
+internal sealed class DateTimeToShortStringConverter : IValueConverter
 {
 	public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 	{
@@ -13,8 +13,5 @@ internal class DateTimeToShortStringConverter : IValueConverter
 		return date.HasValue ? $"{date.Value.ToShortDateString()} {date.Value.ToShortTimeString()}" : string.Empty;
 	}
 
-	public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-	{
-		throw new NotImplementedException();
-	}
+	public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => throw new NotImplementedException();
 }

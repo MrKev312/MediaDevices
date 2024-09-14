@@ -9,7 +9,7 @@ namespace MediaDevices;
 /// </summary>
 public class MediaDeviceServiceContent
 {
-	private MediaDeviceService service;
+	private readonly MediaDeviceService service;
 
 	private MediaDeviceServiceContent()
 	{ }
@@ -67,17 +67,11 @@ public class MediaDeviceServiceContent
 	/// Get the content
 	/// </summary>
 	/// <returns>Content list</returns>
-	public IEnumerable<MediaDeviceServiceContent> GetContent()
-	{
-		return service.GetContent(ObjectId);
-	}
+	public IEnumerable<MediaDeviceServiceContent> GetContent() => service.GetContent(ObjectId);
 
 	/// <summary>
 	/// Get all properties of the content
 	/// </summary>
 	/// <returns>List of properties</returns>
-	public IEnumerable<KeyValuePair<string, string>> GetAllProperties()
-	{
-		return service.GetAllProperties(ObjectId);
-	}
+	public IEnumerable<KeyValuePair<string, string>> GetAllProperties() => service.GetAllProperties(ObjectId);
 }

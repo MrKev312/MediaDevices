@@ -25,10 +25,7 @@ public abstract class ServiceBaseViewModel : BaseViewModel
 	private MediaDeviceService selectedService;
 	public MediaDeviceService SelectedService
 	{
-		get
-		{
-			return selectedService;
-		}
+		get => selectedService;
 		set
 		{
 			if (selectedService != value)

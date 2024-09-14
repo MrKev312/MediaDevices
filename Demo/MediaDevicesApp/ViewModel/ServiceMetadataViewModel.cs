@@ -4,8 +4,5 @@ namespace MediaDevicesApp.ViewModel;
 
 public class ServiceMetadataViewModel : ServiceBaseViewModel
 {
-	public ServiceMetadataViewModel()
-	{
-		availableServices = MediaDeviceServices.Metadata;
-	}
+	public ServiceMetadataViewModel() => availableServices = MediaDeviceServices.Metadata;
 }

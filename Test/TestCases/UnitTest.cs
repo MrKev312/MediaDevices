@@ -47,10 +47,7 @@ public abstract class UnitTest
 	///</summary>
 	public TestContext TestContext { get; set; }
 
-	public UnitTest()
-	{
-		deviceSelect = d => d.Description == deviceDescription && d.FriendlyName == deviceFriendlyName;
-	}
+	public UnitTest() => deviceSelect = d => d.Description == deviceDescription && d.FriendlyName == deviceFriendlyName;
 
 	//protected void FindDeviceLetter(string pnpDeviceId)
 	//{

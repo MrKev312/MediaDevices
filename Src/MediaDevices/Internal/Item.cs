@@ -12,7 +12,7 @@ namespace MediaDevices.Internal;
 [DebuggerDisplay("{this.Type} - {this.Name} - {this.Id}")]
 internal sealed class Item
 {
-	private static IPortableDeviceKeyCollection keyCollection;
+	private static readonly IPortableDeviceKeyCollection keyCollection;
 
 	static Item()
 	{
@@ -36,9 +36,9 @@ internal sealed class Item
 		keyCollection.Add(ref WPD.OBJECT_PERSISTENT_UNIQUE_ID);
 	}
 
-	private MediaDevice device;
+	private readonly MediaDevice device;
 	private string name;
-	private string path;
+	private readonly string path;
 	private Item parent;
 
 	private const uint PORTABLE_DEVICE_DELETE_NO_RECURSION = 0;
@@ -50,15 +50,9 @@ internal sealed class Item
 
 	public const string RootId = "DEVICE";
 
-	public static Item GetRoot(MediaDevice device)
-	{
-		return new Item(device, RootId, @"\");
-	}
+	public static Item GetRoot(MediaDevice device) => new Item(device, RootId, @"\");
 
-	public static Item Create(MediaDevice device, string id, string path = null)
-	{
-		return new Item(device, id, path);
-	}
+	public static Item Create(MediaDevice device, string id, string path = null) => new Item(device, id, path);
 
 	public static Item FindFolder(MediaDevice device, string path)
 	{
@@ -305,9 +299,9 @@ internal sealed class Item
 	public string ParentId { get; private set; }
 	public string PersistentUniqueId { get; private set; }
 
-	public bool IsRoot { get { return Id == RootId; } }
+	public bool IsRoot => Id == RootId;
 
-	public bool IsFile { get { return Type == ItemType.File; } }
+	public bool IsFile => Type == ItemType.File;
 
 	public Item Parent
 	{

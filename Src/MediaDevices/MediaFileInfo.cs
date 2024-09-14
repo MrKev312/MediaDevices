@@ -15,21 +15,12 @@ public class MediaFileInfo : MediaFileSystemInfo
 	/// <summary>
 	/// Refreshes the state of the object.
 	/// </summary>
-	public override void Refresh()
-	{
-		base.Refresh();
-	}
+	public override void Refresh() => base.Refresh();
 
 	/// <summary>
 	/// Gets an instance of the parent directory.
 	/// </summary>
-	public MediaDirectoryInfo Directory
-	{
-		get
-		{
-			return ParentDirectoryInfo;
-		}
-	}
+	public MediaDirectoryInfo Directory => ParentDirectoryInfo;
 
 	/// <summary>
 	/// Copies an existing file to a new file, allowing the overwriting of the existing file.

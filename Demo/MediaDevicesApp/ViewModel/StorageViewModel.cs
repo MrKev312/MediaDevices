@@ -26,10 +26,7 @@ public class StorageViewModel : BaseViewModel
 
 	public List<string> Storages
 	{
-		get
-		{
-			return storages;
-		}
+		get => storages;
 		set
 		{
 			if (storages != value)
@@ -42,10 +39,7 @@ public class StorageViewModel : BaseViewModel
 
 	public string SelectedStorage
 	{
-		get
-		{
-			return selectedStorage;
-		}
+		get => selectedStorage;
 		set
 		{
 			if (selectedStorage != value)
@@ -63,91 +57,25 @@ public class StorageViewModel : BaseViewModel
 		}
 	}
 
-	public MediaStorageInfo Info
-	{
-		get
-		{
-			return mediaStorageInfo;
-		}
-	}
+	public MediaStorageInfo Info => mediaStorageInfo;
 
-	public StorageType Type
-	{
-		get
-		{
-			return mediaStorageInfo?.Type ?? StorageType.Undefined;
-		}
-	}
+	public StorageType Type => mediaStorageInfo?.Type ?? StorageType.Undefined;
 
-	public string FileSystemType
-	{
-		get
-		{
-			return mediaStorageInfo?.FileSystemType;
-		}
-	}
+	public string FileSystemType => mediaStorageInfo?.FileSystemType;
 
-	public ulong Capacity
-	{
-		get
-		{
-			return mediaStorageInfo?.Capacity ?? 0;
-		}
-	}
+	public ulong Capacity => mediaStorageInfo?.Capacity ?? 0;
 
-	public ulong FreeSpaceInBytes
-	{
-		get
-		{
-			return mediaStorageInfo?.FreeSpaceInBytes ?? 0;
-		}
-	}
+	public ulong FreeSpaceInBytes => mediaStorageInfo?.FreeSpaceInBytes ?? 0;
 
-	public ulong FreeSpaceInObjects
-	{
-		get
-		{
-			return mediaStorageInfo?.FreeSpaceInObjects ?? 0;
-		}
-	}
+	public ulong FreeSpaceInObjects => mediaStorageInfo?.FreeSpaceInObjects ?? 0;
 
-	public string Description
-	{
-		get
-		{
-			return mediaStorageInfo?.Description;
-		}
-	}
+	public string Description => mediaStorageInfo?.Description;
 
-	public string SerialNumber
-	{
-		get
-		{
-			return mediaStorageInfo?.SerialNumber;
-		}
-	}
+	public string SerialNumber => mediaStorageInfo?.SerialNumber;
 
-	public ulong MaxObjectSize
-	{
-		get
-		{
-			return mediaStorageInfo?.MaxObjectSize ?? 0;
-		}
-	}
+	public ulong MaxObjectSize => mediaStorageInfo?.MaxObjectSize ?? 0;
 
-	public ulong CapacityInObjects
-	{
-		get
-		{
-			return mediaStorageInfo?.CapacityInObjects ?? 0;
-		}
-	}
+	public ulong CapacityInObjects => mediaStorageInfo?.CapacityInObjects ?? 0;
 
-	public StorageAccessCapability AccessCapability
-	{
-		get
-		{
-			return mediaStorageInfo?.AccessCapability ?? 0;
-		}
-	}
+	public StorageAccessCapability AccessCapability => mediaStorageInfo?.AccessCapability ?? 0;
 }

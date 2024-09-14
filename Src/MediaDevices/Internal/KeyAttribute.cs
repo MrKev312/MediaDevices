@@ -21,9 +21,6 @@ internal sealed class KeyAttribute : Attribute
 
 	public uint Id { get; private set; }
 
-	public PropertyKey PropertyKey
-	{
-		get { return new PropertyKey() { fmtid = Guid, pid = Id }; }
-	}
+	public PropertyKey PropertyKey => new PropertyKey() { fmtid = Guid, pid = Id };
 }
 

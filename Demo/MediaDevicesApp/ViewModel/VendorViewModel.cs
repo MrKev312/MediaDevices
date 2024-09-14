@@ -33,10 +33,7 @@ public class VendorViewModel : BaseViewModel
 
 	public string Description
 	{
-		get
-		{
-			return description;
-		}
+		get => description;
 		set
 		{
 			if (description != value)
@@ -49,10 +46,7 @@ public class VendorViewModel : BaseViewModel
 
 	public List<int> OpCodes
 	{
-		get
-		{
-			return opCodes;
-		}
+		get => opCodes;
 		set
 		{
 			if (opCodes != value)
