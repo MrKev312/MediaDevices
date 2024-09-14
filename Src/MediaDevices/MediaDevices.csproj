@@ -1,5 +1,4 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
 	<PropertyGroup>
 		<TargetFrameworks>netstandard2.1;netstandard2.0;net8.0-windows;net7.0-windows;net6.0-windows;netframework4.8</TargetFrameworks>
 		<LangVersion>12</LangVersion>
@@ -18,7 +17,7 @@
 		<RepositoryType>git</RepositoryType>
 		<RepositoryUrl>https://github.com/Bassman2/MediaDevices</RepositoryUrl>
 		<PackageTags>MTP;WPD;Portable Device;Portable Devices API;phone;tablet</PackageTags>
-		<PackageReleaseNotes>Support for .Net 5.0 to 8.0</PackageReleaseNotes>
+		<PackageReleaseNotes>Support for .Net Core 2.0/.NET Framework 4.6.1 to 8.0</PackageReleaseNotes>
 		<Title>Media Devices</Title>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
