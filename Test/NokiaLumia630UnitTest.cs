@@ -12,28 +12,28 @@ public class NokiaLumia630UnitTest : WritableUnitTest
 	public NokiaLumia630UnitTest()
 	{
 		// Device Select
-		deviceSelect = device => device.Description == deviceDescription;
+		DeviceSelect = device => device.Description == DeviceDescription;
 
 		// Device Test
-		deviceDescription = "Lumia 630 Dual SIM";
-		deviceFriendlyName = "Ralf Phone";
-		deviceManufacture = "NOKIA";
-		deviceFirmwareVersion = "8.10.14234.0";
-		deviceModel = "Lumia 630 Dual SIM";
-		deviceSerialNumber = "29918575d76ae110111b8ced6429e399";
-		deviceDeviceType = DeviceType.Phone;
-		deviceTransport = DeviceTransport.USB;
-		devicePowerSource = PowerSource.External;
+		DeviceDescription = "Lumia 630 Dual SIM";
+		DeviceFriendlyName = "Ralf Phone";
+		DeviceManufacture = "NOKIA";
+		DeviceFirmwareVersion = "8.10.14234.0";
+		DeviceModel = "Lumia 630 Dual SIM";
+		DeviceSerialNumber = "29918575d76ae110111b8ced6429e399";
+		DeviceDeviceType = DeviceType.Phone;
+		DeviceTransport = DeviceTransport.USB;
+		DevicePowerSource = PowerSource.External;
 
 		// Capability Test
-		supportedEvents = [Events.DeviceReset, Events.ObjectRemoved, Events.ObjectUpdated];
-		supportedCommands = [Commands.ObjectEnumerationStartFind, Commands.ObjectManagementDeleteObjects];
-		supportedContents = [ContentType.Image];
+		SupportedEvents = [Events.DeviceReset, Events.ObjectRemoved, Events.ObjectUpdated];
+		SupportedCommands = [Commands.ObjectEnumerationStartFind, Commands.ObjectManagementDeleteObjects];
+		SupportedContents = [ContentType.Image];
 
 		// ContentLocation Test
-		contentLocations = [@"\SD card\Pictures", @"\Phone\Pictures", @"\SD card\Pictures"];
+		ContentLocations = [@"\SD card\Pictures", @"\Phone\Pictures", @"\SD card\Pictures"];
 
-		workingFolder = @"\Phone\Documents";
+		WorkingFolder = @"\Phone\Documents";
 
 		// Exists Test
 		//this.existingFile = @"\Phone\Music\Artist\OMD";

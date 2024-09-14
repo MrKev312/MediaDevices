@@ -57,7 +57,7 @@ internal sealed class Item
 	public static Item FindFolder(MediaDevice device, string path)
 	{
 		Item item = FindItem(device, path);
-		return item == null || item.Type == ItemType.File ? null : item; ;
+		return item == null || item.Type == ItemType.File ? null : item;
 	}
 
 	public static Item FindFile(MediaDevice device, string path)
@@ -188,7 +188,7 @@ internal sealed class Item
 
 	private void GetProperties()
 	{
-		IPortableDeviceValues values = null;
+		IPortableDeviceValues values;
 		try
 		{
 			// get all predefined values
@@ -307,10 +307,7 @@ internal sealed class Item
 	{
 		get
 		{
-			if (parent == null)
-			{
-				parent = string.IsNullOrEmpty(ParentId) ? null : new Item(device, ParentId, Path.GetDirectoryName(Path.GetDirectoryName(FullName)));
-			}
+			parent ??= string.IsNullOrEmpty(ParentId) ? null : new Item(device, ParentId, Path.GetDirectoryName(Path.GetDirectoryName(FullName)));
 
 			return parent;
 		}
@@ -526,12 +523,7 @@ internal sealed class Item
 		// directory.
 		MediaDriveInfo[] drives = device.GetDrives();
 		MediaDriveInfo storageRoot = drives.FirstOrDefault(s => s.RootDirectory.Id == ParentContainerId);
-		if (storageRoot != null)
-		{
-			return storageRoot.RootDirectory.item;
-		}
-
-		return null;
+		return storageRoot?.RootDirectory.item;
 	}
 
 	internal Stream OpenRead()

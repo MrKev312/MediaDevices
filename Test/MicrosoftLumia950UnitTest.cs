@@ -10,26 +10,26 @@ public class MicrosoftLumia950UnitTest : WritableUnitTest
 	public MicrosoftLumia950UnitTest()
 	{
 		// Device Test
-		deviceDescription = "Lumia 950";
-		deviceFriendlyName = "";
-		deviceManufacture = "Microsoft";
-		deviceFirmwareVersion = "10.0.15254.0";
-		deviceModel = "Lumia 650 Dual SIM";
-		deviceSerialNumber = "9aaa36ebd8901685d39337ced4b30893";
-		deviceDeviceType = DeviceType.Phone;
-		deviceTransport = DeviceTransport.USB;
-		devicePowerSource = PowerSource.Battery;
+		DeviceDescription = "Lumia 950";
+		DeviceFriendlyName = "";
+		DeviceManufacture = "Microsoft";
+		DeviceFirmwareVersion = "10.0.15254.0";
+		DeviceModel = "Lumia 650 Dual SIM";
+		DeviceSerialNumber = "9aaa36ebd8901685d39337ced4b30893";
+		DeviceDeviceType = DeviceType.Phone;
+		DeviceTransport = DeviceTransport.USB;
+		DevicePowerSource = PowerSource.Battery;
 
 		// Capability Test
-		supportedEvents = [Events.DeviceReset, Events.ObjectRemoved, Events.ObjectUpdated];
-		supportedCommands = [Commands.ObjectEnumerationStartFind, Commands.ObjectManagementDeleteObjects];
-		supportedContents = [ContentType.Image];
-		functionalCategories = [FunctionalCategory.Storage, FunctionalCategory.RenderingInformation];
+		SupportedEvents = [Events.DeviceReset, Events.ObjectRemoved, Events.ObjectUpdated];
+		SupportedCommands = [Commands.ObjectEnumerationStartFind, Commands.ObjectManagementDeleteObjects];
+		SupportedContents = [ContentType.Image];
+		FunctionalCategories = [FunctionalCategory.Storage, FunctionalCategory.RenderingInformation];
 
 		// ContentLocation Test
-		contentLocations = [@"\Phone\Pictures", @"\Phone\Pictures", @"\SD card\Pictures"];
+		ContentLocations = [@"\Phone\Pictures", @"\Phone\Pictures", @"\SD card\Pictures"];
 
-		workingFolder = @"\Phone\Documents";
+		WorkingFolder = @"\Phone\Documents";
 
 		// Exists Test
 		//this.existingFile = @"\Phone\Music\Artist\05 - Decoupage.mp3";

@@ -11,28 +11,28 @@ public class AppleiPhoneS3UnitTest : ReadonlyUnitTest
 	public AppleiPhoneS3UnitTest()
 	{
 		// Find function
-		deviceSelect = d => d.Description == deviceDescription;
+		DeviceSelect = d => d.Description == DeviceDescription;
 
 		// Device Test
-		deviceDescription = "Apple iPhone";
-		deviceFriendlyName = "iPhone von Egon";
-		deviceManufacture = "Apple Inc.";
-		deviceFirmwareVersion = "4.2.1";
-		deviceModel = "Apple iPhone";
-		deviceSerialNumber = "889155UBY7H";
-		deviceDeviceType = DeviceType.Camera;
-		deviceTransport = DeviceTransport.USB;
-		devicePowerSource = PowerSource.Battery;
-		deviceProtocol = "PTP: 1.10";
+		DeviceDescription = "Apple iPhone";
+		DeviceFriendlyName = "iPhone von Egon";
+		DeviceManufacture = "Apple Inc.";
+		DeviceFirmwareVersion = "4.2.1";
+		DeviceModel = "Apple iPhone";
+		DeviceSerialNumber = "889155UBY7H";
+		DeviceDeviceType = DeviceType.Camera;
+		DeviceTransport = DeviceTransport.USB;
+		DevicePowerSource = PowerSource.Battery;
+		DeviceProtocol = "PTP: 1.10";
 
 		// Capability Test
-		supportedEvents = [Events.DeviceReset, Events.ObjectRemoved, Events.ObjectUpdated];
-		supportedCommands = [Commands.ObjectEnumerationStartFind, Commands.ObjectManagementDeleteObjects];
-		supportedContents = [ContentType.Image];
-		functionalCategories = [FunctionalCategory.Storage];
+		SupportedEvents = [Events.DeviceReset, Events.ObjectRemoved, Events.ObjectUpdated];
+		SupportedCommands = [Commands.ObjectEnumerationStartFind, Commands.ObjectManagementDeleteObjects];
+		SupportedContents = [ContentType.Image];
+		FunctionalCategories = [FunctionalCategory.Storage];
 
 		// ContentLocation Test
-		contentLocations = [];
+		ContentLocations = [];
 
 		// PersistentUniqueId
 		FolderPersistentUniqueId = "{00430045-0049-004D-0100-010000000000}";
@@ -41,43 +41,43 @@ public class AppleiPhoneS3UnitTest : ReadonlyUnitTest
 		FilePersistentUniqueIdPath = @"\Internal Storage\DCIM\800AAAAA\IMG_0001.JPG";
 
 		// Exists Test
-		existingFile = @"Internal Storage\DCIM\800AAAAA\IMG_0001.JPG";
+		ExistingFile = @"Internal Storage\DCIM\800AAAAA\IMG_0001.JPG";
 
-		infoDirectoryName = "DCIM";
-		infoDirectoryPath = @"\Internal Storage\DCIM";
-		infoDirectoryCreationTime = new DateTime(2000, 1, 27, 19, 47, 54);
-		infoDirectoryLastWriteTime = new DateTime(2000, 1, 27, 19, 47, 54);
+		InfoDirectoryName = "DCIM";
+		InfoDirectoryPath = @"\Internal Storage\DCIM";
+		InfoDirectoryCreationTime = new DateTime(2000, 1, 27, 19, 47, 54);
+		InfoDirectoryLastWriteTime = new DateTime(2000, 1, 27, 19, 47, 54);
 
-		infoDirectoryParentName = "Internal Storage";
-		infoDirectoryParentPath = @"\Internal Storage";
-		infoDirectoryParentCreationTime = null;
-		infoDirectoryParentLastWriteTime = null;
+		InfoDirectoryParentName = "Internal Storage";
+		InfoDirectoryParentPath = @"\Internal Storage";
+		InfoDirectoryParentCreationTime = null;
+		InfoDirectoryParentLastWriteTime = null;
 
-		infoFileName = "IMG_0001.JPG";
-		infoFilePath = @"\Internal Storage\DCIM\800AAAAA\IMG_0001.JPG";
-		infoFileLength = 467430ul;
-		infoFileCreationTime = new DateTime(2000, 1, 27, 19, 47, 54);
-		infoFileLastWriteTime = new DateTime(2000, 1, 27, 19, 47, 54);
+		InfoFileName = "IMG_0001.JPG";
+		InfoFilePath = @"\Internal Storage\DCIM\800AAAAA\IMG_0001.JPG";
+		InfoFileLength = 467430ul;
+		InfoFileCreationTime = new DateTime(2000, 1, 27, 19, 47, 54);
+		InfoFileLastWriteTime = new DateTime(2000, 1, 27, 19, 47, 54);
 
-		infoFileParentName = "800AAAAA";
-		infoFileParentPath = @"\Internal Storage\DCIM\800AAAAA";
-		infoFileParentCreationTime = new DateTime(2000, 1, 27, 19, 47, 54);
-		infoFileParentLastWriteTime = new DateTime(2000, 1, 27, 19, 47, 54);
+		InfoFileParentName = "800AAAAA";
+		InfoFileParentPath = @"\Internal Storage\DCIM\800AAAAA";
+		InfoFileParentCreationTime = new DateTime(2000, 1, 27, 19, 47, 54);
+		InfoFileParentLastWriteTime = new DateTime(2000, 1, 27, 19, 47, 54);
 
-		enumDirectory = @"\Internal Storage\DCIM\800AAAAA";
-		enumFolderMask = "*";
-		enumFilesmask = "*_0002*";
-		enumItemMask = "*_0003*";
+		EnumDirectory = @"\Internal Storage\DCIM\800AAAAA";
+		EnumFolderMask = "*";
+		EnumFilesmask = "*_0002*";
+		EnumItemMask = "*_0003*";
 
-		enumAllFolders = [];
-		enumMaskFolders = [];
+		EnumAllFolders = [];
+		EnumMaskFolders = [];
 
-		enumAllFiles = [@"\Internal Storage\DCIM\800AAAAA\IMG_0001.JPG", @"\Internal Storage\DCIM\800AAAAA\IMG_0002.JPG", @"\Internal Storage\DCIM\800AAAAA\IMG_0003.JPG"];
-		enumMaskFiles = [@"\Internal Storage\DCIM\800AAAAA\IMG_0002.JPG"];
-		enumMaskRecursiveFiles = [@"\Internal Storage\DCIM\800AAAAA\IMG_0002.JPG"];
+		EnumAllFiles = [@"\Internal Storage\DCIM\800AAAAA\IMG_0001.JPG", @"\Internal Storage\DCIM\800AAAAA\IMG_0002.JPG", @"\Internal Storage\DCIM\800AAAAA\IMG_0003.JPG"];
+		EnumMaskFiles = [@"\Internal Storage\DCIM\800AAAAA\IMG_0002.JPG"];
+		EnumMaskRecursiveFiles = [@"\Internal Storage\DCIM\800AAAAA\IMG_0002.JPG"];
 
-		enumAllItems = [@"\Internal Storage\DCIM\800AAAAA\IMG_0001.JPG", @"\Internal Storage\DCIM\800AAAAA\IMG_0002.JPG", @"\Internal Storage\DCIM\800AAAAA\IMG_0003.JPG"];
-		enumMaskItems = [@"\Internal Storage\DCIM\800AAAAA\IMG_0003.JPG"];
-		enumMaskRecursiveItems = [@"\Internal Storage\DCIM\800AAAAA\IMG_0003.JPG"];
+		EnumAllItems = [@"\Internal Storage\DCIM\800AAAAA\IMG_0001.JPG", @"\Internal Storage\DCIM\800AAAAA\IMG_0002.JPG", @"\Internal Storage\DCIM\800AAAAA\IMG_0003.JPG"];
+		EnumMaskItems = [@"\Internal Storage\DCIM\800AAAAA\IMG_0003.JPG"];
+		EnumMaskRecursiveItems = [@"\Internal Storage\DCIM\800AAAAA\IMG_0003.JPG"];
 	}
 }

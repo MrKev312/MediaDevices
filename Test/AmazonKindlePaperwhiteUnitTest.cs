@@ -14,28 +14,28 @@ public class AmazonKindlePaperwhiteUnitTest : WritableUnitTest
 	public AmazonKindlePaperwhiteUnitTest()
 	{
 		// Device Test
-		deviceDescription = "Internal Storage";
-		deviceFriendlyName = "KINDLE";
-		deviceManufacture = "Kindle  ";
-		deviceFirmwareVersion = "0100";
-		deviceModel = "Internal Storage";
-		deviceSerialNumber = ""; // G090G10573570BNQ
-		deviceDeviceType = DeviceType.Generic;
-		deviceTransport = DeviceTransport.Unspecified;
-		devicePowerSource = PowerSource.External;
-		deviceProtocol = "MSC:";
+		DeviceDescription = "Internal Storage";
+		DeviceFriendlyName = "KINDLE";
+		DeviceManufacture = "Kindle  ";
+		DeviceFirmwareVersion = "0100";
+		DeviceModel = "Internal Storage";
+		DeviceSerialNumber = ""; // G090G10573570BNQ
+		DeviceDeviceType = DeviceType.Generic;
+		DeviceTransport = DeviceTransport.Unspecified;
+		DevicePowerSource = PowerSource.External;
+		DeviceProtocol = "MSC:";
 
 		// Capability Test
-		supportedEvents = [Events.ObjectAdded, Events.ObjectRemoved, Events.ObjectUpdated];
-		supportedCommands = [ Commands.ObjectEnumerationStartFind, Commands.ObjectEnumerationFindNext, Commands.ObjectEnumerationEndFind,
+		SupportedEvents = [Events.ObjectAdded, Events.ObjectRemoved, Events.ObjectUpdated];
+		SupportedCommands = [ Commands.ObjectEnumerationStartFind, Commands.ObjectEnumerationFindNext, Commands.ObjectEnumerationEndFind,
 				Commands.ObjectManagementDeleteObjects, Commands.ObjectManagementCreateObjectWithPropertiesOnly, Commands.ObjectManagementCreateObjectWithPropertiesAndData,
 				Commands.ObjectManagementWriteObjectData, Commands.ObjectManagementCommitObject, Commands.ObjectManagementRevertObject
 		];
-		supportedContents = [ContentType.Unspecified, ContentType.Folder, ContentType.Audio, ContentType.Video, ContentType.Image, ContentType.Contact];
-		functionalCategories = [FunctionalCategory.Storage];
+		SupportedContents = [ContentType.Unspecified, ContentType.Folder, ContentType.Audio, ContentType.Video, ContentType.Image, ContentType.Contact];
+		FunctionalCategories = [FunctionalCategory.Storage];
 
 		// ContentLocation Test
-		contentLocations = [];
+		ContentLocations = [];
 
 		// PersistentUniqueId
 		FolderPersistentUniqueId = $"{deviceLetter}%3B%5Csystem%5Cstartactions";
@@ -44,7 +44,7 @@ public class AmazonKindlePaperwhiteUnitTest : WritableUnitTest
 		FilePersistentUniqueIdPath = $@"\{deviceLetter}:\system\version.txt";
 
 		// Writable Tests
-		workingFolder = $@"\{deviceLetter}:\documents";
+		WorkingFolder = $@"\{deviceLetter}:\documents";
 
 		// Exists Test
 		//this.existingFile = @"\E:\documents\Old Firehand_B004WLCSLC.sdr\Old Firehand_B004WLCSLC.phl";

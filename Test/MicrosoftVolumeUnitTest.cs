@@ -10,25 +10,25 @@ public class MicrosoftVolumeUnitTest : WritableUnitTest
 	public MicrosoftVolumeUnitTest()
 	{
 		// Device Test
-		deviceDescription = "WPD-Dateisystem-Volumetreiber";
-		deviceFriendlyName = "";
-		deviceManufacture = "Microsoft";
-		deviceFirmwareVersion = "";
-		deviceModel = "";
-		deviceSerialNumber = "";
-		deviceDeviceType = DeviceType.Generic;
-		deviceTransport = DeviceTransport.NotSupported;
-		devicePowerSource = PowerSource.External;
+		DeviceDescription = "WPD-Dateisystem-Volumetreiber";
+		DeviceFriendlyName = "";
+		DeviceManufacture = "Microsoft";
+		DeviceFirmwareVersion = "";
+		DeviceModel = "";
+		DeviceSerialNumber = "";
+		DeviceDeviceType = DeviceType.Generic;
+		DeviceTransport = DeviceTransport.NotSupported;
+		DevicePowerSource = PowerSource.External;
 
 		// Capability Test
-		supportedEvents = [Events.DeviceReset, Events.ObjectRemoved, Events.ObjectUpdated];
-		supportedCommands = [Commands.ObjectEnumerationStartFind, Commands.ObjectManagementDeleteObjects];
-		supportedContents = [ContentType.Image];
+		SupportedEvents = [Events.DeviceReset, Events.ObjectRemoved, Events.ObjectUpdated];
+		SupportedCommands = [Commands.ObjectEnumerationStartFind, Commands.ObjectManagementDeleteObjects];
+		SupportedContents = [ContentType.Image];
 
 		// ContentLocation Test
-		contentLocations = [@"\SD card\Pictures", @"\Phone\Pictures", @"\SD card\Pictures"];
+		ContentLocations = [@"\SD card\Pictures", @"\Phone\Pictures", @"\SD card\Pictures"];
 
-		workingFolder = @"\Phone\Documents";
+		WorkingFolder = @"\Phone\Documents";
 
 		// Exists Test
 		//this.existingFile = @"\Phone\Music\Artist\OMD";

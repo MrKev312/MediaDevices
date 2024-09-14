@@ -12,66 +12,66 @@ namespace MediaDevicesUnitTest.TestCases;
 public abstract class ReadonlyUnitTest : UnitTest
 {
 	// Exists Test
-	protected string existingFile;
+	protected string ExistingFile { get; set; }
 
 	// parent is object and grandparent is root
-	protected string infoDirectoryName;
-	protected string infoDirectoryPath;
-	protected DateTime? infoDirectoryCreationTime;
-	protected DateTime? infoDirectoryLastWriteTime;
-	protected DateTime? infoDirectoryAuthoredTime;
+	protected string InfoDirectoryName { get; set; }
+	protected string InfoDirectoryPath { get; set; }
+	protected DateTime? InfoDirectoryCreationTime { get; set; }
+	protected DateTime? InfoDirectoryLastWriteTime { get; set; }
+	protected DateTime? InfoDirectoryAuthoredTime { get; set; }
 
 	// object and root is parent
-	protected string infoDirectoryParentName;
-	protected string infoDirectoryParentPath;
-	protected DateTime? infoDirectoryParentCreationTime;
-	protected DateTime? infoDirectoryParentLastWriteTime;
-	protected DateTime? infoDirectoryParentAuthoredTime;
+	protected string InfoDirectoryParentName { get; set; }
+	protected string InfoDirectoryParentPath { get; set; }
+	protected DateTime? InfoDirectoryParentCreationTime { get; set; }
+	protected DateTime? InfoDirectoryParentLastWriteTime { get; set; }
+	protected DateTime? InfoDirectoryParentAuthoredTime { get; set; }
 
-	protected string infoFileName;
-	protected string infoFilePath;
-	protected ulong infoFileLength;
-	protected DateTime? infoFileCreationTime;
-	protected DateTime? infoFileLastWriteTime;
-	protected DateTime? infoFileAuthoredTime;
+	protected string InfoFileName { get; set; }
+	protected string InfoFilePath { get; set; }
+	protected ulong InfoFileLength { get; set; }
+	protected DateTime? InfoFileCreationTime { get; set; }
+	protected DateTime? InfoFileLastWriteTime { get; set; }
+	protected DateTime? InfoFileAuthoredTime { get; set; }
 
-	protected string infoFileParentName;
-	protected string infoFileParentPath;
-	protected DateTime? infoFileParentCreationTime;
-	protected DateTime? infoFileParentLastWriteTime;
-	protected DateTime? infoFileParentAuthoredTime;
+	protected string InfoFileParentName { get; set; }
+	protected string InfoFileParentPath { get; set; }
+	protected DateTime? InfoFileParentCreationTime { get; set; }
+	protected DateTime? InfoFileParentLastWriteTime { get; set; }
+	protected DateTime? InfoFileParentAuthoredTime { get; set; }
 
-	protected string enumDirectory;
-	protected string enumFolderMask;
-	protected string enumFilesmask;
-	protected string enumItemMask;
+	protected string EnumDirectory { get; set; }
+	protected string EnumFolderMask { get; set; }
+	protected string EnumFilesmask { get; set; }
+	protected string EnumItemMask { get; set; }
 
-	protected List<string> enumAllFolders;
-	protected List<string> enumMaskFolders;
+	protected List<string> EnumAllFolders { get; set; }
+	protected List<string> EnumMaskFolders { get; set; }
 
-	protected List<string> enumAllFiles;
-	protected List<string> enumMaskFiles;
-	protected List<string> enumMaskRecursiveFiles;
+	protected List<string> EnumAllFiles { get; set; }
+	protected List<string> EnumMaskFiles { get; set; }
+	protected List<string> EnumMaskRecursiveFiles { get; set; }
 
-	protected List<string> enumAllItems;
-	protected List<string> enumMaskItems;
-	protected List<string> enumMaskRecursiveItems;
+	protected List<string> EnumAllItems { get; set; }
+	protected List<string> EnumMaskItems { get; set; }
+	protected List<string> EnumMaskRecursiveItems { get; set; }
 
 	[TestMethod]
 	[Description("Check if files and folders exists.")]
 	public void ExistsTest()
 	{
-		string existingDirectory = Path.GetDirectoryName(existingFile);
+		string existingDirectory = Path.GetDirectoryName(ExistingFile);
 
 		IEnumerable<MediaDevice> devices = MediaDevice.GetDevices();
-		MediaDevice device = devices.FirstOrDefault(deviceSelect);
+		MediaDevice device = devices.FirstOrDefault(DeviceSelect);
 		Assert.IsNotNull(device, "Device");
 		device.Connect();
 
 		bool exists1 = device.DirectoryExists(existingDirectory);
-		bool exists2 = device.DirectoryExists(existingFile);
+		bool exists2 = device.DirectoryExists(ExistingFile);
 		bool exists3 = device.FileExists(existingDirectory);
-		bool exists4 = device.FileExists(existingFile);
+		bool exists4 = device.FileExists(ExistingFile);
 
 		device.Disconnect();
 
@@ -87,17 +87,17 @@ public abstract class ReadonlyUnitTest : UnitTest
 	{
 		long position;
 		IEnumerable<MediaDevice> devices = MediaDevice.GetDevices();
-		MediaDevice device = devices.FirstOrDefault(deviceSelect);
+		MediaDevice device = devices.FirstOrDefault(DeviceSelect);
 		Assert.IsNotNull(device, "Device");
 		device.Connect();
 
-		bool exists = device.FileExists(existingFile);
+		bool exists = device.FileExists(ExistingFile);
 		Assert.IsTrue(exists, "exists");
 
-		string tempFile = Path.Combine(Path.GetTempPath(), Path.GetFileName(existingFile));
+		string tempFile = Path.Combine(Path.GetTempPath(), Path.GetFileName(ExistingFile));
 		using (MemoryStream stream = new())
 		{
-			device.DownloadFile(existingFile, stream);
+			device.DownloadFile(ExistingFile, stream);
 			position = stream.Length;
 
 			using FileStream file = File.Create(tempFile);
@@ -117,30 +117,30 @@ public abstract class ReadonlyUnitTest : UnitTest
 	public void FileInfoTest()
 	{
 		IEnumerable<MediaDevice> devices = MediaDevice.GetDevices();
-		MediaDevice device = devices.FirstOrDefault(deviceSelect);
+		MediaDevice device = devices.FirstOrDefault(DeviceSelect);
 		Assert.IsNotNull(device, "Device");
 		device.Connect();
 
-		MediaFileInfo file = device.GetFileInfo(infoFilePath);
+		MediaFileInfo file = device.GetFileInfo(InfoFilePath);
 		MediaDirectoryInfo parent = file.Directory;
 
-		Assert.AreEqual(infoFileName, file.Name, "file Name");
-		Assert.AreEqual(infoFilePath, file.FullName, "file FullName");
-		Assert.AreEqual(infoFileLength, file.Length, "file Length");
-		Assert.AreEqual(infoFileCreationTime, file.CreationTime, "file CreationTime");
-		Assert.AreEqual(infoFileLastWriteTime, file.LastWriteTime, "file LastWriteTime");
-		Assert.AreEqual(infoFileAuthoredTime, file.DateAuthored, "file DateAuthored");
+		Assert.AreEqual(InfoFileName, file.Name, "file Name");
+		Assert.AreEqual(InfoFilePath, file.FullName, "file FullName");
+		Assert.AreEqual(InfoFileLength, file.Length, "file Length");
+		Assert.AreEqual(InfoFileCreationTime, file.CreationTime, "file CreationTime");
+		Assert.AreEqual(InfoFileLastWriteTime, file.LastWriteTime, "file LastWriteTime");
+		Assert.AreEqual(InfoFileAuthoredTime, file.DateAuthored, "file DateAuthored");
 		Assert.IsTrue(file.Attributes.HasFlag(MediaFileAttributes.Normal), "file Normal");
 		Assert.IsFalse(file.Attributes.HasFlag(MediaFileAttributes.Hidden), "file Hidden");
 		Assert.IsFalse(file.Attributes.HasFlag(MediaFileAttributes.System), "file System");
 		Assert.IsFalse(file.Attributes.HasFlag(MediaFileAttributes.DRMProtected), "file DRMProtected");
 
-		Assert.AreEqual(infoFileParentName, parent.Name, "parent Name");
-		Assert.AreEqual(infoFileParentPath, parent.FullName, "parent FullName");
+		Assert.AreEqual(InfoFileParentName, parent.Name, "parent Name");
+		Assert.AreEqual(InfoFileParentPath, parent.FullName, "parent FullName");
 		Assert.AreEqual(0ul, parent.Length, "parent Length");
-		Assert.AreEqual(infoFileParentCreationTime, parent.CreationTime, "parent CreationTime");
-		Assert.AreEqual(infoFileParentLastWriteTime, parent.LastWriteTime, "parent LastWriteTime");
-		Assert.AreEqual(infoFileParentAuthoredTime, parent.DateAuthored, "parent DateAuthored");
+		Assert.AreEqual(InfoFileParentCreationTime, parent.CreationTime, "parent CreationTime");
+		Assert.AreEqual(InfoFileParentLastWriteTime, parent.LastWriteTime, "parent LastWriteTime");
+		Assert.AreEqual(InfoFileParentAuthoredTime, parent.DateAuthored, "parent DateAuthored");
 		Assert.IsTrue(parent.Attributes.HasFlag(MediaFileAttributes.Directory), "parent Directory");
 		Assert.IsFalse(parent.Attributes.HasFlag(MediaFileAttributes.Hidden), "parent Hidden");
 		Assert.IsFalse(parent.Attributes.HasFlag(MediaFileAttributes.System), "parent System");
@@ -153,7 +153,7 @@ public abstract class ReadonlyUnitTest : UnitTest
 				stream.CopyTo(mem);
 			}
 
-			Assert.AreEqual(infoFileLength, (ulong)mem.Position, "file read size");
+			Assert.AreEqual(InfoFileLength, (ulong)mem.Position, "file read size");
 		}
 
 		device.Disconnect();
@@ -165,32 +165,32 @@ public abstract class ReadonlyUnitTest : UnitTest
 	public void DirectoryInfoTest()
 	{
 		IEnumerable<MediaDevice> devices = MediaDevice.GetDevices();
-		MediaDevice device = devices.FirstOrDefault(deviceSelect);
+		MediaDevice device = devices.FirstOrDefault(DeviceSelect);
 		Assert.IsNotNull(device, "Device");
 		device.Connect();
 
-		MediaDirectoryInfo dir = device.GetDirectoryInfo(infoDirectoryPath);
+		MediaDirectoryInfo dir = device.GetDirectoryInfo(InfoDirectoryPath);
 		MediaDirectoryInfo parent = dir.Parent;
 		MediaDirectoryInfo root = parent.Parent;
 		MediaDirectoryInfo empty = root.Parent;
 
-		Assert.AreEqual(infoDirectoryName, dir.Name, "dir Name");
-		Assert.AreEqual(infoDirectoryPath, dir.FullName, "dir FullName");
+		Assert.AreEqual(InfoDirectoryName, dir.Name, "dir Name");
+		Assert.AreEqual(InfoDirectoryPath, dir.FullName, "dir FullName");
 		Assert.AreEqual(0ul, dir.Length, "dir Length");
-		Assert.AreEqual(infoDirectoryCreationTime, dir.CreationTime, "dir CreationTime");
-		Assert.AreEqual(infoDirectoryLastWriteTime, dir.LastWriteTime, "dir LastWriteTime");
-		Assert.AreEqual(infoDirectoryAuthoredTime, dir.DateAuthored, "dir DateAuthored");
+		Assert.AreEqual(InfoDirectoryCreationTime, dir.CreationTime, "dir CreationTime");
+		Assert.AreEqual(InfoDirectoryLastWriteTime, dir.LastWriteTime, "dir LastWriteTime");
+		Assert.AreEqual(InfoDirectoryAuthoredTime, dir.DateAuthored, "dir DateAuthored");
 		Assert.IsTrue(dir.Attributes.HasFlag(MediaFileAttributes.Directory), "dir Directory");
 		Assert.IsFalse(dir.Attributes.HasFlag(MediaFileAttributes.Hidden), "dir Hidden");
 		Assert.IsFalse(dir.Attributes.HasFlag(MediaFileAttributes.System), "dir System");
 		Assert.IsFalse(dir.Attributes.HasFlag(MediaFileAttributes.DRMProtected), "dir DRMProtected");
 
-		Assert.AreEqual(infoDirectoryParentName, parent.Name, "parent Name");
-		Assert.AreEqual(infoDirectoryParentPath, parent.FullName, "parent FullName");
+		Assert.AreEqual(InfoDirectoryParentName, parent.Name, "parent Name");
+		Assert.AreEqual(InfoDirectoryParentPath, parent.FullName, "parent FullName");
 		Assert.AreEqual(0ul, parent.Length, "parent Length");
-		Assert.AreEqual(infoDirectoryParentCreationTime, parent.CreationTime, "parent CreationTime");
-		Assert.AreEqual(infoDirectoryParentLastWriteTime, parent.LastWriteTime, "parent LastWriteTime");
-		Assert.AreEqual(infoDirectoryParentAuthoredTime, parent.DateAuthored, "parent DateAuthored");
+		Assert.AreEqual(InfoDirectoryParentCreationTime, parent.CreationTime, "parent CreationTime");
+		Assert.AreEqual(InfoDirectoryParentLastWriteTime, parent.LastWriteTime, "parent LastWriteTime");
+		Assert.AreEqual(InfoDirectoryParentAuthoredTime, parent.DateAuthored, "parent DateAuthored");
 		Assert.IsTrue(parent.Attributes.HasFlag(MediaFileAttributes.FileObject), "parent Object");
 		Assert.IsFalse(parent.Attributes.HasFlag(MediaFileAttributes.Hidden), "parent Hidden");
 		Assert.IsFalse(parent.Attributes.HasFlag(MediaFileAttributes.System), "parent System");
@@ -217,35 +217,35 @@ public abstract class ReadonlyUnitTest : UnitTest
 	public void DirectoryInfoEnumTest()
 	{
 		IEnumerable<MediaDevice> devices = MediaDevice.GetDevices();
-		MediaDevice device = devices.FirstOrDefault(deviceSelect);
+		MediaDevice device = devices.FirstOrDefault(DeviceSelect);
 		Assert.IsNotNull(device, "Device");
 		device.Connect();
 
-		MediaDirectoryInfo dir = device.GetDirectoryInfo(enumDirectory);
+		MediaDirectoryInfo dir = device.GetDirectoryInfo(EnumDirectory);
 
 		List<string> enum1 = dir.EnumerateDirectories().Select(e => e.FullName).ToList();
-		List<string> enum2 = dir.EnumerateDirectories(enumFolderMask).Select(e => e.FullName).ToList();
+		List<string> enum2 = dir.EnumerateDirectories(EnumFolderMask).Select(e => e.FullName).ToList();
 
 		List<string> enum3 = dir.EnumerateFiles().Select(e => e.FullName).ToList();
-		List<string> enum4 = dir.EnumerateFiles(enumFilesmask).Select(e => e.FullName).ToList();
-		List<string> enum5 = dir.EnumerateFiles(enumFilesmask, SearchOption.AllDirectories).Select(e => e.FullName).ToList();
+		List<string> enum4 = dir.EnumerateFiles(EnumFilesmask).Select(e => e.FullName).ToList();
+		List<string> enum5 = dir.EnumerateFiles(EnumFilesmask, SearchOption.AllDirectories).Select(e => e.FullName).ToList();
 
 		List<string> enum6 = dir.EnumerateFileSystemInfos().Select(e => e.FullName).ToList();
-		List<string> enum7 = dir.EnumerateFileSystemInfos(enumItemMask).Select(e => e.FullName).ToList();
-		List<string> enum8 = dir.EnumerateFileSystemInfos(enumItemMask, SearchOption.AllDirectories).Select(e => e.FullName).ToList();
+		List<string> enum7 = dir.EnumerateFileSystemInfos(EnumItemMask).Select(e => e.FullName).ToList();
+		List<string> enum8 = dir.EnumerateFileSystemInfos(EnumItemMask, SearchOption.AllDirectories).Select(e => e.FullName).ToList();
 
 		device.Disconnect();
 
-		CollectionAssert.AreEquivalent(enumAllFolders, enum1, "enum1");
-		CollectionAssert.AreEquivalent(enumMaskFolders, enum2, "enum2");
+		CollectionAssert.AreEquivalent(EnumAllFolders, enum1, "enum1");
+		CollectionAssert.AreEquivalent(EnumMaskFolders, enum2, "enum2");
 
-		CollectionAssert.AreEquivalent(enumAllFiles, enum3, "enum3");
-		CollectionAssert.AreEquivalent(enumMaskFiles, enum4, "enum4");
-		CollectionAssert.AreEquivalent(enumMaskRecursiveFiles, enum5, "enum5");
+		CollectionAssert.AreEquivalent(EnumAllFiles, enum3, "enum3");
+		CollectionAssert.AreEquivalent(EnumMaskFiles, enum4, "enum4");
+		CollectionAssert.AreEquivalent(EnumMaskRecursiveFiles, enum5, "enum5");
 
-		CollectionAssert.AreEquivalent(enumAllItems, enum6, "enum6");
-		CollectionAssert.AreEquivalent(enumMaskItems, enum7, "enum7");
-		CollectionAssert.AreEquivalent(enumMaskRecursiveItems, enum8, "enum8");
+		CollectionAssert.AreEquivalent(EnumAllItems, enum6, "enum6");
+		CollectionAssert.AreEquivalent(EnumMaskItems, enum7, "enum7");
+		CollectionAssert.AreEquivalent(EnumMaskRecursiveItems, enum8, "enum8");
 	}
 
 	[TestMethod]
@@ -253,16 +253,16 @@ public abstract class ReadonlyUnitTest : UnitTest
 	public void DownloadFileTest()
 	{
 		IEnumerable<MediaDevice> devices = MediaDevice.GetDevices();
-		MediaDevice device = devices.FirstOrDefault(deviceSelect);
+		MediaDevice device = devices.FirstOrDefault(DeviceSelect);
 		Assert.IsNotNull(device, "Device");
 		device.Connect();
 
-		bool exists = device.FileExists(existingFile);
+		bool exists = device.FileExists(ExistingFile);
 		Assert.IsTrue(exists, "exists");
 
-		string tempFile = Path.ChangeExtension(Path.GetTempFileName(), Path.GetExtension(existingFile));
+		string tempFile = Path.ChangeExtension(Path.GetTempFileName(), Path.GetExtension(ExistingFile));
 
-		device.DownloadFile(existingFile, tempFile);
+		device.DownloadFile(ExistingFile, tempFile);
 
 		device.Disconnect();
 

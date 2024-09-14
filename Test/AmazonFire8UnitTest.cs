@@ -12,24 +12,24 @@ public class AmazonFire8UnitTest : WritableUnitTest
 	public AmazonFire8UnitTest()
 	{
 		// Device Test
-		deviceDescription = "Fire";
-		deviceFriendlyName = "Ralf's Fire 8";
-		deviceManufacture = "Amazon";
-		deviceFirmwareVersion = "1.0";
-		deviceModel = "Fire";
-		deviceSerialNumber = "G0W0T8058304F7P8";
-		deviceDeviceType = DeviceType.MediaPlayer;
-		deviceTransport = DeviceTransport.USB;
-		devicePowerSource = PowerSource.Battery;
+		DeviceDescription = "Fire";
+		DeviceFriendlyName = "Ralf's Fire 8";
+		DeviceManufacture = "Amazon";
+		DeviceFirmwareVersion = "1.0";
+		DeviceModel = "Fire";
+		DeviceSerialNumber = "G0W0T8058304F7P8";
+		DeviceDeviceType = DeviceType.MediaPlayer;
+		DeviceTransport = DeviceTransport.USB;
+		DevicePowerSource = PowerSource.Battery;
 
 		// Capability Test
-		supportedEvents = [Events.DeviceReset, Events.ObjectRemoved, Events.ObjectUpdated];
-		supportedCommands = [Commands.ObjectEnumerationStartFind, Commands.ObjectManagementDeleteObjects];
-		supportedContents = [ContentType.Image];
-		functionalCategories = [FunctionalCategory.Storage];
+		SupportedEvents = [Events.DeviceReset, Events.ObjectRemoved, Events.ObjectUpdated];
+		SupportedCommands = [Commands.ObjectEnumerationStartFind, Commands.ObjectManagementDeleteObjects];
+		SupportedContents = [ContentType.Image];
+		FunctionalCategories = [FunctionalCategory.Storage];
 
 		// ContentLocation Test
-		contentLocations = []; // new List<string> { @"\Phone\Pictures", @"\Phone\Pictures", @"\SD card\Pictures" };
+		ContentLocations = []; // new List<string> { @"\Phone\Pictures", @"\Phone\Pictures", @"\SD card\Pictures" };
 
 		// PersistentUniqueId
 		FolderPersistentUniqueId = "{00000023-0001-0001-0000-000000000000}";
@@ -38,7 +38,7 @@ public class AmazonFire8UnitTest : WritableUnitTest
 		FilePersistentUniqueIdPath = @"\Interner Speicher\Android\data\com.amazon.ags.app\files\cardcache\version";
 
 		// Writable Tests
-		workingFolder = @"\Interner Speicher\tmp";
+		WorkingFolder = @"\Interner Speicher\tmp";
 
 		// Exists Test
 		//this.existingFile = @"\Interner Speicher\Download\14.jpg";

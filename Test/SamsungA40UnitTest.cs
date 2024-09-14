@@ -10,28 +10,28 @@ public class SamsungA40UnitTest : WritableUnitTest
 	public SamsungA40UnitTest()
 	{
 		// Device Select
-		deviceSelect = device => device.Description == deviceDescription;
+		DeviceSelect = device => device.Description == DeviceDescription;
 
 		// Device Test
-		deviceDescription = "MTP-USB-Gerät"; //"SM -A405FN";
-		deviceFriendlyName = "A40 von Ralf";
-		deviceManufacture = "(Standardmäßiges MTP-Gerät)"; //  "Samsung Electronics Co., Ltd.";
-		deviceFirmwareVersion = "A405FNXXU4CVK1";
-		deviceModel = "SM-A405FN";
-		deviceSerialNumber = "R58M81NACKB";
-		deviceDeviceType = DeviceType.MediaPlayer;
-		deviceTransport = DeviceTransport.USB;
-		devicePowerSource = PowerSource.Battery;
-		deviceProtocol = "MTP: 1.00";
+		DeviceDescription = "MTP-USB-Gerät"; //"SM -A405FN";
+		DeviceFriendlyName = "A40 von Ralf";
+		DeviceManufacture = "(Standardmäßiges MTP-Gerät)"; //  "Samsung Electronics Co., Ltd.";
+		DeviceFirmwareVersion = "A405FNXXU4CVK1";
+		DeviceModel = "SM-A405FN";
+		DeviceSerialNumber = "R58M81NACKB";
+		DeviceDeviceType = DeviceType.MediaPlayer;
+		DeviceTransport = DeviceTransport.USB;
+		DevicePowerSource = PowerSource.Battery;
+		DeviceProtocol = "MTP: 1.00";
 
 		// Capability Test
-		supportedEvents = [Events.DeviceReset, Events.ObjectRemoved, Events.ObjectUpdated, Events.ObjectAdded];
-		supportedCommands = [Commands.ObjectEnumerationStartFind, Commands.ObjectManagementDeleteObjects];
-		supportedContents = [ContentType.Image];
-		functionalCategories = [FunctionalCategory.Storage, FunctionalCategory.RenderingInformation];
+		SupportedEvents = [Events.DeviceReset, Events.ObjectRemoved, Events.ObjectUpdated, Events.ObjectAdded];
+		SupportedCommands = [Commands.ObjectEnumerationStartFind, Commands.ObjectManagementDeleteObjects];
+		SupportedContents = [ContentType.Image];
+		FunctionalCategories = [FunctionalCategory.Storage, FunctionalCategory.RenderingInformation];
 
 		// ContentLocation Test
-		contentLocations = [];
+		ContentLocations = [];
 
 		// PersistentUniqueId
 		FolderPersistentUniqueId = "{052BDC9B-08B6-A6AB-5591-E52A8B782B74}"; // "{ CF527675-97D8-3DEF-0000-000000000000}";
@@ -39,7 +39,7 @@ public class SamsungA40UnitTest : WritableUnitTest
 		FilePersistentUniqueId = "{25606D91-C12C-CF74-93A6-34E88717AD11}"; // "{FDFF71F3-E0BD-D98E-0000-000000000000}";
 		FilePersistentUniqueIdPath = @"\Phone\Samsung\Music\Over_the_Horizon.mp3"; // @"\Phone\Videos\desktop.ini"; Directory = "\\Phone\\Samsung\\Music"
 
-		workingFolder = @"\Card\Test";
+		WorkingFolder = @"\Card\Test";
 
 		// Exists Test
 		//this.existingFile = @"\Phone\Music\Artist\05 - Decoupage.mp3";

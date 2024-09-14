@@ -10,28 +10,28 @@ public class MicrosoftLumia650UnitTest : WritableUnitTest
 	public MicrosoftLumia650UnitTest()
 	{
 		// Device Select
-		deviceSelect = device => device.Description == deviceDescription;
+		DeviceSelect = device => device.Description == DeviceDescription;
 
 		// Device Test
-		deviceDescription = "Lumia 650 Dual SIM";
-		deviceFriendlyName = "Ralf Phone";
-		deviceManufacture = "Microsoft";
-		deviceFirmwareVersion = "10.0.15254.0";
-		deviceModel = "Lumia 650 Dual SIM";
-		deviceSerialNumber = "9aaa36ebd8901685d39337ced4b30893";
-		deviceDeviceType = DeviceType.Phone;
-		deviceTransport = DeviceTransport.USB;
-		devicePowerSource = PowerSource.Battery;
-		deviceProtocol = "MTP: 1.00";
+		DeviceDescription = "Lumia 650 Dual SIM";
+		DeviceFriendlyName = "Ralf Phone";
+		DeviceManufacture = "Microsoft";
+		DeviceFirmwareVersion = "10.0.15254.0";
+		DeviceModel = "Lumia 650 Dual SIM";
+		DeviceSerialNumber = "9aaa36ebd8901685d39337ced4b30893";
+		DeviceDeviceType = DeviceType.Phone;
+		DeviceTransport = DeviceTransport.USB;
+		DevicePowerSource = PowerSource.Battery;
+		DeviceProtocol = "MTP: 1.00";
 
 		// Capability Test
-		supportedEvents = [Events.DeviceReset, Events.ObjectRemoved, Events.ObjectUpdated];
-		supportedCommands = [Commands.ObjectEnumerationStartFind, Commands.ObjectManagementDeleteObjects];
-		supportedContents = [ContentType.Image];
-		functionalCategories = [FunctionalCategory.Storage, FunctionalCategory.RenderingInformation];
+		SupportedEvents = [Events.DeviceReset, Events.ObjectRemoved, Events.ObjectUpdated];
+		SupportedCommands = [Commands.ObjectEnumerationStartFind, Commands.ObjectManagementDeleteObjects];
+		SupportedContents = [ContentType.Image];
+		FunctionalCategories = [FunctionalCategory.Storage, FunctionalCategory.RenderingInformation];
 
 		// ContentLocation Test
-		contentLocations = [@"\Phone\Pictures", @"\Phone\Pictures", @"\SD card\Pictures"];
+		ContentLocations = [@"\Phone\Pictures", @"\Phone\Pictures", @"\SD card\Pictures"];
 
 		// PersistentUniqueId
 		FolderPersistentUniqueId = "{CF527675-97D8-3DEF-0000-000000000000}";
@@ -39,7 +39,7 @@ public class MicrosoftLumia650UnitTest : WritableUnitTest
 		FilePersistentUniqueId = "{FDFF71F3-E0BD-D98E-0000-000000000000}";
 		FilePersistentUniqueIdPath = @"\Phone\Videos\desktop.ini";
 
-		workingFolder = @"\Phone\Documents";
+		WorkingFolder = @"\Phone\Documents";
 
 		// Exists Test
 		//this.existingFile = @"\Phone\Music\Artist\05 - Decoupage.mp3";

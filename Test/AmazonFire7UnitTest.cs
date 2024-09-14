@@ -12,25 +12,25 @@ public class AmazonFire7UnitTest : WritableUnitTest
 	public AmazonFire7UnitTest()
 	{
 		// Device Test
-		deviceDescription = "Fire"; // "MTP-USB-Gerät"; // ;
-		deviceFriendlyName = "Ralf's Fire 7";
-		deviceManufacture = "Amazon";
-		deviceFirmwareVersion = "1.0";
-		deviceModel = "Fire";
-		deviceSerialNumber = "G0W0MB06729405K5";
-		deviceDeviceType = DeviceType.MediaPlayer;
-		deviceTransport = DeviceTransport.USB;
-		devicePowerSource = PowerSource.Battery;
-		deviceProtocol = "MTP: 1.00";
+		DeviceDescription = "Fire"; // "MTP-USB-Gerät"; // ;
+		DeviceFriendlyName = "Ralf's Fire 7";
+		DeviceManufacture = "Amazon";
+		DeviceFirmwareVersion = "1.0";
+		DeviceModel = "Fire";
+		DeviceSerialNumber = "G0W0MB06729405K5";
+		DeviceDeviceType = DeviceType.MediaPlayer;
+		DeviceTransport = DeviceTransport.USB;
+		DevicePowerSource = PowerSource.Battery;
+		DeviceProtocol = "MTP: 1.00";
 
 		// Capability Test
-		supportedEvents = [Events.DeviceReset, Events.ObjectRemoved, Events.ObjectUpdated];
-		supportedCommands = [Commands.ObjectEnumerationStartFind, Commands.ObjectManagementDeleteObjects];
-		supportedContents = [ContentType.Image];
-		functionalCategories = [FunctionalCategory.Storage];
+		SupportedEvents = [Events.DeviceReset, Events.ObjectRemoved, Events.ObjectUpdated];
+		SupportedCommands = [Commands.ObjectEnumerationStartFind, Commands.ObjectManagementDeleteObjects];
+		SupportedContents = [ContentType.Image];
+		FunctionalCategories = [FunctionalCategory.Storage];
 
 		// ContentLocation Test
-		contentLocations = []; // new List<string> { @"\Phone\Pictures", @"\Phone\Pictures", @"\SD card\Pictures" };
+		ContentLocations = []; // new List<string> { @"\Phone\Pictures", @"\Phone\Pictures", @"\SD card\Pictures" };
 
 		// PersistentUniqueId
 		FolderPersistentUniqueId = "{00000027-0001-0001-0000-000000000000}";
@@ -39,7 +39,7 @@ public class AmazonFire7UnitTest : WritableUnitTest
 		FilePersistentUniqueIdPath = @"\Interner Speicher\Download\.DS_Store";
 
 		// Writable Tests
-		workingFolder = @"\Interner Speicher\tmp";
+		WorkingFolder = @"\Interner Speicher\tmp";
 
 		// Exists Test
 		//this.existingFile = @"\Interner Speicher\Download\14.jpg";

@@ -15,8 +15,8 @@ public abstract class WritableUnitTest : UnitTest
 {
 	protected static string TestDataFolder => Path.GetFullPath(@".\TestData");
 
-	protected string workingFolder;
-	protected List<string> treeList =
+	protected string WorkingFolder { get; set; }
+	protected List<string> TreeList { get; set; } =
 	[
 		"\\UploadTree\\Aaa",
 			"\\UploadTree\\Aaa\\A.txt",
@@ -37,11 +37,11 @@ public abstract class WritableUnitTest : UnitTest
 			"\\UploadTree\\Ccc",
 			"\\UploadTree\\Root.txt"
 	];
-	protected List<string> treeListFull;
+	protected List<string> TreeListFull { get; set; }
 
 	protected void UploadTestTree(MediaDevice device)
 	{
-		treeListFull = treeList.Select(p => workingFolder + p).ToList();
+		TreeListFull = TreeList.Select(p => WorkingFolder + p).ToList();
 
 		string sourceFolder = Path.Combine(TestDataFolder, "UploadTree");
 
@@ -54,7 +54,7 @@ public abstract class WritableUnitTest : UnitTest
 		List<string> l = [.. Directory.EnumerateFileSystemEntries(sourceFolder, "*", SearchOption.AllDirectories).OrderBy(s => s)];
 		List<string> x = [.. Directory.GetFileSystemEntries(sourceFolder, "*", SearchOption.AllDirectories).OrderBy(s => s)];
 
-		string destFolder = Path.Combine(workingFolder, "UploadTree");
+		string destFolder = Path.Combine(WorkingFolder, "UploadTree");
 
 		bool exists = device.DirectoryExists(destFolder);
 		if (exists)
@@ -72,12 +72,12 @@ public abstract class WritableUnitTest : UnitTest
 		AutoResetEvent fired = new(false);
 
 		IEnumerable<MediaDevice> devices = MediaDevice.GetDevices();
-		MediaDevice device = devices.FirstOrDefault(deviceSelect);
+		MediaDevice device = devices.FirstOrDefault(DeviceSelect);
 		Assert.IsNotNull(device, "Device");
 		device.ObjectRemoved += (s, a) => fired.Set();
 		device.Connect();
 
-		string filePath = Path.Combine(workingFolder, "Test.txt");
+		string filePath = Path.Combine(WorkingFolder, "Test.txt");
 		if (device.FileExists(filePath))
 			device.DeleteFile(filePath);
 
@@ -99,14 +99,14 @@ public abstract class WritableUnitTest : UnitTest
 	public void CreateFolderTest()
 	{
 		IEnumerable<MediaDevice> devices = MediaDevice.GetDevices();
-		MediaDevice device = devices.FirstOrDefault(deviceSelect);
+		MediaDevice device = devices.FirstOrDefault(DeviceSelect);
 		Assert.IsNotNull(device, "Device");
 		device.Connect();
 		MediaDirectoryInfo root = device.GetRootDirectory();
 		List<MediaFileSystemInfo> list = root.EnumerateFileSystemInfos().ToList();
 
-		string newFolder = Path.Combine(workingFolder, "Test");
-		bool exists1 = device.DirectoryExists(workingFolder);
+		string newFolder = Path.Combine(WorkingFolder, "Test");
+		bool exists1 = device.DirectoryExists(WorkingFolder);
 		device.CreateDirectory(newFolder);
 		bool exists2 = device.DirectoryExists(newFolder);
 		device.DeleteDirectory(newFolder, true);
@@ -124,11 +124,11 @@ public abstract class WritableUnitTest : UnitTest
 	public void UploadTest()
 	{
 		IEnumerable<MediaDevice> devices = MediaDevice.GetDevices();
-		MediaDevice device = devices.FirstOrDefault(deviceSelect);
+		MediaDevice device = devices.FirstOrDefault(DeviceSelect);
 		Assert.IsNotNull(device, "Device");
 		device.Connect();
 
-		string filePath = Path.Combine(workingFolder, "Test.txt");
+		string filePath = Path.Combine(WorkingFolder, "Test.txt");
 		if (device.FileExists(filePath))
 			device.DeleteFile(filePath);
 
@@ -152,12 +152,12 @@ public abstract class WritableUnitTest : UnitTest
 	public void UploadFileTest()
 	{
 		IEnumerable<MediaDevice> devices = MediaDevice.GetDevices();
-		MediaDevice device = devices.FirstOrDefault(deviceSelect);
+		MediaDevice device = devices.FirstOrDefault(DeviceSelect);
 		Assert.IsNotNull(device, "Device");
 		device.Connect();
 
 		string sourceFile = Path.Combine(TestDataFolder, "TestFile.txt");
-		string destFile = Path.Combine(workingFolder, "TestFile.txt");
+		string destFile = Path.Combine(WorkingFolder, "TestFile.txt");
 
 		bool exists1 = device.FileExists(destFile);
 		if (exists1)
@@ -180,20 +180,20 @@ public abstract class WritableUnitTest : UnitTest
 	public void UploadTreeTest()
 	{
 		IEnumerable<MediaDevice> devices = MediaDevice.GetDevices();
-		MediaDevice device = devices.FirstOrDefault(deviceSelect);
+		MediaDevice device = devices.FirstOrDefault(DeviceSelect);
 		Assert.IsNotNull(device, "Device");
 		device.Connect();
 
 		UploadTestTree(device);
 
-		string destFolder = Path.Combine(workingFolder, "UploadTree");
-		int pathLen = workingFolder.Length;
+		string destFolder = Path.Combine(WorkingFolder, "UploadTree");
+		int pathLen = WorkingFolder.Length;
 
 		List<string> list = device.EnumerateFileSystemEntries(destFolder, null, SearchOption.AllDirectories).ToList();
 
 		device.Disconnect();
 
-		CollectionAssert.AreEquivalent(treeListFull, list, "EnumerateFileSystemEntries");
+		CollectionAssert.AreEquivalent(TreeListFull, list, "EnumerateFileSystemEntries");
 		//CollectionAssert.AreEquivalent(pathes, list, "EnumerateFileSystemEntries");
 	}
 
@@ -205,7 +205,7 @@ public abstract class WritableUnitTest : UnitTest
 		File.Delete(filePath);
 
 		IEnumerable<MediaDevice> devices = MediaDevice.GetDevices();
-		MediaDevice device = devices.FirstOrDefault(deviceSelect);
+		MediaDevice device = devices.FirstOrDefault(DeviceSelect);
 		Assert.IsNotNull(device, "Device");
 		device.Connect();
 
@@ -229,7 +229,7 @@ public abstract class WritableUnitTest : UnitTest
 		File.Delete(filePath);
 
 		IEnumerable<MediaDevice> devices = MediaDevice.GetDevices();
-		MediaDevice device = devices.FirstOrDefault(deviceSelect);
+		MediaDevice device = devices.FirstOrDefault(DeviceSelect);
 		Assert.IsNotNull(device, "Device");
 		device.Connect();
 
@@ -253,7 +253,7 @@ public abstract class WritableUnitTest : UnitTest
 		File.Delete(filePath);
 
 		IEnumerable<MediaDevice> devices = MediaDevice.GetDevices();
-		MediaDevice device = devices.FirstOrDefault(deviceSelect);
+		MediaDevice device = devices.FirstOrDefault(DeviceSelect);
 		Assert.IsNotNull(device, "Device");
 		device.Connect();
 
@@ -274,12 +274,12 @@ public abstract class WritableUnitTest : UnitTest
 	public void DownloadTreeTest()
 	{
 		IEnumerable<MediaDevice> devices = MediaDevice.GetDevices();
-		MediaDevice device = devices.FirstOrDefault(deviceSelect);
+		MediaDevice device = devices.FirstOrDefault(DeviceSelect);
 		Assert.IsNotNull(device, "Device");
 		device.Connect();
 
 		string sourceFolder = Path.Combine(TestDataFolder, "UploadTree");
-		string destFolder = Path.Combine(workingFolder, "UploadTree");
+		string destFolder = Path.Combine(WorkingFolder, "UploadTree");
 
 		bool exists1 = device.DirectoryExists(destFolder);
 		if (exists1)
@@ -305,13 +305,13 @@ public abstract class WritableUnitTest : UnitTest
 	public void RenameFileTest()
 	{
 		IEnumerable<MediaDevice> devices = MediaDevice.GetDevices();
-		MediaDevice device = devices.FirstOrDefault(deviceSelect);
+		MediaDevice device = devices.FirstOrDefault(DeviceSelect);
 		Assert.IsNotNull(device, "Device");
 		device.Connect();
 
-		string filePath = Path.Combine(workingFolder, "RenameTest.txt");
+		string filePath = Path.Combine(WorkingFolder, "RenameTest.txt");
 		string newName = "NewName.txt";
-		string newPath = Path.Combine(workingFolder, newName);
+		string newPath = Path.Combine(WorkingFolder, newName);
 
 		if (device.FileExists(filePath))
 			device.DeleteFile(filePath);
@@ -345,13 +345,13 @@ public abstract class WritableUnitTest : UnitTest
 	public void RenameFolderTest()
 	{
 		IEnumerable<MediaDevice> devices = MediaDevice.GetDevices();
-		MediaDevice device = devices.FirstOrDefault(deviceSelect);
+		MediaDevice device = devices.FirstOrDefault(DeviceSelect);
 		Assert.IsNotNull(device, "Device");
 		device.Connect();
 
-		string filePath = Path.Combine(workingFolder, "RenameFolder");
+		string filePath = Path.Combine(WorkingFolder, "RenameFolder");
 		string newName = "NewFolder";
-		string newPath = Path.Combine(workingFolder, newName);
+		string newPath = Path.Combine(WorkingFolder, newName);
 
 		if (device.DirectoryExists(filePath))
 			device.DeleteDirectory(filePath);
@@ -382,17 +382,17 @@ public abstract class WritableUnitTest : UnitTest
 	public void WritablePersistentUniqueIdTest()
 	{
 		IEnumerable<MediaDevice> devices = MediaDevice.GetDevices();
-		MediaDevice device = devices.FirstOrDefault(deviceSelect);
+		MediaDevice device = devices.FirstOrDefault(DeviceSelect);
 		Assert.IsNotNull(device, "Device");
 		device.Connect();
 
 		UploadTestTree(device);
 
-		MediaDirectoryInfo dir = device.GetDirectoryInfo(Path.Combine(workingFolder, @"UploadTree\Aaa\Abb"));
+		MediaDirectoryInfo dir = device.GetDirectoryInfo(Path.Combine(WorkingFolder, @"UploadTree\Aaa\Abb"));
 		string dirPui = dir.PersistentUniqueId;
 		MediaDirectoryInfo dirGet = device.GetFileSystemInfoFromPersistentUniqueId(dirPui) as MediaDirectoryInfo;
 
-		MediaFileInfo file = device.GetFileInfo(Path.Combine(workingFolder, @"UploadTree\Aaa\Abb\Acc\Ctest.txt"));
+		MediaFileInfo file = device.GetFileInfo(Path.Combine(WorkingFolder, @"UploadTree\Aaa\Abb\Acc\Ctest.txt"));
 		string filePui = file.PersistentUniqueId;
 		MediaFileInfo fileGet = device.GetFileSystemInfoFromPersistentUniqueId(filePui) as MediaFileInfo;
 
@@ -416,14 +416,14 @@ public abstract class WritableUnitTest : UnitTest
 	public void ReadonlyConnectTest()
 	{
 		IEnumerable<MediaDevice> devices = MediaDevice.GetDevices();
-		MediaDevice device = devices.FirstOrDefault(deviceSelect);
+		MediaDevice device = devices.FirstOrDefault(DeviceSelect);
 		Assert.IsNotNull(device, "Device");
 		device.Connect(MediaDeviceAccess.GenericRead);
 		MediaDirectoryInfo root = device.GetRootDirectory();
 		List<MediaFileSystemInfo> list = root.EnumerateFileSystemInfos().ToList();
 
-		string newFolder = Path.Combine(workingFolder, "Test");
-		bool exists1 = device.DirectoryExists(workingFolder);
+		string newFolder = Path.Combine(WorkingFolder, "Test");
+		bool exists1 = device.DirectoryExists(WorkingFolder);
 		device.CreateDirectory(newFolder);
 		bool exists2 = device.DirectoryExists(newFolder);
 		//device.DeleteDirectory(newFolder, true);
@@ -440,10 +440,10 @@ public abstract class WritableUnitTest : UnitTest
 	[Description("Upload a unix file namne to the target.")]
 	public void UploadUnixFileNameTest()
 	{
-		string workingUnixFolder = Path.Combine(workingFolder, "UnixTest");
+		string workingUnixFolder = Path.Combine(WorkingFolder, "UnixTest");
 
 		IEnumerable<MediaDevice> devices = MediaDevice.GetDevices();
-		MediaDevice device = devices.FirstOrDefault(deviceSelect);
+		MediaDevice device = devices.FirstOrDefault(DeviceSelect);
 		Assert.IsNotNull(device, "Device");
 		device.Connect();
 

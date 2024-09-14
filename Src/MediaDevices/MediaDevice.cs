@@ -297,24 +297,9 @@ public sealed class MediaDevice : IDisposable
 	/// <exception cref="NotConnectedException">device is not connected. only for setter</exception>
 	public string FriendlyName
 	{
-		get
-		{
-			if (IsConnected)
-			{
-				if (deviceValues.TryGetStringValue(WPD.DEVICE_FRIENDLY_NAME, out string val))
-				{
-					return val;
-				}
-				else
-				{
-					return friendlyName;
-				}
-			}
-			else
-			{
-				return friendlyName;
-			}
-		}
+		get => IsConnected && deviceValues.TryGetStringValue(WPD.DEVICE_FRIENDLY_NAME, out string val)
+				? val
+				: friendlyName;
 		set
 		{
 			if (!IsConnected)
@@ -424,10 +409,8 @@ public sealed class MediaDevice : IDisposable
 			{
 				return (PowerSource)val;
 			}
-			else
-			{
-				return PowerSource.Unknown;
-			}
+
+			return PowerSource.Unknown;
 		}
 	}
 
@@ -715,7 +698,7 @@ public sealed class MediaDevice : IDisposable
 			clientInfo.SetUnsignedIntegerValue(ref WPD.CLIENT_SHARE_MODE, (uint)share);
 		}
 
-		if (enableCache == false)
+		if (!enableCache)
 		{
 			// disable file list cache
 			clientInfo.SetGuidValue(ref WPD.CLIENT_EVENT_COOKIE, ref WPD.CLSID_PORTABLE_DEVICES);
@@ -796,12 +779,7 @@ public sealed class MediaDevice : IDisposable
 			throw new NotConnectedException("Not connected");
 		}
 
-		Item item = Item.FindFolder(this, path);
-		if (item == null)
-		{
-			throw new DirectoryNotFoundException($"Director {path} not found.");
-		}
-
+		Item item = Item.FindFolder(this, path) ?? throw new DirectoryNotFoundException($"Director {path} not found.");
 		return item.GetChildren().Where(i => i.Type != ItemType.File).Select(i => i.FullName);
 	}
 
@@ -830,12 +808,7 @@ public sealed class MediaDevice : IDisposable
 			throw new NotConnectedException("Not connected");
 		}
 
-		Item item = Item.FindFolder(this, path);
-		if (item == null)
-		{
-			throw new DirectoryNotFoundException($"Director {path} not found.");
-		}
-
+		Item item = Item.FindFolder(this, path) ?? throw new DirectoryNotFoundException($"Director {path} not found.");
 		return item.GetChildren(FilterToRegex(searchPattern), searchOption).Where(i => i.Type != ItemType.File).Select(i => i.FullName);
 	}
 
@@ -861,12 +834,7 @@ public sealed class MediaDevice : IDisposable
 			throw new NotConnectedException("Not connected");
 		}
 
-		Item item = Item.FindFolder(this, path);
-		if (item == null)
-		{
-			throw new DirectoryNotFoundException($"Director {path} not found.");
-		}
-
+		Item item = Item.FindFolder(this, path) ?? throw new DirectoryNotFoundException($"Director {path} not found.");
 		return item.GetChildren().Where(i => i.Type == ItemType.File).Select(i => i.FullName);
 	}
 
@@ -894,12 +862,7 @@ public sealed class MediaDevice : IDisposable
 			throw new NotConnectedException("Not connected");
 		}
 
-		Item item = Item.FindFolder(this, path);
-		if (item == null)
-		{
-			throw new DirectoryNotFoundException($"Director {path} not found.");
-		}
-
+		Item item = Item.FindFolder(this, path) ?? throw new DirectoryNotFoundException($"Director {path} not found.");
 		string pattern = FilterToRegex(searchPattern);
 		return item.GetChildren(pattern, searchOption).Where(i => i.Type == ItemType.File).Select(i => i.FullName);
 	}
@@ -926,12 +889,7 @@ public sealed class MediaDevice : IDisposable
 			throw new NotConnectedException("Not connected");
 		}
 
-		Item item = Item.FindFolder(this, path);
-		if (item == null)
-		{
-			throw new DirectoryNotFoundException($"Director {path} not found.");
-		}
-
+		Item item = Item.FindFolder(this, path) ?? throw new DirectoryNotFoundException($"Director {path} not found.");
 		return item.GetChildren().Select(i => i.FullName);
 	}
 
@@ -959,12 +917,7 @@ public sealed class MediaDevice : IDisposable
 			throw new NotConnectedException("Not connected");
 		}
 
-		Item item = Item.FindFolder(this, path);
-		if (item == null)
-		{
-			throw new DirectoryNotFoundException($"Director {path} not found.");
-		}
-
+		Item item = Item.FindFolder(this, path) ?? throw new DirectoryNotFoundException($"Director {path} not found.");
 		return item.GetChildren(FilterToRegex(searchPattern), searchOption).Select(i => i.FullName);
 	}
 
@@ -1093,12 +1046,7 @@ public sealed class MediaDevice : IDisposable
 			throw new NotConnectedException("Not connected");
 		}
 
-		Item item = Item.FindFolder(this, path);
-		if (item == null)
-		{
-			throw new DirectoryNotFoundException($"Director {path} not found.");
-		}
-
+		Item item = Item.FindFolder(this, path) ?? throw new DirectoryNotFoundException($"Director {path} not found.");
 		item.Delete(recursive);
 	}
 
@@ -1156,12 +1104,7 @@ public sealed class MediaDevice : IDisposable
 			throw new NotConnectedException("Not connected");
 		}
 
-		Item item = Item.FindFile(this, path);
-		if (item == null)
-		{
-			throw new FileNotFoundException($"File {path} not found.");
-		}
-
+		Item item = Item.FindFile(this, path) ?? throw new FileNotFoundException($"File {path} not found.");
 		using Stream sourceStream = item.OpenRead();
 		sourceStream.CopyTo(stream);
 	}
@@ -1197,12 +1140,7 @@ public sealed class MediaDevice : IDisposable
 			throw new NotConnectedException("Not connected");
 		}
 
-		Item item = Item.FindFile(this, path);
-		if (item == null)
-		{
-			throw new FileNotFoundException($"File {path} not found.");
-		}
-
+		Item item = Item.FindFile(this, path) ?? throw new FileNotFoundException($"File {path} not found.");
 		using Stream sourceStream = item.OpenReadIcon();
 		sourceStream.CopyTo(stream);
 	}
@@ -1238,15 +1176,10 @@ public sealed class MediaDevice : IDisposable
 			throw new NotConnectedException("Not connected");
 		}
 
-		Item item = Item.FindFile(this, path);
+		Item item = Item.FindFile(this, path) ?? throw new FileNotFoundException($"File {path} not found.");
 
 #if NET6_0_OR_GREATER
-		ArgumentNullException.ThrowIfNull(item);
 #else
-		if (item == null)
-		{
-			throw new FileNotFoundException($"File {path} not found.");
-		}
 #endif
 
 		using Stream sourceStream = item.OpenReadThumbnail();
@@ -1285,14 +1218,10 @@ public sealed class MediaDevice : IDisposable
 
 		string folder = Path.GetDirectoryName(path);
 		string fileName = Path.GetFileName(path);
-		Item item = Item.FindFolder(this, folder);
+		Item item = Item.FindFolder(this, folder) ?? throw new DirectoryNotFoundException($"Directory {folder} not found.");
+
 #if NET6_0_OR_GREATER
-		ArgumentNullException.ThrowIfNull(item);
 #else
-		if (item == null)
-		{
-			throw new DirectoryNotFoundException($"Directory {folder} not found.");
-		}
 #endif
 
 		if (item.GetChildren().Any(i => EqualsName(i.Name, fileName)))
@@ -1348,14 +1277,10 @@ public sealed class MediaDevice : IDisposable
 			throw new NotConnectedException("Not connected");
 		}
 
-		Item item = Item.FindFile(this, path);
+		Item item = Item.FindFile(this, path) ?? throw new FileNotFoundException($"File {path} not found.");
+
 #if NET6_0_OR_GREATER
-		ArgumentNullException.ThrowIfNull(item);
 #else
-		if (item == null)
-		{
-			throw new FileNotFoundException($"File {path} not found.");
-		}
 #endif
 
 		item.Delete();
@@ -1383,14 +1308,10 @@ public sealed class MediaDevice : IDisposable
 			throw new ArgumentNullException(nameof(newName));
 		}
 
-		Item item = Item.FindItem(this, path);
+		Item item = Item.FindItem(this, path) ?? throw new FileNotFoundException($"Path {path} not found.", path);
+
 #if NET6_0_OR_GREATER
-		ArgumentNullException.ThrowIfNull(item);
 #else
-		if (item == null)
-		{
-			throw new FileNotFoundException($"Path {path} not found.", path);
-		}
 #endif
 
 		item.Rename(newName);
@@ -1418,14 +1339,10 @@ public sealed class MediaDevice : IDisposable
 			throw new NotConnectedException("Not connected");
 		}
 
-		Item item = Item.FindItem(this, path);
+		Item item = Item.FindItem(this, path) ?? throw new FileNotFoundException($"{path} not found.", path);
+
 #if NET6_0_OR_GREATER
-		ArgumentNullException.ThrowIfNull(item);
 #else
-		if (item == null)
-		{
-			throw new FileNotFoundException($"{path} not found.", path);
-		}
 #endif
 
 		return new MediaFileInfo(this, item);
@@ -1453,15 +1370,10 @@ public sealed class MediaDevice : IDisposable
 			throw new NotConnectedException("Not connected");
 		}
 
-		Item item = Item.FindFolder(this, path);
+		Item item = Item.FindFolder(this, path) ?? throw new DirectoryNotFoundException($"{path} not found.");
 
 #if NET6_0_OR_GREATER
-		ArgumentNullException.ThrowIfNull(item);
 #else
-		if (item == null)
-		{
-			throw new DirectoryNotFoundException($"{path} not found.");
-		}
 #endif
 
 		return new MediaDirectoryInfo(this, item);
@@ -1600,20 +1512,13 @@ public sealed class MediaDevice : IDisposable
 			throw new NotConnectedException("Not connected");
 		}
 
-		Item item = Item.GetFromPersistentUniqueId(this, persistentUniqueId);
-		if (item == null)
-		{
-			throw new FileNotFoundException($"{persistentUniqueId} not found.");
-		}
-
+		Item item = Item.GetFromPersistentUniqueId(this, persistentUniqueId) ?? throw new FileNotFoundException($"{persistentUniqueId} not found.");
 		if (item.IsFile)
 		{
 			return new MediaFileInfo(this, item);
 		}
-		else
-		{
-			return new MediaDirectoryInfo(this, item);
-		}
+
+		return new MediaDirectoryInfo(this, item);
 	}
 
 	#endregion
@@ -2275,17 +2180,13 @@ public sealed class MediaDevice : IDisposable
 		//}
 
 		// not supported by old frameworks
-		switch (service)
+		return service switch
 		{
-			case MediaDeviceServices.Status:
-				return services.Select(s => new MediaDeviceStatusService(this, s));
-			case MediaDeviceServices.Hints:
-				return services.Select(s => new MediaDeviceServiceHints(this, s));
-			case MediaDeviceServices.Metadata:
-				return services.Select(s => new MediaDeviceServiceMetadata(this, s));
-			default:
-				return services.Select(s => new MediaDeviceService(this, s));
-		}
+			MediaDeviceServices.Status => services.Select(s => new MediaDeviceStatusService(this, s)),
+			MediaDeviceServices.Hints => services.Select(s => new MediaDeviceServiceHints(this, s)),
+			MediaDeviceServices.Metadata => services.Select(s => new MediaDeviceServiceMetadata(this, s)),
+			_ => services.Select(s => new MediaDeviceService(this, s)),
+		};
 	}
 
 	#endregion

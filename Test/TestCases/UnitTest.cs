@@ -13,41 +13,41 @@ namespace MediaDevicesUnitTest.TestCases;
 public abstract class UnitTest
 {
 	// Device Select
-	protected Func<MediaDevice, bool> deviceSelect;
+	protected Func<MediaDevice, bool> DeviceSelect { get; set; }
 
 	// Device Test
-	protected string deviceDescription;
-	protected string deviceFriendlyName;
-	protected string deviceManufacture;
-	protected string deviceFirmwareVersion;
-	protected string deviceModel;
-	protected string deviceSerialNumber;
-	protected DeviceType deviceDeviceType;
-	protected DeviceTransport deviceTransport;
-	protected PowerSource devicePowerSource;
-	protected string deviceProtocol;
+	protected string DeviceDescription { get; set; }
+	protected string DeviceFriendlyName { get; set; }
+	protected string DeviceManufacture { get; set; }
+	protected string DeviceFirmwareVersion { get; set; }
+	protected string DeviceModel { get; set; }
+	protected string DeviceSerialNumber { get; set; }
+	protected DeviceType DeviceDeviceType { get; set; }
+	protected DeviceTransport DeviceTransport { get; set; }
+	protected PowerSource DevicePowerSource { get; set; }
+	protected string DeviceProtocol { get; set; }
 
 	// Capability Test
-	protected List<Events> supportedEvents;
-	protected List<Commands> supportedCommands;
-	protected List<ContentType> supportedContents;
-	protected List<FunctionalCategory> functionalCategories;
+	protected List<Events> SupportedEvents { get; set; }
+	protected List<Commands> SupportedCommands { get; set; }
+	protected List<ContentType> SupportedContents { get; set; }
+	protected List<FunctionalCategory> FunctionalCategories { get; set; }
 
 	// ContentLocation Test
-	protected List<string> contentLocations;
+	protected List<string> ContentLocations { get; set; }
 
 	// PersistentUniqueId
-	protected string FolderPersistentUniqueId;
-	protected string FolderPersistentUniqueIdPath;
-	protected string FilePersistentUniqueId;
-	protected string FilePersistentUniqueIdPath;
+	protected string FolderPersistentUniqueId { get; set; }
+	protected string FolderPersistentUniqueIdPath { get; set; }
+	protected string FilePersistentUniqueId { get; set; }
+	protected string FilePersistentUniqueIdPath { get; set; }
 
 	/// <summary>
 	/// Gets or sets the test context which provides information about and functionality for the current test run.
 	///</summary>
 	public TestContext TestContext { get; set; }
 
-	public UnitTest() => deviceSelect = d => d.Description == deviceDescription && d.FriendlyName == deviceFriendlyName;
+	public UnitTest() => DeviceSelect = d => d.Description == DeviceDescription && d.FriendlyName == DeviceFriendlyName;
 
 	//protected void FindDeviceLetter(string pnpDeviceId)
 	//{
@@ -76,7 +76,7 @@ public abstract class UnitTest
 	public void DeviceTest()
 	{
 		MediaDevice[] devices = MediaDevice.GetDevices().ToArray();
-		MediaDevice device = devices.FirstOrDefault(deviceSelect);
+		MediaDevice device = devices.FirstOrDefault(DeviceSelect);
 		Assert.IsNotNull(device, "Device");
 
 		string description = device.Description;
@@ -94,17 +94,17 @@ public abstract class UnitTest
 		string protocol = device.Protocol;
 		device.Disconnect();
 
-		Assert.AreEqual(deviceDescription, description, "Description");
-		Assert.AreEqual(deviceFriendlyName, friendlyName, "FriendlyName");
-		Assert.AreEqual(deviceManufacture, manufacture, "Manufacture");
+		Assert.AreEqual(DeviceDescription, description, "Description");
+		Assert.AreEqual(DeviceFriendlyName, friendlyName, "FriendlyName");
+		Assert.AreEqual(DeviceManufacture, manufacture, "Manufacture");
 
-		Assert.AreEqual(deviceFirmwareVersion, firmwareVersion, "FirmwareVersion");
-		Assert.AreEqual(deviceModel, model, "Model");
-		Assert.AreEqual(deviceSerialNumber, serialNumber, "SerialNumber");
-		Assert.AreEqual(deviceDeviceType, deviceType, "DeviceType");
-		Assert.AreEqual(deviceTransport, transport, "Transport");
-		Assert.AreEqual(devicePowerSource, powerSource, "PowerSource");
-		Assert.AreEqual(deviceProtocol, protocol, "Protocol");
+		Assert.AreEqual(DeviceFirmwareVersion, firmwareVersion, "FirmwareVersion");
+		Assert.AreEqual(DeviceModel, model, "Model");
+		Assert.AreEqual(DeviceSerialNumber, serialNumber, "SerialNumber");
+		Assert.AreEqual(DeviceDeviceType, deviceType, "DeviceType");
+		Assert.AreEqual(DeviceTransport, transport, "Transport");
+		Assert.AreEqual(DevicePowerSource, powerSource, "PowerSource");
+		Assert.AreEqual(DeviceProtocol, protocol, "Protocol");
 		Assert.IsTrue(powerLevel > 0, "PowerLevel");
 	}
 
@@ -113,7 +113,7 @@ public abstract class UnitTest
 	public void CapabilityTest()
 	{
 		List<MediaDevice> devices = MediaDevice.GetDevices().ToList();
-		MediaDevice device = devices.FirstOrDefault(deviceSelect);
+		MediaDevice device = devices.FirstOrDefault(DeviceSelect);
 		Assert.IsNotNull(device, "Device");
 		device.Connect();
 
@@ -128,10 +128,10 @@ public abstract class UnitTest
 
 		device.Disconnect();
 
-		CollectionAssert.IsSubsetOf(supportedEvents, events, "Events");
-		CollectionAssert.IsSubsetOf(supportedCommands, commands, "Commands");
-		CollectionAssert.IsSubsetOf(supportedContents, contents, "Contents");
-		CollectionAssert.AreEquivalent(functionalCategories, categories, "Categories");
+		CollectionAssert.IsSubsetOf(SupportedEvents, events, "Events");
+		CollectionAssert.IsSubsetOf(SupportedCommands, commands, "Commands");
+		CollectionAssert.IsSubsetOf(SupportedContents, contents, "Contents");
+		CollectionAssert.AreEquivalent(FunctionalCategories, categories, "Categories");
 	}
 
 	[TestMethod]
@@ -139,7 +139,7 @@ public abstract class UnitTest
 	public void ContentLocationTest()
 	{
 		IEnumerable<MediaDevice> devices = MediaDevice.GetDevices();
-		MediaDevice device = devices.FirstOrDefault(deviceSelect);
+		MediaDevice device = devices.FirstOrDefault(DeviceSelect);
 		Assert.IsNotNull(device, "Device");
 		device.Connect();
 
@@ -147,7 +147,7 @@ public abstract class UnitTest
 
 		device.Disconnect();
 
-		CollectionAssert.AreEquivalent(contentLocations, locations, "Locations");
+		CollectionAssert.AreEquivalent(ContentLocations, locations, "Locations");
 	}
 
 	[TestMethod]
@@ -155,7 +155,7 @@ public abstract class UnitTest
 	public void PersistentUniqueIdTest()
 	{
 		IEnumerable<MediaDevice> devices = MediaDevice.GetDevices();
-		MediaDevice device = devices.FirstOrDefault(deviceSelect);
+		MediaDevice device = devices.FirstOrDefault(DeviceSelect);
 		Assert.IsNotNull(device, "Device");
 		device.Connect();
 
@@ -178,7 +178,7 @@ public abstract class UnitTest
 	public void FriendlyNameTest()
 	{
 		IEnumerable<MediaDevice> devices = MediaDevice.GetDevices();
-		MediaDevice device = devices.FirstOrDefault(deviceSelect);
+		MediaDevice device = devices.FirstOrDefault(DeviceSelect);
 		Assert.IsNotNull(device, "Device");
 
 		string disconnectedFriendlyName = device.FriendlyName;
@@ -204,8 +204,8 @@ public abstract class UnitTest
 
 		device.Disconnect();
 
-		Assert.AreEqual(deviceFriendlyName, disconnectedFriendlyName, "disconnectedFriendlyName");
-		Assert.AreEqual(deviceFriendlyName, connectedFriendlyName, "connectedFriendlyName");
+		Assert.AreEqual(DeviceFriendlyName, disconnectedFriendlyName, "disconnectedFriendlyName");
+		Assert.AreEqual(DeviceFriendlyName, connectedFriendlyName, "connectedFriendlyName");
 		Assert.AreEqual("DUMMY", dummyFriendlyName, "dummyFriendlyName");
 		Assert.AreEqual("DUMMY", disconnectedDummyFriendlyName, "disconnectedDummyFriendlyName");
 		Assert.AreEqual("DUMMY", connectedDummyFriendlyName, "connectedDummyFriendlyName");
@@ -216,7 +216,7 @@ public abstract class UnitTest
 	public void SpeedTest()
 	{
 		IEnumerable<MediaDevice> devices = MediaDevice.GetDevices();
-		MediaDevice device = devices.FirstOrDefault(deviceSelect);
+		MediaDevice device = devices.FirstOrDefault(DeviceSelect);
 		Assert.IsNotNull(device, "Device");
 		device.Connect();
 

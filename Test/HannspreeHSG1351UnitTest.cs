@@ -17,25 +17,25 @@ public class HannspreeHSG1351UnitTest : WritableUnitTest
 		//this.supContentLocation = false;
 
 		// Device Test
-		deviceDescription = "HSG1351";
-		deviceFriendlyName = "Canon EOS 60D";
-		deviceManufacture = "Canon Inc.";
-		deviceFirmwareVersion = "3-1.0.9";
-		deviceModel = "Canon EOS 60D";
-		deviceSerialNumber = "ff76057ad3e84a228e406f41cdd778a6";
-		deviceDeviceType = DeviceType.Camera;
-		deviceTransport = DeviceTransport.USB;
-		devicePowerSource = PowerSource.Battery;
+		DeviceDescription = "HSG1351";
+		DeviceFriendlyName = "Canon EOS 60D";
+		DeviceManufacture = "Canon Inc.";
+		DeviceFirmwareVersion = "3-1.0.9";
+		DeviceModel = "Canon EOS 60D";
+		DeviceSerialNumber = "ff76057ad3e84a228e406f41cdd778a6";
+		DeviceDeviceType = DeviceType.Camera;
+		DeviceTransport = DeviceTransport.USB;
+		DevicePowerSource = PowerSource.Battery;
 
 		// Capability Test
-		supportedEvents = [Events.DeviceReset, Events.ObjectRemoved, Events.ObjectUpdated];
-		supportedCommands = [Commands.ObjectEnumerationStartFind, Commands.ObjectManagementDeleteObjects];
-		supportedContents = [ContentType.Image];
+		SupportedEvents = [Events.DeviceReset, Events.ObjectRemoved, Events.ObjectUpdated];
+		SupportedCommands = [Commands.ObjectEnumerationStartFind, Commands.ObjectManagementDeleteObjects];
+		SupportedContents = [ContentType.Image];
 
 		// ContentLocation Test
-		contentLocations = [""];
+		ContentLocations = [""];
 
-		workingFolder = @"\SD\DCIM\100CANON";
+		WorkingFolder = @"\SD\DCIM\100CANON";
 
 		// Exists Test
 		//this.existingFile = @"\SD\DCIM\100CANON\IMG_2568.JPG";

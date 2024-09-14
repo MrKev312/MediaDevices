@@ -10,25 +10,25 @@ public class Nexus7UnitTest : WritableUnitTest
 	public Nexus7UnitTest()
 	{
 		// Device Test
-		deviceDescription = "Nexus 7";
-		deviceFriendlyName = "My Nexus 7";
-		deviceManufacture = "asus";
-		deviceFirmwareVersion = "1.0";
-		deviceModel = "Nexus 7";
-		deviceSerialNumber = "09ecf73a";
-		deviceDeviceType = DeviceType.MediaPlayer;
-		deviceTransport = DeviceTransport.USB;
-		devicePowerSource = PowerSource.Battery;
+		DeviceDescription = "Nexus 7";
+		DeviceFriendlyName = "My Nexus 7";
+		DeviceManufacture = "asus";
+		DeviceFirmwareVersion = "1.0";
+		DeviceModel = "Nexus 7";
+		DeviceSerialNumber = "09ecf73a";
+		DeviceDeviceType = DeviceType.MediaPlayer;
+		DeviceTransport = DeviceTransport.USB;
+		DevicePowerSource = PowerSource.Battery;
 
 		// Capability Test
-		supportedEvents = [Events.DeviceReset, Events.ObjectRemoved, Events.ObjectUpdated, Events.ObjectAdded];
-		supportedCommands = [Commands.ObjectEnumerationStartFind, Commands.ObjectManagementDeleteObjects];
-		supportedContents = [ContentType.Image, ContentType.Audio, ContentType.Playlist, ContentType.Video, ContentType.Document, ContentType.Unspecified, ContentType.Folder];
+		SupportedEvents = [Events.DeviceReset, Events.ObjectRemoved, Events.ObjectUpdated, Events.ObjectAdded];
+		SupportedCommands = [Commands.ObjectEnumerationStartFind, Commands.ObjectManagementDeleteObjects];
+		SupportedContents = [ContentType.Image, ContentType.Audio, ContentType.Playlist, ContentType.Video, ContentType.Document, ContentType.Unspecified, ContentType.Folder];
 
 		// ContentLocation Test
-		contentLocations = [@"\SD card\Pictures", @"\Phone\Pictures", @"\SD card\Pictures"];
+		ContentLocations = [@"\SD card\Pictures", @"\Phone\Pictures", @"\SD card\Pictures"];
 
-		workingFolder = @"\Internal storage\Download";
+		WorkingFolder = @"\Internal storage\Download";
 
 		// Exists Test
 		//this.existingFile = @"\Internal storage\Ringtones\hangouts_message.ogg";

@@ -12,24 +12,24 @@ public class KingstonFCRHS219UnitTest : WritableUnitTest
 	public KingstonFCRHS219UnitTest()
 	{
 		// Device Test
-		deviceDescription = "FCR-HS219/1     ";
-		deviceFriendlyName = "T_ASGAR";
-		deviceManufacture = "Kingston";
-		deviceFirmwareVersion = "9722";
-		deviceModel = "FCR-HS219/1     ";
-		deviceSerialNumber = "";
-		deviceDeviceType = DeviceType.Generic;
-		deviceTransport = DeviceTransport.Unspecified;
-		devicePowerSource = PowerSource.External;
+		DeviceDescription = "FCR-HS219/1     ";
+		DeviceFriendlyName = "T_ASGAR";
+		DeviceManufacture = "Kingston";
+		DeviceFirmwareVersion = "9722";
+		DeviceModel = "FCR-HS219/1     ";
+		DeviceSerialNumber = "";
+		DeviceDeviceType = DeviceType.Generic;
+		DeviceTransport = DeviceTransport.Unspecified;
+		DevicePowerSource = PowerSource.External;
 
 		// Capability Test
-		supportedEvents = [Events.ObjectAdded, Events.ObjectRemoved, Events.ObjectUpdated];
-		supportedCommands = [Commands.ObjectEnumerationStartFind, Commands.ObjectManagementDeleteObjects];
-		supportedContents = [ContentType.Unspecified, ContentType.Folder, ContentType.Audio, ContentType.Video, ContentType.Image, ContentType.Contact];
-		functionalCategories = [FunctionalCategory.Storage];
+		SupportedEvents = [Events.ObjectAdded, Events.ObjectRemoved, Events.ObjectUpdated];
+		SupportedCommands = [Commands.ObjectEnumerationStartFind, Commands.ObjectManagementDeleteObjects];
+		SupportedContents = [ContentType.Unspecified, ContentType.Folder, ContentType.Audio, ContentType.Video, ContentType.Image, ContentType.Contact];
+		FunctionalCategories = [FunctionalCategory.Storage];
 
 		// ContentLocation Test
-		contentLocations = []; // new List<string> { @"\Phone\Pictures", @"\Phone\Pictures", @"\SD card\Pictures" };
+		ContentLocations = []; // new List<string> { @"\Phone\Pictures", @"\Phone\Pictures", @"\SD card\Pictures" };
 
 		// PersistentUniqueId
 		FolderPersistentUniqueId = "K%3B%5CTest";
@@ -38,7 +38,7 @@ public class KingstonFCRHS219UnitTest : WritableUnitTest
 		FilePersistentUniqueIdPath = @"\K:\Test\desctop.ini";
 
 		// Writable Tests
-		workingFolder = @"\K:\Test";
+		WorkingFolder = @"\K:\Test";
 
 		// Exists Test
 		//this.existingFile = @"\Interner Speicher\Download\14.jpg";
