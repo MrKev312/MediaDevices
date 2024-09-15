@@ -82,7 +82,7 @@ public class StillImageViewModel : BaseViewModel
 	{
 		device.ObjectAdded += OnStillImage;
 
-		device.StillImageCaptureInitiate(selectedStillImageFunctionalObject);
+		_ = device.StillImageCaptureInitiate(selectedStillImageFunctionalObject);
 	}
 
 	private void OnStillImage(object sender, ObjectAddedEventArgs e)

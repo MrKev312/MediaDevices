@@ -7,8 +7,13 @@ internal static class ComHelper
 {
 	public static bool HasKeyValue(this IPortableDeviceValues values, PropertyKey findKey)
 	{
+		if (values == null)
+		{
+			return false;
+		}
+
 		uint num = 0;
-		values?.GetCount(ref num);
+		values.GetCount(ref num);
 		for (uint i = 0; i < num; i++)
 		{
 			PropertyKey key = new();
@@ -31,7 +36,7 @@ internal static class ComHelper
 		return val.VariantType;
 	}
 
-	internal static bool TryGetValue(this IPortableDeviceValues values, PropertyKey key, out PropVariantFacade value)
+	internal static bool TryGetValue(this IPortableDeviceValues values, PropertyKey key, out PropVariantFacade? value)
 	{
 		if (values.HasKeyValue(key))
 		{
@@ -133,7 +138,7 @@ internal static class ComHelper
 		return false;
 	}
 
-	public static bool TryGetIUnknownValue(this IPortableDeviceValues values, PropertyKey key, out object value)
+	public static bool TryGetIUnknownValue(this IPortableDeviceValues values, PropertyKey key, out object? value)
 	{
 		if (values.HasKeyValue(key))
 		{
@@ -145,7 +150,7 @@ internal static class ComHelper
 		return false;
 	}
 
-	public static bool TryByteArrayValue(this IPortableDeviceValues values, PropertyKey key, out byte[] value)
+	public static bool TryByteArrayValue(this IPortableDeviceValues values, PropertyKey key, out byte[]? value)
 	{
 		if (values.HasKeyValue(key))
 		{
@@ -165,6 +170,7 @@ internal static class ComHelper
 		// http://www.pinvoke.net/default.aspx/iprop/PropVariantClear.html
 		// https://social.msdn.microsoft.com/Forums/windowsserver/en-US/ec242718-8738-4468-ae9d-9734113d2dea/quotipropdllquot-seems-to-be-missing-in-windows-server-2008-and-x64-systems?forum=winserver2008appcompatabilityandcertification
 		[DllImport("ole32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
-		static extern public int PropVariantClear(ref PropVariant val);
+		[DefaultDllImportSearchPaths(DllImportSearchPath.System32)]
+		public static extern int PropVariantClear(ref PropVariant val);
 	}
 }

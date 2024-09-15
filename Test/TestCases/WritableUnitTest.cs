@@ -46,10 +46,10 @@ public abstract class WritableUnitTest : UnitTest
 		string sourceFolder = Path.Combine(TestDataFolder, "UploadTree");
 
 		// create empty folders not checked in
-		Directory.CreateDirectory(Path.Combine(sourceFolder, @"Aaa\Abb\Add"));
-		Directory.CreateDirectory(Path.Combine(sourceFolder, @"Aaa\Acc"));
-		Directory.CreateDirectory(Path.Combine(sourceFolder, "Bbb"));
-		Directory.CreateDirectory(Path.Combine(sourceFolder, "Ccc"));
+		_ = Directory.CreateDirectory(Path.Combine(sourceFolder, @"Aaa\Abb\Add"));
+		_ = Directory.CreateDirectory(Path.Combine(sourceFolder, @"Aaa\Acc"));
+		_ = Directory.CreateDirectory(Path.Combine(sourceFolder, "Bbb"));
+		_ = Directory.CreateDirectory(Path.Combine(sourceFolder, "Ccc"));
 
 		List<string> l = [.. Directory.EnumerateFileSystemEntries(sourceFolder, "*", SearchOption.AllDirectories).OrderBy(s => s)];
 		List<string> x = [.. Directory.GetFileSystemEntries(sourceFolder, "*", SearchOption.AllDirectories).OrderBy(s => s)];

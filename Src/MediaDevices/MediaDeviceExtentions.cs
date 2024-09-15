@@ -22,6 +22,15 @@ public static class MediaDeviceExtentions
 	/// <exception cref="MediaDevices.NotConnectedException">device is not connected.</exception>
 	public static void DownloadFile(this MediaDevice device, string source, string destination)
 	{
+#if NET6_0_OR_GREATER
+		ArgumentNullException.ThrowIfNull(device, nameof(device));
+#else
+		if (device == null)
+		{
+			throw new ArgumentNullException(nameof(device));
+		}
+#endif
+
 		if (!MediaDevice.IsPath(source))
 		{
 			throw new ArgumentException("The source path is not valid", nameof(source));
@@ -54,6 +63,14 @@ public static class MediaDeviceExtentions
 	/// <exception cref="MediaDevices.NotConnectedException">device is not connected.</exception>
 	public static void DownloadIcon(this MediaDevice device, string source, string destination)
 	{
+#if NET6_0_OR_GREATER
+		ArgumentNullException.ThrowIfNull(device, nameof(device));
+#else
+		if (device == null)
+		{
+			throw new ArgumentNullException(nameof(device));
+		}
+#endif
 
 		if (!MediaDevice.IsPath(source))
 		{
@@ -87,6 +104,15 @@ public static class MediaDeviceExtentions
 	/// <exception cref="MediaDevices.NotConnectedException">device is not connected.</exception>
 	public static void DownloadThumbnail(this MediaDevice device, string source, string destination)
 	{
+#if NET6_0_OR_GREATER
+		ArgumentNullException.ThrowIfNull(device, nameof(device));
+#else
+		if (device == null)
+		{
+			throw new ArgumentNullException(nameof(device));
+		}
+#endif
+
 		if (!MediaDevice.IsPath(source))
 		{
 			throw new ArgumentException("The source path is not valid", nameof(source));
@@ -119,6 +145,15 @@ public static class MediaDeviceExtentions
 	/// <exception cref="MediaDevices.NotConnectedException">device is not connected.</exception>
 	public static void UploadFile(this MediaDevice device, string source, string destination)
 	{
+#if NET6_0_OR_GREATER
+		ArgumentNullException.ThrowIfNull(device, nameof(device));
+#else
+		if (device == null)
+		{
+			throw new ArgumentNullException(nameof(device));
+		}
+#endif
+
 		if (!MediaDevice.IsPath(source))
 		{
 			throw new ArgumentException("The source path is not valid", nameof(source));
@@ -152,6 +187,15 @@ public static class MediaDeviceExtentions
 	/// <exception cref="MediaDevices.NotConnectedException">device is not connected.</exception>
 	public static void DownloadFolder(this MediaDevice device, string source, string destination, bool recursive = true)
 	{
+#if NET6_0_OR_GREATER
+		ArgumentNullException.ThrowIfNull(device, nameof(device));
+#else
+		if (device == null)
+		{
+			throw new ArgumentNullException(nameof(device));
+		}
+#endif
+
 		if (!MediaDevice.IsPath(source))
 		{
 			throw new ArgumentException("The source path is not valid", nameof(source));
@@ -169,7 +213,7 @@ public static class MediaDeviceExtentions
 
 		if (!Directory.Exists(destination))
 		{
-			Directory.CreateDirectory(destination);
+			_ = Directory.CreateDirectory(destination);
 		}
 
 		MediaDirectoryInfo dir = device.GetDirectoryInfo(source);
@@ -182,12 +226,12 @@ public static class MediaDeviceExtentions
 				{
 					if (!Directory.Exists(path))
 					{
-						Directory.CreateDirectory(path);
+						_ = Directory.CreateDirectory(path);
 					}
 				}
 				else
 				{
-					MediaFileInfo mfi = fsi as MediaFileInfo;
+					MediaFileInfo mfi = (MediaFileInfo)fsi;
 					mfi.CopyTo(path);
 				}
 			}
@@ -216,6 +260,15 @@ public static class MediaDeviceExtentions
 	/// <exception cref="MediaDevices.NotConnectedException">device is not connected.</exception>
 	public static void UploadFolder(this MediaDevice device, string source, string destination, bool recursive = true)
 	{
+#if NET6_0_OR_GREATER
+		ArgumentNullException.ThrowIfNull(device, nameof(device));
+#else
+		if (device == null)
+		{
+			throw new ArgumentNullException(nameof(device));
+		}
+#endif
+
 		if (!MediaDevice.IsPath(source))
 		{
 			throw new ArgumentException("The source path is not valid", nameof(source));
@@ -245,7 +298,7 @@ public static class MediaDeviceExtentions
 				}
 				else
 				{
-					FileInfo fi = e as FileInfo;
+					FileInfo fi = (FileInfo)e;
 					using FileStream stream = fi.OpenRead();
 					device.UploadFile(stream, path);
 				}
@@ -276,6 +329,15 @@ public static class MediaDeviceExtentions
 	/// <exception cref="MediaDevices.NotConnectedException">device is not connected.</exception>
 	public static void DownloadFileFromPersistentUniqueId(this MediaDevice device, string persistentUniqueId, string destination)
 	{
+#if NET6_0_OR_GREATER
+		ArgumentNullException.ThrowIfNull(device, nameof(device));
+#else
+		if (device == null)
+		{
+			throw new ArgumentNullException(nameof(device));
+		}
+#endif
+
 		if (string.IsNullOrEmpty(persistentUniqueId))
 		{
 			throw new ArgumentNullException(nameof(persistentUniqueId));

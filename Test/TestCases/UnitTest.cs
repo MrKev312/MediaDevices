@@ -86,10 +86,10 @@ public abstract class UnitTest
 		device.Connect();
 		string firmwareVersion = device.FirmwareVersion;
 		PowerSource powerSource = device.PowerSource;
-		int powerLevel = device.PowerLevel;
+		int? powerLevel = device.PowerLevel;
 		string model = device.Model;
 		string serialNumber = device.SerialNumber;
-		DeviceType deviceType = device.DeviceType;
+		DeviceType? deviceType = device.DeviceType;
 		DeviceTransport transport = device.Transport;
 		string protocol = device.Protocol;
 		device.Disconnect();

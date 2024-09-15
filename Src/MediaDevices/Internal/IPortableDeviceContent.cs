@@ -11,8 +11,8 @@ internal interface IPortableDeviceContent
 {
 	void EnumObjects(
 		[In] uint dwFlags,
-		[In, MarshalAs(UnmanagedType.LPWStr)] string pszParentObjectID,
-		[In, MarshalAs(UnmanagedType.Interface)] IPortableDeviceValues pFilter,
+		[In, MarshalAs(UnmanagedType.LPWStr)] string? pszParentObjectID,
+		[In, MarshalAs(UnmanagedType.Interface)] IPortableDeviceValues? pFilter,
 		[Out, MarshalAs(UnmanagedType.Interface)] out IEnumPortableDeviceObjectIDs ppenum);
 
 	void Properties(
@@ -29,7 +29,7 @@ internal interface IPortableDeviceContent
 		[In, MarshalAs(UnmanagedType.Interface)] IPortableDeviceValues pValues,
 		[Out, MarshalAs(UnmanagedType.Interface)] out IStream ppData,
 		[In, Out] ref uint pdwOptimalWriteBufferSize,
-		[In, Out, MarshalAs(UnmanagedType.LPWStr)] ref string ppszCookie);
+		[In, Out, MarshalAs(UnmanagedType.LPWStr)] ref string? ppszCookie);
 
 	void Delete(
 		[In] uint dwOptions,

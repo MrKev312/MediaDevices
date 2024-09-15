@@ -16,17 +16,17 @@ internal static class ComEnumerable
 		{
 			PropertyKey key = new();
 			using PropVariantFacade val = new();
-			values.GetAt(i, ref key, ref val.Value);
+			values?.GetAt(i, ref key, ref val.Value);
 
 			string fieldName = string.Empty;
-			FieldInfo propField = ComTrace.FindPropertyKeyField(key);
+			FieldInfo? propField = ComTrace.FindPropertyKeyField(key);
 			if (propField != null)
 			{
 				fieldName = propField.Name;
 			}
 			else
 			{
-				FieldInfo guidField = ComTrace.FindGuidField(key.fmtid);
+				FieldInfo? guidField = ComTrace.FindGuidField(key.fmtid);
 				if (guidField != null)
 				{
 					fieldName = $"{guidField.Name}, {key.pid}";
@@ -37,30 +37,31 @@ internal static class ComEnumerable
 				}
 			}
 
-			string fieldValue = string.Empty;
-			switch (val.VariantType)
+			string? fieldValue = val.VariantType switch
 			{
-				case PropVariantType.VT_CLSID:
-					fieldValue = ComTrace.FindGuidField(val.ToGuid())?.Name ?? val.ToString();
-					break;
-				default:
-					fieldValue = val.ToDebugString();
-					break;
-			}
+				PropVariantType.VT_CLSID => ComTrace.FindGuidField(val.ToGuid())?.Name ?? val.ToString(),
+				_ => val.ToDebugString(),
+			};
 
-			yield return new KeyValuePair<string, string>(fieldName, fieldValue);
+			if (fieldValue != null)
+				yield return new KeyValuePair<string, string>(fieldName, fieldValue);
 		}
-
 	}
 
-	public static Guid Guid(this Enum e)
+	public static Guid? Guid(this Enum e)
 	{
-		FieldInfo fi = e.GetType().GetField(e.ToString());
+		FieldInfo? fi = e.GetType().GetField(e.ToString());
+
+		if (fi == null)
+		{
+			return null;
+		}
 
 		// changed for .net framework 4.0
 		// EnumGuidAttribute attribute = fi.GetCustomAttribute<EnumGuidAttribute>();
-		EnumGuidAttribute attribute = Attribute.GetCustomAttribute(fi, typeof(EnumGuidAttribute)) as EnumGuidAttribute;
-		return attribute.Guid;
+		EnumGuidAttribute? attribute = Attribute.GetCustomAttribute(fi, typeof(EnumGuidAttribute)) as EnumGuidAttribute;
+
+		return attribute?.Guid;
 	}
 
 	public static IEnumerable<PropertyKey> ToEnum(this IPortableDeviceKeyCollection col)
@@ -95,7 +96,11 @@ internal static class ComEnumerable
 		{
 			using PropVariantFacade val = new();
 			col.GetAt(i, ref val.Value);
-			yield return GetEnumFromAttrGuid<TEnum>(val.ToGuid());
+			TEnum? enumValue = GetEnumFromAttrGuid<TEnum>(val.ToGuid());
+			if (enumValue.HasValue)
+			{
+				yield return enumValue.Value;
+			}
 		}
 	}
 
@@ -105,8 +110,18 @@ internal static class ComEnumerable
 		{
 			// changed for .net framework 4.0
 			// EnumGuidAttribute ea = e.GetType().GetField(e.ToString()).GetCustomAttribute<EnumGuidAttribute>();
-			EnumGuidAttribute ea = Attribute.GetCustomAttribute(e.GetType().GetField(e.ToString()), typeof(EnumGuidAttribute)) as EnumGuidAttribute;
-			return ea.Guid == guid;
+			string? fieldName = e.ToString();
+
+			if (fieldName == null)
+				return false;
+
+			FieldInfo? field = e.GetType().GetField(fieldName);
+
+			if (field == null)
+				return false;
+
+			EnumGuidAttribute? ea = Attribute.GetCustomAttribute(field, typeof(EnumGuidAttribute)) as EnumGuidAttribute;
+			return ea?.Guid == guid;
 		}).FirstOrDefault();
 		return en;
 	}
@@ -117,8 +132,18 @@ internal static class ComEnumerable
 		{
 			// changed for .net framework 4.0
 			// KeyAttribute attr = e.GetType().GetField(e.ToString()).GetCustomAttribute<KeyAttribute>();
-			KeyAttribute attr = Attribute.GetCustomAttribute(e.GetType().GetField(e.ToString()), typeof(KeyAttribute)) as KeyAttribute;
-			return attr.PropertyKey == key;
+			string? fieldName = e.ToString();
+
+			if (fieldName == null)
+				return false;
+
+			FieldInfo? field = e.GetType().GetField(fieldName);
+
+			if (field == null)
+				return false;
+
+			KeyAttribute? attr = Attribute.GetCustomAttribute(field, typeof(KeyAttribute)) as KeyAttribute;
+			return attr?.PropertyKey == key;
 		}).FirstOrDefault();
 		if (en.Equals(default(T)))
 		{
@@ -128,13 +153,23 @@ internal static class ComEnumerable
 		return en;
 	}
 
-	public static T GetEnumFromAttrGuid<T>(this Guid guid) where T : struct // enum
+	public static T? GetEnumFromAttrGuid<T>(this Guid guid) where T : struct // enum
 	{
 		T en = Enum.GetValues(typeof(T)).Cast<T>().Where(e =>
 		{
 			// changed for .net framework 4.0
 			// return e.GetType().GetField(e.ToString()).GetCustomAttribute<EnumGuidAttribute>().Guid == guid;
-			return (Attribute.GetCustomAttribute(e.GetType().GetField(e.ToString()), typeof(EnumGuidAttribute)) as EnumGuidAttribute).Guid == guid;
+			string? fieldName = e.ToString();
+
+			if (fieldName == null)
+				return false;
+
+			FieldInfo? field = e.GetType().GetField(fieldName);
+
+			if (field == null)
+				return false;
+
+			return (Attribute.GetCustomAttribute(field, typeof(EnumGuidAttribute)) as EnumGuidAttribute)?.Guid == guid;
 		}).FirstOrDefault();
 		if (en.Equals(default(T)))
 		{

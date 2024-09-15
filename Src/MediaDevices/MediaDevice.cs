@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -27,7 +28,7 @@ public sealed class MediaDevice : IDisposable
 	private IPortableDeviceCapabilities deviceCapabilities;
 	private IPortableDeviceValues deviceValues;
 	private string friendlyName = string.Empty;
-	private string eventCookie;
+	private string? eventCookie;
 	private EventCallback eventCallback;
 
 	#endregion
@@ -37,48 +38,48 @@ public sealed class MediaDevice : IDisposable
 	/// <summary>
 	/// This event is sent after a new object is available on the device.
 	/// </summary>
-	public event EventHandler<ObjectAddedEventArgs> ObjectAdded;
+	public event EventHandler<ObjectAddedEventArgs> ObjectAdded = delegate { };
 
 	/// <summary>
 	/// This event is sent after a previously existing object has been removed from the device.
 	/// </summary>
 	/// 
-	public event EventHandler<MediaDeviceEventArgs> ObjectRemoved;
+	public event EventHandler<MediaDeviceEventArgs> ObjectRemoved = delegate { };
 
 	/// <summary>
 	/// This event is sent after an object has been updated such that any connected client should refresh its view of that object.
 	/// </summary>
-	public event EventHandler<MediaDeviceEventArgs> ObjectUpdated;
+	public event EventHandler<MediaDeviceEventArgs> ObjectUpdated = delegate { };
 
 	/// <summary>
 	/// This event indicates that the device is about to be reset, and all connected clients should close their connection to the device. 
 	/// </summary>
-	public event EventHandler<MediaDeviceEventArgs> DeviceReset;
+	public event EventHandler<MediaDeviceEventArgs> DeviceReset = delegate { };
 
 	/// <summary>
 	/// This event indicates that the device capabilities have changed. Clients should re-query the device if they have made any decisions based on device capabilities.
 	/// </summary>
-	public event EventHandler<MediaDeviceEventArgs> DeviceCapabilitiesUpdated;
+	public event EventHandler<MediaDeviceEventArgs> DeviceCapabilitiesUpdated = delegate { };
 
 	/// <summary>
 	/// This event indicates the progress of a format operation on a storage object.
 	/// </summary>
-	public event EventHandler<MediaDeviceEventArgs> StorageFormat;
+	public event EventHandler<MediaDeviceEventArgs> StorageFormat = delegate { };
 
 	/// <summary>
 	/// This event is sent to request an application to transfer a particular object from the device.
 	/// </summary>
-	public event EventHandler<MediaDeviceEventArgs> ObjectTransferRequest;
+	public event EventHandler<MediaDeviceEventArgs> ObjectTransferRequest = delegate { };
 
 	/// <summary>
 	/// This event is sent when a driver for a device is being unloaded. This is typically a result of the device being unplugged.
 	/// </summary>
-	public event EventHandler<MediaDeviceEventArgs> DeviceRemoved;
+	public event EventHandler<MediaDeviceEventArgs> DeviceRemoved = delegate { };
 
 	/// <summary>
 	/// This event is sent when a driver has completed invoking a service method. This event must be sent even when the method fails.
 	/// </summary>
-	public event EventHandler<MediaDeviceEventArgs> ServiceMethodComplete;
+	public event EventHandler<MediaDeviceEventArgs> ServiceMethodComplete = delegate { };
 
 	#endregion
 
@@ -152,7 +153,7 @@ public sealed class MediaDevice : IDisposable
 
 		// remove
 		List<string> remove = deviceList.Where(d => !idList.Contains(d.DeviceId)).Select(d => d.DeviceId).ToList();
-		deviceList.RemoveAll(d => remove.Contains(d.DeviceId));
+		_ = deviceList.RemoveAll(d => remove.Contains(d.DeviceId));
 
 		// add
 		List<string> add = idList.Where(id => !deviceList.Select(d => d.DeviceId).Contains(id)).ToList();
@@ -351,7 +352,7 @@ public sealed class MediaDevice : IDisposable
 				throw new NotConnectedException("Not connected");
 			}
 
-			deviceValues.TryGetStringValue(WPD.DEVICE_SYNC_PARTNER, out string val);
+			_ = deviceValues.TryGetStringValue(WPD.DEVICE_SYNC_PARTNER, out string val);
 			return val;
 		}
 	}
@@ -360,16 +361,16 @@ public sealed class MediaDevice : IDisposable
 	/// Firmware version of the portable device.
 	/// </summary>
 	/// <exception cref="NotConnectedException">device is not connected.</exception>
-	public string FirmwareVersion
+	public string? FirmwareVersion
 	{
 		get
 		{
 			if (!IsConnected)
 			{
-				throw new NotConnectedException("Not connected");
+				return null;
 			}
 
-			deviceValues.TryGetStringValue(WPD.DEVICE_FIRMWARE_VERSION, out string val);
+			_ = deviceValues.TryGetStringValue(WPD.DEVICE_FIRMWARE_VERSION, out string val);
 			return val;
 		}
 	}
@@ -378,16 +379,16 @@ public sealed class MediaDevice : IDisposable
 	/// Battery level of the portable device.
 	/// </summary>
 	/// <exception cref="NotConnectedException">device is not connected.</exception>
-	public int PowerLevel
+	public int? PowerLevel
 	{
 		get
 		{
 			if (!IsConnected)
 			{
-				throw new NotConnectedException("Not connected");
+				return null;
 			}
 
-			deviceValues.TryGetSignedIntegerValue(WPD.DEVICE_POWER_LEVEL, out int val);
+			_ = deviceValues.TryGetSignedIntegerValue(WPD.DEVICE_POWER_LEVEL, out int val);
 			return val;
 		}
 	}
@@ -427,7 +428,7 @@ public sealed class MediaDevice : IDisposable
 				throw new NotConnectedException("Not connected");
 			}
 
-			deviceValues.TryGetStringValue(WPD.DEVICE_PROTOCOL, out string val);
+			_ = deviceValues.TryGetStringValue(WPD.DEVICE_PROTOCOL, out string val);
 			return val;
 		}
 	}
@@ -445,7 +446,7 @@ public sealed class MediaDevice : IDisposable
 				throw new NotConnectedException("Not connected");
 			}
 
-			deviceValues.TryGetStringValue(WPD.DEVICE_MODEL, out string val);
+			_ = deviceValues.TryGetStringValue(WPD.DEVICE_MODEL, out string val);
 			return val;
 		}
 	}
@@ -463,7 +464,7 @@ public sealed class MediaDevice : IDisposable
 				throw new NotConnectedException("Not connected");
 			}
 
-			deviceValues.TryGetStringValue(WPD.DEVICE_SERIAL_NUMBER, out string val);
+			_ = deviceValues.TryGetStringValue(WPD.DEVICE_SERIAL_NUMBER, out string val);
 			return val;
 		}
 	}
@@ -500,10 +501,10 @@ public sealed class MediaDevice : IDisposable
 		{
 			if (!IsConnected)
 			{
-				throw new NotConnectedException("Not connected");
+				return null;
 			}
 
-			deviceValues.TryGetDateTimeValue(WPD.DEVICE_DATETIME, out DateTime? val);
+			_ = deviceValues.TryGetDateTimeValue(WPD.DEVICE_DATETIME, out DateTime? val);
 			return val;
 		}
 	}
@@ -534,16 +535,16 @@ public sealed class MediaDevice : IDisposable
 	/// Device type of the portable device.
 	/// </summary>
 	/// <exception cref="NotConnectedException">device is not connected.</exception>
-	public DeviceType DeviceType
+	public DeviceType? DeviceType
 	{
 		get
 		{
 			if (!IsConnected)
 			{
-				throw new NotConnectedException("Not connected");
+				return null;
 			}
 
-			deviceValues.TryGetSignedIntegerValue(WPD.DEVICE_TYPE, out int val);
+			_ = deviceValues.TryGetSignedIntegerValue(WPD.DEVICE_TYPE, out int val);
 			return (DeviceType)val;
 		}
 	}
@@ -562,7 +563,7 @@ public sealed class MediaDevice : IDisposable
 				throw new NotConnectedException("Not connected");
 			}
 
-			deviceValues.TryGetUnsignedLargeIntegerValue(WPD.DEVICE_NETWORK_IDENTIFIER, out ulong val);
+			_ = deviceValues.TryGetUnsignedLargeIntegerValue(WPD.DEVICE_NETWORK_IDENTIFIER, out ulong val);
 			return val;
 		}
 	}
@@ -571,17 +572,19 @@ public sealed class MediaDevice : IDisposable
 	/// Functional unique id od the media device
 	/// </summary>
 	/// <exception cref="NotConnectedException">device is not connected.</exception>
-	public byte[] FunctionalUniqueId
+	public Collection<byte>? FunctionalUniqueId
 	{
 		get
 		{
 			if (!IsConnected)
 			{
-				throw new NotConnectedException("Not connected");
+				return null;
 			}
 
-			deviceValues.TryByteArrayValue(WPD.DEVICE_FUNCTIONAL_UNIQUE_ID, out byte[] val);
-			return val;
+			_ = deviceValues.TryByteArrayValue(WPD.DEVICE_FUNCTIONAL_UNIQUE_ID, out byte[]? value);
+			return value != null
+				? new Collection<byte>(value)
+				: null;
 		}
 	}
 
@@ -589,17 +592,19 @@ public sealed class MediaDevice : IDisposable
 	/// Model unique id od the media device
 	/// </summary>
 	/// <exception cref="NotConnectedException">device is not connected.</exception>
-	public byte[] ModelUniqueId
+	public Collection<byte>? ModelUniqueId
 	{
 		get
 		{
 			if (!IsConnected)
 			{
-				throw new NotConnectedException("Not connected");
+				return null;
 			}
 
-			deviceValues.TryByteArrayValue(WPD.DEVICE_MODEL_UNIQUE_ID, out byte[] value);
-			return value;
+			_ = deviceValues.TryByteArrayValue(WPD.DEVICE_MODEL_UNIQUE_ID, out byte[]? value);
+			return value != null
+				? new Collection<byte>(value)
+				: null;
 		}
 	}
 
@@ -616,7 +621,7 @@ public sealed class MediaDevice : IDisposable
 				throw new NotConnectedException("Not connected");
 			}
 
-			deviceValues.TryGetSignedIntegerValue(WPD.DEVICE_TRANSPORT, out int val);
+			_ = deviceValues.TryGetSignedIntegerValue(WPD.DEVICE_TRANSPORT, out int val);
 			return (DeviceTransport)val;
 		}
 	}
@@ -634,7 +639,7 @@ public sealed class MediaDevice : IDisposable
 				throw new NotConnectedException("Not connected");
 			}
 
-			deviceValues.TryGetUnsignedIntegerValue(WPD.DEVICE_USE_DEVICE_STAGE, out uint val);
+			_ = deviceValues.TryGetUnsignedIntegerValue(WPD.DEVICE_USE_DEVICE_STAGE, out uint val);
 			return (DeviceTransport)val;
 		}
 	}
@@ -735,7 +740,7 @@ public sealed class MediaDevice : IDisposable
 
 		if (!string.IsNullOrEmpty(eventCookie))
 		{
-			device.Unadvise(eventCookie);
+			device.Unadvise(eventCookie!);
 			eventCookie = null;
 		}
 
@@ -863,7 +868,7 @@ public sealed class MediaDevice : IDisposable
 		}
 
 		Item item = Item.FindFolder(this, path) ?? throw new DirectoryNotFoundException($"Director {path} not found.");
-		string pattern = FilterToRegex(searchPattern);
+		string? pattern = FilterToRegex(searchPattern);
 		return item.GetChildren(pattern, searchOption).Where(i => i.Type == ItemType.File).Select(i => i.FullName);
 	}
 
@@ -1021,7 +1026,7 @@ public sealed class MediaDevice : IDisposable
 			throw new NotConnectedException("Not connected");
 		}
 
-		Item.GetRoot(this).CreateSubdirectory(path);
+		_ = Item.GetRoot(this).CreateSubdirectory(path);
 	}
 
 	/// <summary>
@@ -1216,13 +1221,15 @@ public sealed class MediaDevice : IDisposable
 			throw new NotConnectedException("Not connected");
 		}
 
-		string folder = Path.GetDirectoryName(path);
-		string fileName = Path.GetFileName(path);
-		Item item = Item.FindFolder(this, folder) ?? throw new DirectoryNotFoundException($"Directory {folder} not found.");
+		string? folder = Path.GetDirectoryName(path);
+		string? fileName = Path.GetFileName(path);
 
-#if NET6_0_OR_GREATER
-#else
-#endif
+		if (string.IsNullOrEmpty(folder) || string.IsNullOrEmpty(fileName))
+		{
+			throw new DirectoryNotFoundException($"Directory {folder} not found.");
+		}
+
+		Item item = Item.FindFolder(this, folder) ?? throw new DirectoryNotFoundException($"Directory {folder} not found.");
 
 		if (item.GetChildren().Any(i => EqualsName(i.Name, fileName)))
 		{
@@ -1252,7 +1259,7 @@ public sealed class MediaDevice : IDisposable
 			throw new NotConnectedException("Not connected");
 		}
 
-		Item objectId = Item.FindFile(this, path);
+		Item? objectId = Item.FindFile(this, path);
 		return objectId != null;
 	}
 
@@ -1383,7 +1390,7 @@ public sealed class MediaDevice : IDisposable
 	/// Get all drives of the device.
 	/// </summary>
 	/// <returns>Array with all drives of the device.</returns>
-	public MediaDriveInfo[] GetDrives() => FunctionalObjects(FunctionalCategory.Storage)?.Select(o => new MediaDriveInfo(this, o)).ToArray();
+	public MediaDriveInfo[]? GetDrives() => FunctionalObjects(FunctionalCategory.Storage)?.Select(o => new MediaDriveInfo(this, o)).ToArray();
 
 	/// <summary>
 	/// Gets a new instance of the root MediaDirectoryInfo class, which acts as a wrapper for the root directory path.
@@ -1454,7 +1461,7 @@ public sealed class MediaDevice : IDisposable
 			throw new NotConnectedException("Not connected");
 		}
 
-		Item item = Item.GetFromPersistentUniqueId(this, persistentUniqueId);
+		Item? item = Item.GetFromPersistentUniqueId(this, persistentUniqueId);
 		if (item == null || !item.IsFile)
 		{
 			throw new FileNotFoundException($"{persistentUniqueId} not found.");
@@ -1483,13 +1490,13 @@ public sealed class MediaDevice : IDisposable
 			throw new NotConnectedException("Not connected");
 		}
 
-		Item item = Item.GetFromPersistentUniqueId(this, persistentUniqueId);
+		Item? item = Item.GetFromPersistentUniqueId(this, persistentUniqueId);
 		if (item == null || !item.IsFile)
 		{
 			throw new FileNotFoundException($"{persistentUniqueId} not found.");
 		}
 
-		return item == null ? null : new StreamReader(item.OpenRead());
+		return new StreamReader(item.OpenRead());
 	}
 
 	/// <summary>
@@ -1529,12 +1536,11 @@ public sealed class MediaDevice : IDisposable
 	/// Retrieves all commands supported by the device.
 	/// </summary>
 	/// <returns>List with supported commands</returns>
-	/// <exception cref="NotConnectedException">device is not connected.</exception>
-	public IEnumerable<Commands> SupportedCommands()
+	public IEnumerable<Commands>? SupportedCommands()
 	{
 		if (!IsConnected)
 		{
-			throw new NotConnectedException("Not connected");
+			return null;
 		}
 
 		try
@@ -1554,12 +1560,11 @@ public sealed class MediaDevice : IDisposable
 	/// Retrieves all functional categories by the device.
 	/// </summary>
 	/// <returns>List with functional categories</returns>
-	/// <exception cref="NotConnectedException">device is not connected.</exception>
-	public IEnumerable<FunctionalCategory> FunctionalCategories()
+	public IEnumerable<FunctionalCategory>? FunctionalCategories()
 	{
 		if (!IsConnected)
 		{
-			throw new NotConnectedException("Not connected");
+			return null;
 		}
 
 		try
@@ -1580,18 +1585,23 @@ public sealed class MediaDevice : IDisposable
 	/// </summary>
 	/// <param name="functionalCategory">Select functional category</param>
 	/// <returns>List with functional objects</returns>
-	/// <exception cref="NotConnectedException">device is not connected.</exception>
-	public IEnumerable<string> FunctionalObjects(FunctionalCategory functionalCategory)
+	public IEnumerable<string>? FunctionalObjects(FunctionalCategory functionalCategory)
 	{
 		if (!IsConnected)
 		{
-			throw new NotConnectedException("Not connected");
+			return null;
 		}
 
 		try
 		{
-			Guid g = functionalCategory.Guid();
-			Guid guid = functionalCategory.Guid();
+			Guid? g = functionalCategory.Guid();
+			Guid? guidNull = functionalCategory.Guid();
+			if (guidNull == null)
+			{
+				return null;
+			}
+
+			Guid guid = guidNull.Value;
 			deviceCapabilities.GetFunctionalObjects(ref guid, out IPortableDevicePropVariantCollection objects);
 			ComTrace.WriteObject(objects);
 			return objects.ToStrings();
@@ -1608,9 +1618,8 @@ public sealed class MediaDevice : IDisposable
 	/// Get supported content types
 	/// </summary>
 	/// <param name="functionalCategory">Select functional category</param>
-	/// <returns>List with supported content types </returns>
-	/// <exception cref="NotConnectedException">device is not connected.</exception>
-	public IEnumerable<ContentType> SupportedContentTypes(FunctionalCategory functionalCategory)
+	/// <returns>List with supported content types</returns>
+	public IEnumerable<ContentType>? SupportedContentTypes(FunctionalCategory functionalCategory)
 	{
 		if (!IsConnected)
 		{
@@ -1619,7 +1628,13 @@ public sealed class MediaDevice : IDisposable
 
 		try
 		{
-			Guid guid = functionalCategory.Guid();
+			Guid? guidNull = functionalCategory.Guid();
+			if (guidNull == null)
+			{
+				return null;
+			}
+
+			Guid guid = guidNull.Value;
 			deviceCapabilities.GetSupportedContentTypes(ref guid, out IPortableDevicePropVariantCollection types);
 			return types.ToEnum<ContentType>();
 		}
@@ -1635,12 +1650,11 @@ public sealed class MediaDevice : IDisposable
 	/// Retrieves all events supported by the device.
 	/// </summary>
 	/// <returns>List with supported events</returns>
-	/// <exception cref="NotConnectedException">device is not connected.</exception>
-	public IEnumerable<Events> SupportedEvents()
+	public IEnumerable<Events>? SupportedEvents()
 	{
 		if (!IsConnected)
 		{
-			throw new NotConnectedException("Not connected");
+			return null;
 		}
 
 		try
@@ -1672,7 +1686,7 @@ public sealed class MediaDevice : IDisposable
 			throw new NotConnectedException("Not connected");
 		}
 
-		Command.Create(WPD.COMMAND_COMMON_RESET_DEVICE).Send(device);
+		_ = Command.Create(WPD.COMMAND_COMMON_RESET_DEVICE).Send(device);
 	}
 
 	/// <summary>
@@ -1681,7 +1695,7 @@ public sealed class MediaDevice : IDisposable
 	/// <param name="contentType">Content type to find the locations for.</param>
 	/// <returns>List with the location paths.</returns>
 	/// <exception cref="NotConnectedException">device is not connected.</exception>
-	public IEnumerable<string> GetContentLocations(ContentType contentType)
+	public IEnumerable<string>? GetContentLocations(ContentType contentType)
 	{
 		if (!IsConnected)
 		{
@@ -1691,7 +1705,13 @@ public sealed class MediaDevice : IDisposable
 		try
 		{
 			Command cmd = Command.Create(WPD.COMMAND_DEVICE_HINTS_GET_CONTENT_LOCATION);
-			cmd.Add(WPD.PROPERTY_DEVICE_HINTS_CONTENT_TYPE, contentType.Guid());
+			Guid? guid = contentType.Guid();
+			if (guid == null)
+			{
+				return null;
+			}
+
+			cmd.Add(WPD.PROPERTY_DEVICE_HINTS_CONTENT_TYPE, guid.Value);
 			if (!cmd.Send(device))
 			{
 				cmd.WriteResults();
@@ -1740,7 +1760,12 @@ public sealed class MediaDevice : IDisposable
 			throw new ArgumentNullException(nameof(path));
 		}
 
-		Item item = Item.FindFolder(this, path);
+		Item? item = Item.FindFolder(this, path);
+		if (item == null || item.Id == null)
+		{
+			throw new DirectoryNotFoundException($"Directory {path} not found.");
+		}
+
 		return InternalEject(item.Id);
 	}
 
@@ -1767,7 +1792,12 @@ public sealed class MediaDevice : IDisposable
 			throw new ArgumentNullException(nameof(path));
 		}
 
-		Item item = Item.FindFolder(this, path);
+		Item? item = Item.FindFolder(this, path);
+		if (item == null || item.Id == null)
+		{
+			throw new DirectoryNotFoundException($"Directory {path} not found.");
+		}
+
 		Format(item.Id);
 		//Command cmd = Command.Create(WPD.COMMAND_STORAGE_FORMAT);
 		//cmd.Add(WPD.PROPERTY_STORAGE_OBJECT_ID, item.Id);
@@ -1778,7 +1808,7 @@ public sealed class MediaDevice : IDisposable
 	{
 		Command cmd = Command.Create(WPD.COMMAND_STORAGE_FORMAT);
 		cmd.Add(WPD.PROPERTY_STORAGE_OBJECT_ID, id);
-		cmd.Send(device);
+		_ = cmd.Send(device);
 	}
 
 	/// <summary>
@@ -1869,7 +1899,14 @@ public sealed class MediaDevice : IDisposable
 	{
 		//ComTrace.WriteObject(eventParameters);
 		eventParameters.GetGuidValue(ref WPD.EVENT_PARAMETER_EVENT_ID, out Guid eventGuid);
-		Events eventEnum = eventGuid.GetEnumFromAttrGuid<Events>();
+		Events? eventEnumNull = eventGuid.GetEnumFromAttrGuid<Events>();
+
+		if (eventEnumNull == null)
+		{
+			return;
+		}
+
+		Events eventEnum = eventEnumNull.Value;
 
 		switch (eventEnum)
 		{
@@ -1928,7 +1965,7 @@ public sealed class MediaDevice : IDisposable
 	/// }
 	/// </code>
 	/// </example>
-	public MediaStorageInfo GetStorageInfo(string storageObjectId)
+	public MediaStorageInfo? GetStorageInfo(string storageObjectId)
 	{
 		if (!IsConnected)
 		{
@@ -1960,34 +1997,34 @@ public sealed class MediaDevice : IDisposable
 			ComTrace.WriteObject(ppKeys);
 			deviceProperties.GetValues(storageObjectId, keys, out IPortableDeviceValues values);
 
-			values.TryGetUnsignedIntegerValue(WPD.STORAGE_TYPE, out uint type);
+			_ = values.TryGetUnsignedIntegerValue(WPD.STORAGE_TYPE, out uint type);
 			info.Type = (StorageType)type;
 
-			values.TryGetStringValue(WPD.STORAGE_FILE_SYSTEM_TYPE, out string fileSystemType);
+			_ = values.TryGetStringValue(WPD.STORAGE_FILE_SYSTEM_TYPE, out string fileSystemType);
 			info.FileSystemType = fileSystemType;
 
-			values.TryGetUnsignedLargeIntegerValue(WPD.STORAGE_CAPACITY, out ulong capacity);
+			_ = values.TryGetUnsignedLargeIntegerValue(WPD.STORAGE_CAPACITY, out ulong capacity);
 			info.Capacity = capacity;
 
-			values.TryGetUnsignedLargeIntegerValue(WPD.STORAGE_FREE_SPACE_IN_BYTES, out ulong freeBytes);
+			_ = values.TryGetUnsignedLargeIntegerValue(WPD.STORAGE_FREE_SPACE_IN_BYTES, out ulong freeBytes);
 			info.FreeSpaceInBytes = freeBytes;
 
-			values.TryGetUnsignedLargeIntegerValue(WPD.STORAGE_FREE_SPACE_IN_OBJECTS, out ulong freeObjects);
+			_ = values.TryGetUnsignedLargeIntegerValue(WPD.STORAGE_FREE_SPACE_IN_OBJECTS, out ulong freeObjects);
 			info.FreeSpaceInObjects = freeObjects;
 
-			values.TryGetStringValue(WPD.STORAGE_DESCRIPTION, out string description);
+			_ = values.TryGetStringValue(WPD.STORAGE_DESCRIPTION, out string description);
 			info.Description = description;
 
-			values.TryGetStringValue(WPD.STORAGE_SERIAL_NUMBER, out string serialNumber);
+			_ = values.TryGetStringValue(WPD.STORAGE_SERIAL_NUMBER, out string serialNumber);
 			info.SerialNumber = serialNumber;
 
-			values.TryGetUnsignedLargeIntegerValue(WPD.STORAGE_MAX_OBJECT_SIZE, out ulong maxObjectSize);
+			_ = values.TryGetUnsignedLargeIntegerValue(WPD.STORAGE_MAX_OBJECT_SIZE, out ulong maxObjectSize);
 			info.MaxObjectSize = maxObjectSize;
 
-			values.TryGetUnsignedLargeIntegerValue(WPD.STORAGE_CAPACITY_IN_OBJECTS, out ulong capacityInObjects);
+			_ = values.TryGetUnsignedLargeIntegerValue(WPD.STORAGE_CAPACITY_IN_OBJECTS, out ulong capacityInObjects);
 			info.CapacityInObjects = capacityInObjects;
 
-			values.TryGetUnsignedIntegerValue(WPD.STORAGE_ACCESS_CAPABILITY, out uint accessCapability);
+			_ = values.TryGetUnsignedIntegerValue(WPD.STORAGE_ACCESS_CAPABILITY, out uint accessCapability);
 			info.AccessCapability = (StorageAccessCapability)accessCapability;
 
 			return info;
@@ -2017,7 +2054,7 @@ public sealed class MediaDevice : IDisposable
 		}
 
 		Command cmd = Command.Create(WPD.COMMAND_MTP_EXT_GET_SUPPORTED_VENDOR_OPCODES);
-		cmd.Send(device);
+		_ = cmd.Send(device);
 		IEnumerable<PropVariantFacade> list = cmd.GetPropVariants(WPD.PROPERTY_MTP_EXT_VENDOR_OPERATION_CODES);
 		return list.Select(p => p.ToInt());
 	}
@@ -2030,8 +2067,18 @@ public sealed class MediaDevice : IDisposable
 	/// <param name="respCode">Response code</param>
 	/// <returns>Output parameters</returns>
 	/// <exception cref="NotConnectedException">device is not connected.</exception>
+	/// <exception cref="ArgumentNullException">inputParams is null.</exception>
 	public IEnumerable<int> VendorExcecute(int opCode, IEnumerable<int> inputParams, out int respCode)
 	{
+#if NET6_0_OR_GREATER
+		ArgumentNullException.ThrowIfNull(inputParams, nameof(inputParams));
+#else
+		if (inputParams == null)
+		{
+			throw new ArgumentNullException(nameof(inputParams));
+		}
+#endif
+
 		if (!IsConnected)
 		{
 			throw new NotConnectedException("Not connected");
@@ -2040,7 +2087,7 @@ public sealed class MediaDevice : IDisposable
 		Command cmd = Command.Create(WPD.COMMAND_MTP_EXT_EXECUTE_COMMAND_WITHOUT_DATA_PHASE);
 		cmd.Add(WPD.PROPERTY_MTP_EXT_OPERATION_CODE, opCode);
 		cmd.Add(WPD.PROPERTY_MTP_EXT_OPERATION_PARAMS, inputParams);
-		cmd.Send(device);
+		_ = cmd.Send(device);
 		respCode = cmd.GetInt(WPD.PROPERTY_MTP_EXT_RESPONSE_CODE);
 		return cmd.GetPropVariants(WPD.PROPERTY_MTP_EXT_RESPONSE_PARAMS).Select(p => p.ToInt());
 	}
@@ -2052,8 +2099,18 @@ public sealed class MediaDevice : IDisposable
 	/// <param name="inputParams">Input parameters.</param>
 	/// <returns>Returned as a context identifier for subsequent data transfer</returns>
 	/// <exception cref="NotConnectedException">device is not connected.</exception>
+	/// <exception cref="ArgumentNullException">inputParams is null.</exception>
 	public IEnumerable<int> VendorExcecuteRead(int opCode, IEnumerable<int> inputParams)
 	{
+#if NET6_0_OR_GREATER
+		ArgumentNullException.ThrowIfNull(inputParams, nameof(inputParams));
+#else
+		if (inputParams == null)
+		{
+			throw new ArgumentNullException(nameof(inputParams));
+		}
+#endif
+
 		if (!IsConnected)
 		{
 			throw new NotConnectedException("Not connected");
@@ -2062,7 +2119,7 @@ public sealed class MediaDevice : IDisposable
 		Command cmd = Command.Create(WPD.COMMAND_MTP_EXT_EXECUTE_COMMAND_WITH_DATA_TO_READ);
 		cmd.Add(WPD.PROPERTY_MTP_EXT_OPERATION_CODE, opCode);
 		cmd.Add(WPD.PROPERTY_MTP_EXT_OPERATION_PARAMS, inputParams);
-		cmd.Send(device);
+		_ = cmd.Send(device);
 		List<PropVariantFacade> list = cmd.GetPropVariants(WPD.PROPERTY_MTP_EXT_VENDOR_OPERATION_CODES).ToList();
 		return list.Select(p => p.ToInt()); //.ToList();
 	}
@@ -2074,8 +2131,18 @@ public sealed class MediaDevice : IDisposable
 	/// <param name="inputParams">Input parameters.</param>
 	/// <returns>Returned as a context identifier for subsequent data transfer</returns>
 	/// <exception cref="NotConnectedException">device is not connected.</exception>
+	/// <exception cref="ArgumentNullException">inputParams is null.</exception>
 	public IEnumerable<int> VendorExcecuteWrite(int opCode, IEnumerable<int> inputParams)
 	{
+#if NET6_0_OR_GREATER
+		ArgumentNullException.ThrowIfNull(inputParams, nameof(inputParams));
+#else
+		if (inputParams == null)
+		{
+			throw new ArgumentNullException(nameof(inputParams));
+		}
+#endif
+
 		if (!IsConnected)
 		{
 			throw new NotConnectedException("Not connected");
@@ -2084,7 +2151,7 @@ public sealed class MediaDevice : IDisposable
 		Command cmd = Command.Create(WPD.COMMAND_MTP_EXT_EXECUTE_COMMAND_WITH_DATA_TO_WRITE);
 		cmd.Add(WPD.PROPERTY_MTP_EXT_OPERATION_CODE, opCode);
 		cmd.Add(WPD.PROPERTY_MTP_EXT_OPERATION_PARAMS, inputParams);
-		cmd.Send(device);
+		_ = cmd.Send(device);
 		List<PropVariantFacade> list = cmd.GetPropVariants(WPD.PROPERTY_MTP_EXT_VENDOR_OPERATION_CODES).ToList();
 		return list.Select(p => p.ToInt()); //.ToList();
 	}
@@ -2120,7 +2187,7 @@ public sealed class MediaDevice : IDisposable
 	{
 		Command cmd = Command.Create(WPD.COMMAND_MTP_EXT_END_DATA_TRANSFER);
 		cmd.Add(WPD.PROPERTY_MTP_EXT_TRANSFER_CONTEXT, context);
-		cmd.Send(device);
+		_ = cmd.Send(device);
 		respCode = cmd.GetInt(WPD.PROPERTY_MTP_EXT_RESPONSE_CODE);
 		return cmd.GetPropVariants(WPD.PROPERTY_MTP_EXT_RESPONSE_PARAMS).Select(p => p.ToInt());
 	}
@@ -2138,12 +2205,12 @@ public sealed class MediaDevice : IDisposable
 		}
 
 		Command cmd = Command.Create(WPD.COMMAND_MTP_EXT_GET_VENDOR_EXTENSION_DESCRIPTION);
-		cmd.Send(device);
+		_ = cmd.Send(device);
 		string description = cmd.GetString(WPD.PROPERTY_MTP_EXT_VENDOR_EXTENSION_DESCRIPTION);
 		return description;
 	}
 
-	#endregion
+#endregion
 
 	#region Services
 
@@ -2154,9 +2221,15 @@ public sealed class MediaDevice : IDisposable
 	/// </summary>
 	/// <param name="service">Service type</param>
 	/// <returns>List of services</returns>
-	public IEnumerable<MediaDeviceService> GetServices(MediaDeviceServices service)
+	public IEnumerable<MediaDeviceService>? GetServices(MediaDeviceServices service)
 	{
-		Guid serviceGuid = service.Guid();
+		Guid? serviceGuidNull = service.Guid();
+		if (serviceGuidNull == null)
+		{
+			return null;
+		}
+
+		Guid serviceGuid = serviceGuidNull.Value;
 		uint num = 0;
 		serviceManager.GetDeviceServices(DeviceId, ref serviceGuid, null, ref num);
 
@@ -2197,7 +2270,7 @@ public sealed class MediaDevice : IDisposable
 
 	internal bool EqualsName(string a, string b) => IsCaseSensitive ? a == b : string.Equals(a, b, StringComparison.OrdinalIgnoreCase);
 
-	internal static string FilterToRegex(string filter)
+	internal static string? FilterToRegex(string filter)
 	{
 		if (filter is null or "*" or "*.*")
 		{
@@ -2205,15 +2278,15 @@ public sealed class MediaDevice : IDisposable
 		}
 
 		StringBuilder s = new(filter);
-		s.Replace(".", @"\.");
-		s.Replace("+", @"\+");
-		s.Replace("$", @"\$");
-		s.Replace("(", @"\(");
-		s.Replace(")", @"\)");
-		s.Replace("[", @"\[");
-		s.Replace("]", @"\]");
-		s.Replace("?", ".?");
-		s.Replace("*", ".*");
+		_ = s.Replace(".", @"\.");
+		_ = s.Replace("+", @"\+");
+		_ = s.Replace("$", @"\$");
+		_ = s.Replace("(", @"\(");
+		_ = s.Replace(")", @"\)");
+		_ = s.Replace("[", @"\[");
+		_ = s.Replace("]", @"\]");
+		_ = s.Replace("?", ".?");
+		_ = s.Replace("*", ".*");
 		return s.ToString();
 	}
 

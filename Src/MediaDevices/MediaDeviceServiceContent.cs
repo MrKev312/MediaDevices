@@ -24,6 +24,11 @@ public class MediaDeviceServiceContent
 
 	internal virtual void UpdateProperties()
 	{
+		if (service.content == null)
+		{
+			return;
+		}
+
 		service.content.Properties(out IPortableDeviceProperties properties);
 
 		//IPortableDeviceKeyCollection keyCol = (IPortableDeviceKeyCollection)new PortableDeviceKeyCollection();

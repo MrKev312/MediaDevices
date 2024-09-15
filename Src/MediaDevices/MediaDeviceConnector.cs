@@ -10,12 +10,12 @@ namespace MediaDevices;
 /// </summary>
 public class MediaDeviceConnector : IConnectionRequestCallback
 {
-	private readonly IPortableDeviceConnector connector;
+	private readonly IPortableDeviceConnector? connector;
 
 	/// <summary>
 	/// Event signals if complete
 	/// </summary>
-	public event EventHandler<CompleteEventArgs> Complete;
+	public event EventHandler<CompleteEventArgs>? Complete;
 
 	private MediaDeviceConnector()
 	{ }
@@ -25,12 +25,12 @@ public class MediaDeviceConnector : IConnectionRequestCallback
 	/// <summary>
 	/// Connect to service
 	/// </summary>
-	public void Connect() => connector.Connect(this);
+	public void Connect() => connector?.Connect(this);
 
 	/// <summary>
 	/// Disconnect from service
 	/// </summary>
-	public void Disconnect() => connector.Disconnect(this);
+	public void Disconnect() => connector?.Disconnect(this);
 
 	/// <summary>
 	/// On completed

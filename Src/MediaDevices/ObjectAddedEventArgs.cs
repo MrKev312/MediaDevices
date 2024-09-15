@@ -13,32 +13,40 @@ public class ObjectAddedEventArgs : MediaDeviceEventArgs
 	internal ObjectAddedEventArgs(Events eventEnum, MediaDevice mediaDevice, IPortableDeviceValues eventParameters)
 		: base(eventEnum, mediaDevice, eventParameters)
 	{
-		eventParameters.TryGetStringValue(WPD.OBJECT_ID, out string objectId);
+		_ = eventParameters.TryGetStringValue(WPD.OBJECT_ID, out string objectId);
 		ObjectId = objectId;
 
-		eventParameters.TryGetStringValue(WPD.OBJECT_PERSISTENT_UNIQUE_ID, out string objectPersistentUniqueId);
+		_ = eventParameters.TryGetStringValue(WPD.OBJECT_PERSISTENT_UNIQUE_ID, out string objectPersistentUniqueId);
 		ObjectPersistentUniqueId = objectPersistentUniqueId;
 
-		eventParameters.TryGetStringValue(WPD.OBJECT_NAME, out string objectName);
+		_ = eventParameters.TryGetStringValue(WPD.OBJECT_NAME, out string objectName);
 		ObjectName = objectName;
 
 		if (eventParameters.TryGetGuidValue(WPD.OBJECT_CONTENT_TYPE, out Guid objectContentType))
 		{
-			ObjectContentType = ComEnumerable.GetEnumFromAttrGuid<ContentType>(objectContentType);
+			ContentType? contentType = ComEnumerable.GetEnumFromAttrGuid<ContentType>(objectContentType);
+			if (contentType != null)
+			{
+				ObjectContentType = contentType.Value;
+			}
 		}
 
 		if (eventParameters.TryGetGuidValue(WPD.FUNCTIONAL_OBJECT_CATEGORY, out Guid functionalObjectCategory))
 		{
-			FunctionalObjectCategory = ComEnumerable.GetEnumFromAttrGuid<FunctionalCategory>(functionalObjectCategory);
+			FunctionalCategory? functionalCategory = ComEnumerable.GetEnumFromAttrGuid<FunctionalCategory>(functionalObjectCategory);
+			if (functionalCategory != null)
+			{
+				FunctionalObjectCategory = functionalCategory.Value;
+			}
 		}
 
-		eventParameters.TryGetStringValue(WPD.OBJECT_ORIGINAL_FILE_NAME, out string objectOriginalFileName);
+		_ = eventParameters.TryGetStringValue(WPD.OBJECT_ORIGINAL_FILE_NAME, out string objectOriginalFileName);
 		ObjectOriginalFileName = objectOriginalFileName;
 
-		eventParameters.TryGetStringValue(WPD.OBJECT_PARENT_ID, out string objectParentId);
+		_ = eventParameters.TryGetStringValue(WPD.OBJECT_PARENT_ID, out string objectParentId);
 		ObjectParentId = objectParentId;
 
-		eventParameters.TryGetStringValue(WPD.OBJECT_CONTAINER_FUNCTIONAL_OBJECT_ID, out string objectContainerFuntionalObjectId);
+		_ = eventParameters.TryGetStringValue(WPD.OBJECT_CONTAINER_FUNCTIONAL_OBJECT_ID, out string objectContainerFuntionalObjectId);
 		ObjectContainerFuntionalObjectId = objectContainerFuntionalObjectId;
 	}
 

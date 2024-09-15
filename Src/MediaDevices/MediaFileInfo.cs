@@ -20,7 +20,7 @@ public class MediaFileInfo : MediaFileSystemInfo
 	/// <summary>
 	/// Gets an instance of the parent directory.
 	/// </summary>
-	public MediaDirectoryInfo Directory => ParentDirectoryInfo;
+	public MediaDirectoryInfo? Directory => ParentDirectoryInfo;
 
 	/// <summary>
 	/// Copies an existing file to a new file, allowing the overwriting of the existing file.

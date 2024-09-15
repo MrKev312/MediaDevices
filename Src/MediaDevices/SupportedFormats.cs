@@ -5,7 +5,7 @@ namespace MediaDevices;
 /// <summary>
 /// Formats
 /// </summary>
-public enum Formats
+public enum SupportedFormats
 {
 	/// <summary>
 	/// Unknown format

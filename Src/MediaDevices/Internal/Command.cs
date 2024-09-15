@@ -67,7 +67,7 @@ internal sealed class Command
 	public IEnumerable<PropVariantFacade> GetPropVariants(PropertyKey key)
 	{
 		result.GetIUnknownValue(ref key, out object obj);
-		IPortableDevicePropVariantCollection col = obj as IPortableDevicePropVariantCollection;
+		IPortableDevicePropVariantCollection col = (IPortableDevicePropVariantCollection)obj;
 
 		uint count = 0;
 		col.GetCount(ref count);

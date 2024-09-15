@@ -19,13 +19,13 @@ internal static class ComTrace
 		guidFields = typeof(WPD).GetFields().Where(f => f.FieldType == typeof(Guid)).ToList();
 	}
 
-	public static FieldInfo FindPropertyKeyField(PropertyKey key) =>
+	public static FieldInfo? FindPropertyKeyField(PropertyKey key) =>
 		//return pkeyFields.SingleOrDefault(i => ((PropertyKey)i.GetValue(null)) == key);
-		pkeyFields.FirstOrDefault(i => ((PropertyKey)i.GetValue(null)) == key);
+		pkeyFields.FirstOrDefault(i => ((PropertyKey?)i.GetValue(null)) == key);
 
-	public static FieldInfo FindGuidField(Guid guid) =>
+	public static FieldInfo? FindGuidField(Guid guid) =>
 		//return guidFields.SingleOrDefault(i => ((Guid)i.GetValue(null)) == guid);
-		guidFields.FirstOrDefault(i => ((Guid)i.GetValue(null)) == guid);
+		guidFields.FirstOrDefault(i => ((Guid?)i.GetValue(null)) == guid);
 
 	[Conditional("COMTRACE")]
 	public static void WriteObject(IPortableDeviceValues values) => InternalWriteObject(values);
@@ -43,7 +43,7 @@ internal static class ComTrace
 	[Conditional("COMTRACE")]
 	private static void InternalWriteObject(IPortableDeviceValues values)
 	{
-		string func = new StackTrace().GetFrame(2).GetMethod().Name;
+		string? func = new StackTrace().GetFrame(2)?.GetMethod()?.Name;
 		Trace.WriteLine($"############################### {func}");
 		uint num = 0;
 
@@ -54,23 +54,18 @@ internal static class ComTrace
 			PropVariantFacade val = new();
 			values.GetAt(i, ref key, ref val.Value);
 
-			string fieldName = string.Empty;
-			FieldInfo propField = FindPropertyKeyField(key);
+			string fieldName;
+			FieldInfo? propField = FindPropertyKeyField(key);
 			if (propField != null)
 			{
 				fieldName = propField.Name;
 			}
 			else
 			{
-				FieldInfo guidField = FindGuidField(key.fmtid);
-				if (guidField != null)
-				{
-					fieldName = $"{guidField.Name}, {key.pid}";
-				}
-				else
-				{
-					fieldName = $"{key.fmtid}, {key.pid}";
-				}
+				FieldInfo? guidField = FindGuidField(key.fmtid);
+				fieldName = guidField != null
+					? $"{guidField.Name}, {key.pid}"
+					: $"{key.fmtid}, {key.pid}";
 			}
 
 			switch (val.VariantType)

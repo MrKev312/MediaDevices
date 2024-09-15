@@ -2,6 +2,7 @@
 	<PropertyGroup>
 		<TargetFrameworks>netstandard2.1;netstandard2.0;net8.0-windows;net7.0-windows;net6.0-windows;netframework4.8</TargetFrameworks>
 		<LangVersion>12</LangVersion>
+		<Nullable>enable</Nullable>
 		<AssemblyName>MediaDevices</AssemblyName>
 		<RootNamespace>MediaDevices</RootNamespace>
 		<SignAssembly>True</SignAssembly>

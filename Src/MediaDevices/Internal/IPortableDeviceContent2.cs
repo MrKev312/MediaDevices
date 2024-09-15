@@ -14,7 +14,7 @@ internal interface IPortableDeviceContent2 : IPortableDeviceContent
 	new void EnumObjects(
 		[In] uint dwFlags,
 		[In][MarshalAs(UnmanagedType.LPWStr)] string pszParentObjectID,
-		[In][MarshalAs(UnmanagedType.Interface)] IPortableDeviceValues pFilter,
+		[In][MarshalAs(UnmanagedType.Interface)] IPortableDeviceValues? pFilter,
 		[MarshalAs(UnmanagedType.Interface)] out IEnumPortableDeviceObjectIDs ppenum);
 
 	[MethodImpl(MethodImplOptions.InternalCall)]

@@ -14,10 +14,10 @@ namespace MediaDevices;
 public class MediaDeviceService : IDisposable
 {
 	internal MediaDevice device;
-	internal IPortableDeviceService privateService = (IPortableDeviceService)new PortableDeviceService();
+	internal IPortableDeviceService? privateService = (IPortableDeviceService)new PortableDeviceService();
 	//protected IPortableDeviceValues values;
-	internal IPortableDeviceServiceCapabilities capabilities;
-	internal IPortableDeviceContent2 content;
+	internal IPortableDeviceServiceCapabilities? capabilities;
+	internal IPortableDeviceContent2? content;
 
 	private MediaDeviceService()
 	{ }
@@ -164,6 +164,9 @@ public class MediaDeviceService : IDisposable
 
 	internal IEnumerable<MediaDeviceServiceContent> GetContent(string objectID)
 	{
+		if (content == null)
+			return [];
+
 		content.EnumObjects(0, objectID, null, out IEnumPortableDeviceObjectIDs enumerator);
 
 		uint num = 0;
@@ -175,6 +178,9 @@ public class MediaDeviceService : IDisposable
 
 	internal IEnumerable<KeyValuePair<string, string>> GetAllProperties(string objectID)
 	{
+		if (content == null)
+			return [];
+
 		content.Properties(out IPortableDeviceProperties properties);
 
 		properties.GetSupportedProperties(objectID, out IPortableDeviceKeyCollection keyCol);
@@ -184,8 +190,11 @@ public class MediaDeviceService : IDisposable
 		return deviceValues.ToKeyValuePair();
 	}
 
-	internal IPortableDeviceValues GetProperties(IPortableDeviceKeyCollection keyCol)
+	internal IPortableDeviceValues? GetProperties(IPortableDeviceKeyCollection keyCol)
 	{
+		if (content == null)
+			return null;
+
 		content.Properties(out IPortableDeviceProperties properties);
 
 		properties.GetValues(ServiceObjectID, keyCol, out IPortableDeviceValues deviceValues);
@@ -198,6 +207,9 @@ public class MediaDeviceService : IDisposable
 	/// </summary>
 	protected virtual void Update()
 	{
+		if (content == null)
+			return;
+
 		content.Properties(out IPortableDeviceProperties properties);
 
 		properties.GetSupportedProperties(ServiceObjectID, out IPortableDeviceKeyCollection keyCol);
@@ -219,6 +231,9 @@ public class MediaDeviceService : IDisposable
 	/// <returns>List of supported methods</returns>
 	public IEnumerable<Methods> GetSupportedMethods()
 	{
+		if (capabilities == null)
+			return [];
+
 		capabilities.GetSupportedMethods(out IPortableDevicePropVariantCollection methods);
 		ComTrace.WriteObject(methods);
 		return methods.ToEnum<Methods>();
@@ -230,6 +245,9 @@ public class MediaDeviceService : IDisposable
 	/// <returns>List of supported commands</returns>
 	public IEnumerable<Commands> GetSupportedCommands()
 	{
+		if (capabilities == null)
+			return [];
+
 		capabilities.GetSupportedCommands(out IPortableDeviceKeyCollection commands);
 		ComTrace.WriteObject(commands);
 		return commands.ToEnum<Commands>();
@@ -241,6 +259,9 @@ public class MediaDeviceService : IDisposable
 	/// <returns>list of supported events</returns>
 	public IEnumerable<Events> GetSupportedEvents()
 	{
+		if (capabilities == null)
+			return [];
+
 		capabilities.GetSupportedEvents(out IPortableDevicePropVariantCollection events);
 		ComTrace.WriteObject(events);
 		return events.ToEnum<Events>();
@@ -250,11 +271,14 @@ public class MediaDeviceService : IDisposable
 	/// Get supported formats
 	/// </summary>
 	/// <returns>List of supported formats</returns>
-	public IEnumerable<Formats> GetSupportedFormats()
+	public IEnumerable<SupportedFormats> GetSupportedFormats()
 	{
+		if (capabilities == null)
+			return [];
+
 		capabilities.GetSupportedFormats(out IPortableDevicePropVariantCollection formats);
 		ComTrace.WriteObject(formats);
-		return formats.ToEnum<Formats>();
+		return formats.ToEnum<SupportedFormats>();
 	}
 
 	/// <summary>
@@ -272,6 +296,15 @@ public class MediaDeviceService : IDisposable
 	/// <param name="method">Method GUID</param>
 	public void CallMethod(Guid method)
 	{
+#if NET7_0_OR_GREATER
+		ObjectDisposedException.ThrowIf(privateService == null, privateService);
+#else
+		if (privateService == null)
+		{
+			throw new ObjectDisposedException("MediaDeviceService");
+		}
+#endif
+
 		privateService.Methods(out IPortableDeviceServiceMethods methods);
 
 		IPortableDeviceValues values = (IPortableDeviceValues)new PortableDeviceValues();
@@ -285,6 +318,6 @@ public class MediaDeviceService : IDisposable
 		IPortableDeviceValues values = (IPortableDeviceValues)new PortableDeviceValues();
 		values.SetGuidValue(ref WPD.PROPERTY_COMMON_COMMAND_CATEGORY, ref commandKey.fmtid);
 		values.SetUnsignedIntegerValue(ref WPD.PROPERTY_COMMON_COMMAND_ID, commandKey.pid);
-		privateService.SendCommand(0, ref values, out _);
+		privateService?.SendCommand(0, ref values, out _);
 	}
 }

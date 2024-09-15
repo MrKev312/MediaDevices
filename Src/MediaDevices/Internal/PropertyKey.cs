@@ -2,7 +2,7 @@
 
 namespace MediaDevices.Internal;
 
-internal struct PropertyKey
+internal struct PropertyKey : IEquatable<PropertyKey>
 {
 	public Guid fmtid;
 	public uint pid;
@@ -17,10 +17,17 @@ internal struct PropertyKey
 		return obj1.fmtid != obj2.fmtid || obj1.pid != obj2.pid;
 	}
 
-	public override bool Equals(object obj)
+	public override readonly bool Equals(object? obj)
 	{
-		PropertyKey pk = (PropertyKey)obj;
-		return fmtid == pk.fmtid && pid == pk.pid;
+		PropertyKey? pk = obj as PropertyKey?;
+		if (pk == null)
+		{
+			return false;
+		}
+		return fmtid == pk.Value.fmtid && pid == pk.Value.pid;
 	}
-	public override int GetHashCode() => fmtid.GetHashCode() ^ pid.GetHashCode();
+
+	public readonly bool Equals(PropertyKey other) => fmtid == other.fmtid && pid == other.pid;
+
+	public override readonly int GetHashCode() => fmtid.GetHashCode() ^ pid.GetHashCode();
 }

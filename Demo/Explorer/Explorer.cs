@@ -389,7 +389,7 @@ public class Explorer : Control
 			virtualFileDataObject.SetData(files);
 
 			dlg = new ProgresshWindow() { Owner = Window.GetWindow(this) };
-			VirtualFileDataObject.DoDragDrop(virtualFileDataObject, DragDropEffects.Copy);
+			_ = VirtualFileDataObject.DoDragDrop(virtualFileDataObject, DragDropEffects.Copy);
 
 			isMouseDown = false;
 		}

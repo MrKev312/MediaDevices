@@ -8,7 +8,7 @@ namespace MediaDevices.Internal;
 
 internal sealed class StreamWrapper(IStream stream, ulong size = 0) : Stream
 {
-	private IStream stream = stream ?? throw new ArgumentNullException(nameof(stream));
+	private IStream? stream = stream ?? throw new ArgumentNullException(nameof(stream));
 	private IntPtr pLength = Marshal.AllocHGlobal(16);
 
 	private void CheckDisposed()
@@ -28,7 +28,7 @@ internal sealed class StreamWrapper(IStream stream, ulong size = 0) : Stream
 	{
 		if (stream != null)
 		{
-			Marshal.ReleaseComObject(stream);
+			_ = Marshal.ReleaseComObject(stream);
 			stream = null;
 		}
 
@@ -47,7 +47,7 @@ internal sealed class StreamWrapper(IStream stream, ulong size = 0) : Stream
 
 	public override bool CanWrite => true;
 
-	public override void Flush() => stream.Commit(0);
+	public override void Flush() => stream?.Commit(0);
 
 	public override long Length
 	{
@@ -73,6 +73,11 @@ internal sealed class StreamWrapper(IStream stream, ulong size = 0) : Stream
 			throw new ArgumentOutOfRangeException(nameof(offset));
 		}
 
+		if (stream == null)
+		{
+			return 0;
+		}
+
 		byte[] localBuffer = buffer;
 
 		if (offset > 0)
@@ -92,9 +97,18 @@ internal sealed class StreamWrapper(IStream stream, ulong size = 0) : Stream
 
 			return bytesRead;
 		}
+		catch (IOException ioEx)
+		{
+			Trace.WriteLine($"IO Exception: {ioEx}");
+		}
+		catch (COMException comEx)
+		{
+			Trace.WriteLine($"COM Exception: {comEx}");
+		}
 		catch (Exception ex)
 		{
-			Trace.WriteLine(ex.ToString());
+			Trace.WriteLine($"Unexpected Exception: {ex}");
+			throw;
 		}
 
 		return 0;
@@ -106,7 +120,7 @@ internal sealed class StreamWrapper(IStream stream, ulong size = 0) : Stream
 	{
 		CheckDisposed();
 
-		stream.SetSize(value);
+		stream?.SetSize(value);
 	}
 
 	public override void Write(byte[] buffer, int offset, int count)
@@ -128,6 +142,6 @@ internal sealed class StreamWrapper(IStream stream, ulong size = 0) : Stream
 
 		// workaround for Windows 10 Update 1703 problem 
 		// https://social.msdn.microsoft.com/Forums/en-US/7f7a045d-9d9d-4ff4-b8e3-de2d7477a177/windows-10-update-1703-problem-with-wpd-and-mtp?forum=csharpgeneral
-		stream.Write(localBuffer, count, pLength);
+		stream?.Write(localBuffer, count, pLength);
 	}
 }

@@ -21,7 +21,7 @@ public partial class App : Application
 		{
 			Exception ex = (Exception)a.ExceptionObject;
 			Trace.TraceError(ex.ToString());
-			MessageBox.Show(ex.ToString(), "Unhandled Error !!!");
+			_ = MessageBox.Show(ex.ToString(), "Unhandled Error !!!");
 		};
 
 		new MainView() { DataContext = new MainViewModel() }.Show();

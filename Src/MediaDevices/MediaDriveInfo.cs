@@ -11,7 +11,7 @@ public sealed class MediaDriveInfo
 {
 	private readonly MediaDevice device;
 	private readonly string objectId;
-	private readonly MediaStorageInfo info;
+	private readonly MediaStorageInfo? info;
 
 	internal MediaDriveInfo(MediaDevice device, string objectId)
 	{
@@ -47,7 +47,7 @@ public sealed class MediaDriveInfo
 	/// <summary>
 	/// Format of the drive.
 	/// </summary>
-	public string DriveFormat { get; private set; }
+	public string? DriveFormat { get; private set; }
 
 	/// <summary>
 	/// Type of the drive
@@ -62,12 +62,12 @@ public sealed class MediaDriveInfo
 	/// <summary>
 	/// Name of the drive
 	/// </summary>
-	public string Name { get; private set; }
+	public string? Name { get; private set; }
 
 	/// <summary>
 	/// Get the root directory of the drive.
 	/// </summary>
-	public MediaDirectoryInfo RootDirectory { get; private set; }
+	public MediaDirectoryInfo? RootDirectory { get; private set; }
 
 	/// <summary>
 	/// Gets the total free space of the device in bytes.
@@ -82,7 +82,7 @@ public sealed class MediaDriveInfo
 	/// <summary>
 	/// Get the volume lable of the drive.
 	/// </summary>
-	public string VolumeLabel { get; private set; }
+	public string? VolumeLabel { get; private set; }
 
 	/// <summary>
 	/// Eject the drive.

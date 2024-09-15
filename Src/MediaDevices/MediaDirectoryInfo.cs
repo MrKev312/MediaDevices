@@ -23,7 +23,7 @@ public class MediaDirectoryInfo : MediaFileSystemInfo
 	/// <summary>
 	/// Gets the parent directory of a specified subdirectory.
 	/// </summary>
-	public MediaDirectoryInfo Parent => ParentDirectoryInfo;
+	public MediaDirectoryInfo? Parent => ParentDirectoryInfo;
 
 	/// <summary>
 	/// Creates a subdirectory or subdirectories on the specified path. The specified path is relative to this instance of the DirectoryInfo class.
@@ -31,6 +31,7 @@ public class MediaDirectoryInfo : MediaFileSystemInfo
 	/// <param name="path">The specified path. </param>
 	/// <returns>The last directory specified in path.</returns>
 	/// <exception cref="System.IO.IOException">path is a file name.</exception>
+	/// <exception cref="System.IO.IOException">Could not create the directory.</exception>
 	/// <exception cref="System.ArgumentException">path is a zero-length string, contains only white space, or contains invalid characters as defined by System.IO.Path.GetInvalidPathChars.</exception>
 	/// <exception cref="System.ArgumentNullException">path is null.</exception>
 	/// <exception cref="System.IO.DirectoryNotFoundException">path is invalid.</exception>
@@ -56,7 +57,7 @@ public class MediaDirectoryInfo : MediaFileSystemInfo
 			throw new NotConnectedException("Not connected");
 		}
 
-		Item item = this.item.CreateSubdirectory(path);
+		Item? item = this.item.CreateSubdirectory(path) ?? throw new IOException("Error creating directory");
 		return new MediaDirectoryInfo(device, item);
 	}
 

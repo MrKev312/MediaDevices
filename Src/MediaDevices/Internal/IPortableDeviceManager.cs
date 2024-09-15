@@ -9,7 +9,7 @@ namespace MediaDevices.Internal;
 internal interface IPortableDeviceManager
 {
 	void GetDevices(
-		[Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr)] string[] pPnPDeviceIDs,
+		[Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr)] string[]? pPnPDeviceIDs,
 		[In, Out] ref uint pcPnPDeviceIDs);
 
 	void RefreshDeviceList();
@@ -37,6 +37,6 @@ internal interface IPortableDeviceManager
 		[In, Out] ref uint pdwType);
 
 	void GetPrivateDevices(
-		[Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr)] string[] pPnPDeviceIDs,
+		[Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr)] string[]? pPnPDeviceIDs,
 		[In, Out] ref uint pcPnPDeviceIDs);
 }

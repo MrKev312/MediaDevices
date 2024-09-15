@@ -298,7 +298,7 @@ internal sealed partial class VirtualFileDataObject : System.Runtime.InteropServ
 				}
 				finally
 				{
-					NativeMethods.GlobalUnlock(medium.unionmember);
+					_ = NativeMethods.GlobalUnlock(medium.unionmember);
 				}
 			}
 
@@ -415,7 +415,7 @@ internal sealed partial class VirtualFileDataObject : System.Runtime.InteropServ
 					}
 					// Return an IntPtr for the IStream
 					ptr = Marshal.GetComInterfaceForObject(iStream, typeof(IStream));
-					Marshal.ReleaseComObject(iStream);
+					_ = Marshal.ReleaseComObject(iStream);
 					return (ptr, NativeMethods.S_OK);
 				},
 			});
@@ -583,7 +583,7 @@ internal sealed partial class VirtualFileDataObject : System.Runtime.InteropServ
 					}
 					finally
 					{
-						NativeMethods.GlobalUnlock(result.Item1);
+						_ = NativeMethods.GlobalUnlock(result.Item1);
 					}
 				}
 			}

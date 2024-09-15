@@ -35,7 +35,7 @@ public abstract class MediaFileSystemInfo
 	/// <summary>
 	/// Gets the parent directory of a specified subdirectory.
 	/// </summary>
-	protected MediaDirectoryInfo ParentDirectoryInfo
+	protected MediaDirectoryInfo? ParentDirectoryInfo
 	{
 		get
 		{
@@ -122,7 +122,7 @@ public abstract class MediaFileSystemInfo
 	/// <summary>
 	/// Gets the id of the MTP object.
 	/// </summary>
-	public string Id => item.Id;
+	public string? Id => item.Id;
 
 	/// <summary>
 	/// Gets the persistent unique id of the MTP object.
@@ -142,12 +142,28 @@ public abstract class MediaFileSystemInfo
 	/// Gets the hash code for the current object.
 	/// </summary>
 	/// <returns>A hash code for the current object.</returns>
-	public override int GetHashCode() => Id.GetHashCode();
+#if NET5_0_OR_GREATER
+	public override int GetHashCode() => Id?.GetHashCode(StringComparison.Ordinal) ?? 0;
+#else
+#pragma warning disable CA1307 // Specify StringComparison for clarity - not available before .NET 5.0
+	public override int GetHashCode() => Id?.GetHashCode() ?? 0;
+#pragma warning restore CA1307 // Specify StringComparison for clarity
+#endif
+
+
+#if NET5_0_OR_GREATER
+	/// <summary>
+	/// Gets the hash code for the current object.
+	/// </summary>
+	/// <param name="comparison">The comparison.</param>
+	/// <returns>A hash code for the current object.</returns>
+	public int GetHashCode(StringComparison comparison) => Id?.GetHashCode(comparison) ?? 0;
+#endif
 
 	/// <summary>
 	/// Determines whether the specified object is equal to the current object.
 	/// </summary>
 	/// <param name="obj">The object to compare with the current object.</param>
 	/// <returns>true if the specified object is equal to the current object; otherwise, false.</returns>
-	public override bool Equals(object obj) => (obj as MediaFileSystemInfo)?.Id == Id;
+	public override bool Equals(object obj) => ((obj as MediaFileSystemInfo)?.Id) == Id;
 }

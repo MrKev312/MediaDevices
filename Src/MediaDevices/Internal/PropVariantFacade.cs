@@ -43,7 +43,7 @@ internal sealed class PropVariantFacade : IDisposable
 
 	public PropVariantType VariantType => Value.vt;
 
-	public string ToDebugString()
+	public string? ToDebugString()
 	{
 		if (Value.vt == PropVariantType.VT_ERROR)
 		{
@@ -60,10 +60,10 @@ internal sealed class PropVariantFacade : IDisposable
 		switch (Value.vt)
 		{
 			case PropVariantType.VT_LPSTR:
-				return Marshal.PtrToStringAnsi(Value.ptrVal);
+				return Marshal.PtrToStringAnsi(Value.ptrVal) ?? "";
 
 			case PropVariantType.VT_LPWSTR:
-				return Marshal.PtrToStringUni(Value.ptrVal);
+				return Marshal.PtrToStringUni(Value.ptrVal) ?? "";
 
 			case PropVariantType.VT_BSTR:
 				return Marshal.PtrToStringBSTR(Value.ptrVal);
@@ -239,7 +239,7 @@ internal sealed class PropVariantFacade : IDisposable
 		if (Value.vt == PropVariantType.VT_ERROR)
 		{
 			Debug.WriteLine($"VT_ERROR: 0x{Value.errorCode:X}");
-			return null;
+			return [];
 		}
 
 		if (Value.vt != (PropVariantType.VT_VECTOR | PropVariantType.VT_UI1))
@@ -298,49 +298,26 @@ internal sealed class PropVariantFacade : IDisposable
 		return pv;
 	}
 
-	public static implicit operator string(PropVariantFacade val)
-	{
-		return val.ToString();
-	}
+	public static implicit operator string(PropVariantFacade val) => val.ToString() ?? "";
 
-	public static implicit operator bool(PropVariantFacade val)
-	{
-		return val.ToBool();
-	}
+	public static implicit operator bool(PropVariantFacade val) => val.ToBool();
 
-	public static implicit operator DateTime(PropVariantFacade val)
-	{
-		return val.ToDate();
-	}
+	public static implicit operator DateTime(PropVariantFacade val) => val.ToDate();
 
-	public static implicit operator Guid(PropVariantFacade val)
-	{
-		return val.ToGuid();
-	}
+	public static implicit operator Guid(PropVariantFacade val) => val.ToGuid();
 
-	public static implicit operator int(PropVariantFacade val)
-	{
-		return val.ToInt();
-	}
+	public static implicit operator int(PropVariantFacade val) => val.ToInt();
 
-	public static implicit operator byte(PropVariantFacade val)
-	{
-		return (byte)val.ToUInt();
-	}
+	public static implicit operator byte(PropVariantFacade val) => (byte)val.ToUInt();
 
-	public static implicit operator ulong(PropVariantFacade val)
-	{
-		return val.ToUlong();
-	}
+	public static implicit operator ulong(PropVariantFacade val) => val.ToUlong();
 
-	public static implicit operator byte[](PropVariantFacade val)
-	{
-		return val.ToByteArray();
-	}
+	public static implicit operator byte[](PropVariantFacade val) => val.ToByteArray();
 
 	private static class NativeMethods
 	{
 		[DllImport("ole32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
-		static extern public int PropVariantClear(ref PropVariant val);
+		[DefaultDllImportSearchPaths(DllImportSearchPath.System32)]
+		public static extern int PropVariantClear(ref PropVariant val);
 	}
 }

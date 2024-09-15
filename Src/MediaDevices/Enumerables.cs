@@ -36,8 +36,17 @@ public static class Enumerables
 	/// }
 	/// </code>
 	/// </example>
-	public static IEnumerable<T> CatchExceptions<T>(this IEnumerable<T> src, Action<Exception> action = null)
+	/// <exception cref="ArgumentNullException">Source is null.</exception>"
+	public static IEnumerable<T> CatchExceptions<T>(this IEnumerable<T> src, Action<Exception>? action = null)
 	{
+#if NET6_0_OR_GREATER
+		ArgumentNullException.ThrowIfNull(src, nameof(src));
+#else
+		if (src == null)
+		{
+			throw new ArgumentNullException(nameof(src));
+		}
+#endif
 		using IEnumerator<T> enumerator = src.GetEnumerator();
 		bool next = true;
 		while (next)

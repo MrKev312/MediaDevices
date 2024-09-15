@@ -14,25 +14,25 @@ public class MediaDeviceEventArgs : EventArgs
 		MediaDevice = mediaDevice;
 		Event = eventEnum;
 
-		eventParameters.TryGetStringValue(WPD.EVENT_PARAMETER_PNP_DEVICE_ID, out string pnpDeviceId);
+		_ = eventParameters.TryGetStringValue(WPD.EVENT_PARAMETER_PNP_DEVICE_ID, out string pnpDeviceId);
 		PnpDeviceId = pnpDeviceId;
 
-		eventParameters.TryGetUnsignedIntegerValue(WPD.EVENT_PARAMETER_OPERATION_STATE, out uint operationState);
+		_ = eventParameters.TryGetUnsignedIntegerValue(WPD.EVENT_PARAMETER_OPERATION_STATE, out uint operationState);
 		OperationState = (OperationState)operationState;
 
-		eventParameters.TryGetUnsignedIntegerValue(WPD.EVENT_PARAMETER_OPERATION_PROGRESS, out uint operationProgress);
+		_ = eventParameters.TryGetUnsignedIntegerValue(WPD.EVENT_PARAMETER_OPERATION_PROGRESS, out uint operationProgress);
 		OperationProgress = operationProgress;
 
-		eventParameters.TryGetStringValue(WPD.EVENT_PARAMETER_OBJECT_PARENT_PERSISTENT_UNIQUE_ID, out string objectParentPersistanceUniqueId);
+		_ = eventParameters.TryGetStringValue(WPD.EVENT_PARAMETER_OBJECT_PARENT_PERSISTENT_UNIQUE_ID, out string objectParentPersistanceUniqueId);
 		ObjectParentPersistanceUniqueId = objectParentPersistanceUniqueId;
 
-		eventParameters.TryGetStringValue(WPD.EVENT_PARAMETER_OBJECT_CREATION_COOKIE, out string objectCreationCookie);
+		_ = eventParameters.TryGetStringValue(WPD.EVENT_PARAMETER_OBJECT_CREATION_COOKIE, out string objectCreationCookie);
 		ObjectCreationCookie = objectCreationCookie;
 
-		eventParameters.TryGetBoolValue(WPD.EVENT_PARAMETER_CHILD_HIERARCHY_CHANGED, out bool childHierarchyChanged);
+		_ = eventParameters.TryGetBoolValue(WPD.EVENT_PARAMETER_CHILD_HIERARCHY_CHANGED, out bool childHierarchyChanged);
 		ChildHierarchyChanged = childHierarchyChanged;
 
-		eventParameters.TryGetStringValue(WPD.EVENT_PARAMETER_SERVICE_METHOD_CONTEXT, out string serviceMethodContext);
+		_ = eventParameters.TryGetStringValue(WPD.EVENT_PARAMETER_SERVICE_METHOD_CONTEXT, out string serviceMethodContext);
 		ServiceMethodContext = serviceMethodContext;
 	}
 

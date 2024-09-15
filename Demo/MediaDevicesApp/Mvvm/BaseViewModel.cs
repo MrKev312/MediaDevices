@@ -25,7 +25,7 @@ public class BaseViewModel : INotifyPropertyChanged
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 		else
 		{
-			Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.DataBind, new NotifyPropertyChangedDeleagte(NotifyPropertyChanged), propertyName);
+			_ = Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.DataBind, new NotifyPropertyChangedDeleagte(NotifyPropertyChanged), propertyName);
 		}
 	}
 
@@ -37,7 +37,7 @@ public class BaseViewModel : INotifyPropertyChanged
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 		else
 		{
-			Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.DataBind, new NotifyPropertyChangedDeleagte(NotifyPropertyChanged), propertyName);
+			_ = Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.DataBind, new NotifyPropertyChangedDeleagte(NotifyPropertyChanged), propertyName);
 		}
 	}
 
@@ -47,7 +47,7 @@ public class BaseViewModel : INotifyPropertyChanged
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(null));
 		else
 		{
-			Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.DataBind, new NotifyPropertyChangedDeleagte(NotifyPropertyChanged), null);
+			_ = Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.DataBind, new NotifyPropertyChangedDeleagte(NotifyPropertyChanged), null);
 		}
 	}
 

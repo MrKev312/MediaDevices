@@ -19,11 +19,11 @@ internal interface IPortableDeviceProperties
 
 	void GetValues(
 		[In, MarshalAs(UnmanagedType.LPWStr)] string pszObjectID,
-		[In, MarshalAs(UnmanagedType.Interface)] IPortableDeviceKeyCollection pKeys,
+		[In, MarshalAs(UnmanagedType.Interface)] IPortableDeviceKeyCollection? pKeys,
 		[Out, MarshalAs(UnmanagedType.Interface)] out IPortableDeviceValues ppValues);
 
 	void SetValues(
-		[In, MarshalAs(UnmanagedType.LPWStr)] string pszObjectID,
+		[In, MarshalAs(UnmanagedType.LPWStr)] string? pszObjectID,
 		[In, MarshalAs(UnmanagedType.Interface)] IPortableDeviceValues pValues,
 		[Out, MarshalAs(UnmanagedType.Interface)] out IPortableDeviceValues ppResults);
 

@@ -25,7 +25,7 @@ internal interface IPortableDeviceValues
 
 	void SetStringValue(
 		[In] ref PropertyKey key,
-		[In, MarshalAs(UnmanagedType.LPWStr)] string Value);
+		[In, MarshalAs(UnmanagedType.LPWStr)] string? Value);
 
 	void GetStringValue(
 		[In] ref PropertyKey key,

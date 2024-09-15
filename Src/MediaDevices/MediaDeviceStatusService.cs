@@ -31,7 +31,12 @@ public class MediaDeviceStatusService : MediaDeviceService
 		keyCol.Add(ref WPD.StorageCapacity);
 		keyCol.Add(ref WPD.StorageFreeSpace);
 		keyCol.Add(ref WPD.InternetConnected);
-		IPortableDeviceValues values = GetProperties(keyCol);
+		IPortableDeviceValues? values = GetProperties(keyCol);
+
+		if (values == null)
+		{
+			return;
+		}
 
 		using (PropVariantFacade value = new())
 		{
