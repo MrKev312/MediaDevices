@@ -7,7 +7,7 @@ namespace MediaDevices.Internal;
 internal sealed class Command
 {
 	private readonly IPortableDeviceValues values;
-	private IPortableDeviceValues result;
+	private IPortableDeviceValues? result;
 
 	private Command(PropertyKey commandKey)
 	{
@@ -48,24 +48,44 @@ internal sealed class Command
 
 	public Guid GetGuid(PropertyKey key)
 	{
+		if (result == null)
+		{
+			throw new InvalidOperationException("Command not sent!");
+		}
+
 		result.GetGuidValue(ref key, out Guid value);
 		return value;
 	}
 
 	public int GetInt(PropertyKey key)
 	{
+		if (result == null)
+		{
+			throw new InvalidOperationException("Command not sent!");
+		}
+
 		result.GetSignedIntegerValue(ref key, out int value);
 		return value;
 	}
 
 	public string GetString(PropertyKey key)
 	{
+		if (result == null)
+		{
+			throw new InvalidOperationException("Command not sent!");
+		}
+
 		result.GetStringValue(ref key, out string value);
 		return value;
 	}
 
 	public IEnumerable<PropVariantFacade> GetPropVariants(PropertyKey key)
 	{
+		if (result == null)
+		{
+			throw new InvalidOperationException("Command not sent!");
+		}
+
 		result.GetIUnknownValue(ref key, out object obj);
 		IPortableDevicePropVariantCollection col = (IPortableDevicePropVariantCollection)obj;
 
@@ -81,6 +101,11 @@ internal sealed class Command
 
 	public bool Has(PropertyKey key)
 	{
+		if (result == null)
+		{
+			throw new InvalidOperationException("Command not sent!");
+		}
+
 		uint count = 0;
 		result.GetCount(ref count);
 		for (uint i = 0; i < count; i++)
@@ -115,5 +140,14 @@ internal sealed class Command
 	}
 
 	[Conditional("COMTRACE")]
-	public void WriteResults() => ComTrace.WriteObject(result);
+	public void WriteResults()
+	{
+
+		if (result == null)
+		{
+			throw new InvalidOperationException("Command not sent!");
+		}
+
+		ComTrace.WriteObject(result);
+	}
 }

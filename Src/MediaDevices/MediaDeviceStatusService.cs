@@ -146,12 +146,12 @@ public class MediaDeviceStatusService : MediaDeviceService
 	/// <summary>
 	/// Human-readable name of the current mobile network (for example, “Microsoft Cellular”).
 	/// </summary>
-	public string NetworkName { get; private set; }
+	public string? NetworkName { get; private set; }
 
 	/// <summary>
 	/// Type of mobile network that the device is currently using (for example, “E” for EDGE, “U” for UMTS, or “1x” for 1xRTT).
 	/// </summary>
-	public string NetworkType { get; private set; }
+	public string? NetworkType { get; private set; }
 
 	/// <summary>
 	/// Roaming type.

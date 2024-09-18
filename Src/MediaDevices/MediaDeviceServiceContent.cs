@@ -32,6 +32,10 @@ public class MediaDeviceServiceContent
 		service.content.Properties(out IPortableDeviceProperties properties);
 
 		//IPortableDeviceKeyCollection keyCol = (IPortableDeviceKeyCollection)new PortableDeviceKeyCollection();
+		if (ObjectId == null)
+		{
+			return;
+		}
 
 		properties.GetSupportedProperties(ObjectId, out IPortableDeviceKeyCollection keyCol);
 
@@ -50,33 +54,32 @@ public class MediaDeviceServiceContent
 		}
 
 		ComTrace.WriteObject(deviceValues);
-
 	}
 
 	/// <summary>
 	/// Object ID of teh content
 	/// </summary>
-	public string ObjectId { get; private set; }
+	public string? ObjectId { get; private set; }
 
 	/// <summary>
 	/// Parent ID of the content
 	/// </summary>
-	public string ParentId { get; private set; }
+	public string? ParentId { get; private set; }
 
 	/// <summary>
 	/// Name of the content
 	/// </summary>
-	public string Name { get; private set; }
+	public string? Name { get; private set; }
 
 	/// <summary>
 	/// Get the content
 	/// </summary>
 	/// <returns>Content list</returns>
-	public IEnumerable<MediaDeviceServiceContent> GetContent() => service.GetContent(ObjectId);
+	public IEnumerable<MediaDeviceServiceContent> GetContent() => ObjectId != null ? service.GetContent(ObjectId) : [];
 
 	/// <summary>
 	/// Get all properties of the content
 	/// </summary>
 	/// <returns>List of properties</returns>
-	public IEnumerable<KeyValuePair<string, string>> GetAllProperties() => service.GetAllProperties(ObjectId);
+	public IEnumerable<KeyValuePair<string, string>> GetAllProperties() => ObjectId != null ? service.GetAllProperties(ObjectId) : [];
 }

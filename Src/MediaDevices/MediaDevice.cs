@@ -22,11 +22,11 @@ public sealed class MediaDevice : IDisposable
 
 	#region Fields
 
-	internal IPortableDevice device;
-	internal IPortableDeviceContent deviceContent;
-	internal IPortableDeviceProperties deviceProperties;
-	private IPortableDeviceCapabilities deviceCapabilities;
-	private IPortableDeviceValues deviceValues;
+	internal IPortableDevice? device;
+	internal IPortableDeviceContent? deviceContent;
+	internal IPortableDeviceProperties? deviceProperties;
+	private IPortableDeviceCapabilities? deviceCapabilities;
+	private IPortableDeviceValues? deviceValues;
 	private string friendlyName = string.Empty;
 	private string? eventCookie;
 	private EventCallback eventCallback;
@@ -85,11 +85,11 @@ public sealed class MediaDevice : IDisposable
 
 	#region static
 
-	private static readonly IPortableDeviceManager deviceManager;
-	private static readonly IPortableDeviceServiceManager serviceManager;
+	private static readonly IPortableDeviceManager? deviceManager;
+	private static readonly IPortableDeviceServiceManager? serviceManager;
 
-	private static List<MediaDevice> devices;
-	private static List<MediaDevice> privateDevices;
+	private static List<MediaDevice> devices = [];
+	private static List<MediaDevice> privateDevices = [];
 
 	static MediaDevice()
 	{
@@ -785,7 +785,7 @@ public sealed class MediaDevice : IDisposable
 		}
 
 		Item item = Item.FindFolder(this, path) ?? throw new DirectoryNotFoundException($"Director {path} not found.");
-		return item.GetChildren().Where(i => i.Type != ItemType.File).Select(i => i.FullName);
+		return item.GetChildren().Where(i => i.Type != ItemType.File).Select(i => i.FullName!);
 	}
 
 	/// <summary>
@@ -814,7 +814,7 @@ public sealed class MediaDevice : IDisposable
 		}
 
 		Item item = Item.FindFolder(this, path) ?? throw new DirectoryNotFoundException($"Director {path} not found.");
-		return item.GetChildren(FilterToRegex(searchPattern), searchOption).Where(i => i.Type != ItemType.File).Select(i => i.FullName);
+		return item.GetChildren(FilterToRegex(searchPattern), searchOption).Where(i => i.Type != ItemType.File).Select(i => i.FullName!);
 	}
 
 	/// <summary>
@@ -840,7 +840,7 @@ public sealed class MediaDevice : IDisposable
 		}
 
 		Item item = Item.FindFolder(this, path) ?? throw new DirectoryNotFoundException($"Director {path} not found.");
-		return item.GetChildren().Where(i => i.Type == ItemType.File).Select(i => i.FullName);
+		return item.GetChildren().Where(i => i.Type == ItemType.File).Select(i => i.FullName!);
 	}
 
 	/// <summary>
@@ -869,7 +869,7 @@ public sealed class MediaDevice : IDisposable
 
 		Item item = Item.FindFolder(this, path) ?? throw new DirectoryNotFoundException($"Director {path} not found.");
 		string? pattern = FilterToRegex(searchPattern);
-		return item.GetChildren(pattern, searchOption).Where(i => i.Type == ItemType.File).Select(i => i.FullName);
+		return item.GetChildren(pattern, searchOption).Where(i => i.Type == ItemType.File).Select(i => i.FullName!);
 	}
 
 	/// <summary>
@@ -895,7 +895,7 @@ public sealed class MediaDevice : IDisposable
 		}
 
 		Item item = Item.FindFolder(this, path) ?? throw new DirectoryNotFoundException($"Director {path} not found.");
-		return item.GetChildren().Select(i => i.FullName);
+		return item.GetChildren().Select(i => i.FullName!);
 	}
 
 	/// <summary>
@@ -923,7 +923,7 @@ public sealed class MediaDevice : IDisposable
 		}
 
 		Item item = Item.FindFolder(this, path) ?? throw new DirectoryNotFoundException($"Director {path} not found.");
-		return item.GetChildren(FilterToRegex(searchPattern), searchOption).Select(i => i.FullName);
+		return item.GetChildren(FilterToRegex(searchPattern), searchOption).Select(i => i.FullName!);
 	}
 
 	/// <summary>
@@ -1718,7 +1718,7 @@ public sealed class MediaDevice : IDisposable
 				return [];
 			}
 
-			return cmd.GetPropVariants(WPD.PROPERTY_DEVICE_HINTS_CONTENT_LOCATIONS).Select(c => Item.Create(this, c).FullName);
+			return cmd.GetPropVariants(WPD.PROPERTY_DEVICE_HINTS_CONTENT_LOCATIONS).Select(c => Item.Create(this, c).FullName!);
 		}
 		catch (COMException ex)
 		{
@@ -2268,7 +2268,16 @@ public sealed class MediaDevice : IDisposable
 
 	internal static bool IsPath(string path) => !string.IsNullOrWhiteSpace(path) && path.IndexOfAny(Path.GetInvalidPathChars()) < 0;
 
-	internal bool EqualsName(string a, string b) => IsCaseSensitive ? a == b : string.Equals(a, b, StringComparison.OrdinalIgnoreCase);
+	internal bool EqualsName(string? a, string? b)
+	{
+		// If either is null, return false.
+		if (a is null || b is null)
+		{
+			return false;
+		}
+
+		return IsCaseSensitive ? a == b : string.Equals(a, b, StringComparison.OrdinalIgnoreCase);
+	}
 
 	internal static string? FilterToRegex(string filter)
 	{

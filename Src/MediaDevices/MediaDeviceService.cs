@@ -118,37 +118,37 @@ public class MediaDeviceService : IDisposable
 	/// <summary>
 	/// ID of the service
 	/// </summary>
-	public string ServiceId { get; private set; }
+	public string? ServiceId { get; private set; }
 
 	/// <summary>
 	/// Get services
 	/// </summary>
-	public MediaDeviceServices Service { get; private set; }
+	public MediaDeviceServices? Service { get; private set; }
 
 	/// <summary>
 	/// Name of the service
 	/// </summary>
-	public string Name { get; private set; }
+	public string? Name { get; private set; }
 
 	/// <summary>
 	/// Servicename
 	/// </summary>
-	public string ServiceName { get; private set; }
+	public string? ServiceName { get; private set; }
 
 	/// <summary>
 	/// Version of the service
 	/// </summary>
-	public string ServiceVersion { get; private set; }
+	public string? ServiceVersion { get; private set; }
 
 	/// <summary>
 	/// OhjectID of the service
 	/// </summary>
-	public string ServiceObjectID { get; private set; }
+	public string? ServiceObjectID { get; private set; }
 
 	/// <summary>
 	/// PnP service ID
 	/// </summary>
-	public string PnPServiceID { get; private set; }
+	public string? PnPServiceID { get; private set; }
 
 	/// <summary>
 	/// Info of the service
@@ -192,7 +192,7 @@ public class MediaDeviceService : IDisposable
 
 	internal IPortableDeviceValues? GetProperties(IPortableDeviceKeyCollection keyCol)
 	{
-		if (content == null)
+		if (content == null || ServiceObjectID == null)
 			return null;
 
 		content.Properties(out IPortableDeviceProperties properties);
@@ -207,7 +207,7 @@ public class MediaDeviceService : IDisposable
 	/// </summary>
 	protected virtual void Update()
 	{
-		if (content == null)
+		if (content == null || ServiceObjectID == null)
 			return;
 
 		content.Properties(out IPortableDeviceProperties properties);
@@ -223,7 +223,7 @@ public class MediaDeviceService : IDisposable
 	/// Get all properties
 	/// </summary>
 	/// <returns>List of properties</returns>
-	public IEnumerable<KeyValuePair<string, string>> GetAllProperties() => GetAllProperties(ServiceObjectID);
+	public IEnumerable<KeyValuePair<string, string>> GetAllProperties() => ServiceObjectID != null ? GetAllProperties(ServiceObjectID) : [];
 
 	/// <summary>
 	/// Get supported methods

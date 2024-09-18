@@ -38,7 +38,7 @@ internal sealed class Item
 	}
 
 	private readonly MediaDevice device;
-	private string name;
+	private string? name;
 	private readonly string? path;
 	private Item? parent;
 
@@ -164,7 +164,7 @@ internal sealed class Item
 			Guid contentType = ContentType;
 			if (contentType == WPD.CONTENT_TYPE_FUNCTIONAL_OBJECT)
 			{
-				Name = name;
+				Name = name ?? @"\";
 				Type = ItemType.Object;
 
 			}
@@ -307,13 +307,13 @@ internal sealed class Item
 	#region Value Properties
 
 	public string? Id { get; private set; }
-	public string Name { get; private set; }
-	public string FullName { get; set; }
+	public string? Name { get; private set; }
+	public string? FullName { get; set; }
 	public ItemType Type { get; private set; }
 	public Guid ContentType { get; private set; }
-	public string OriginalFileName { get; private set; }
-	public string HintLocationName { get; private set; }
-	public string ParentContainerId { get; private set; }
+	public string? OriginalFileName { get; private set; }
+	public string? HintLocationName { get; private set; }
+	public string? ParentContainerId { get; private set; }
 	public ulong Size { get; private set; }
 	public DateTime? DateCreated { get; private set; }
 	public DateTime? DateModified { get; private set; }
@@ -322,8 +322,8 @@ internal sealed class Item
 	public bool IsSystem { get; private set; }
 	public bool IsHidden { get; private set; }
 	public bool IsDRMProtected { get; private set; }
-	public string ParentId { get; private set; }
-	public string PersistentUniqueId { get; private set; }
+	public string? ParentId { get; private set; }
+	public string? PersistentUniqueId { get; private set; }
 
 	public bool IsRoot => Id == RootId;
 
@@ -333,7 +333,12 @@ internal sealed class Item
 	{
 		get
 		{
-			parent ??= string.IsNullOrEmpty(ParentId) ? null : new Item(device, ParentId, Path.GetDirectoryName(Path.GetDirectoryName(FullName)));
+			if (ParentId == null)
+			{
+				return null;
+			}
+
+			parent ??= new Item(device, ParentId, Path.GetDirectoryName(Path.GetDirectoryName(FullName)));
 
 			return parent;
 		}
@@ -531,7 +536,7 @@ internal sealed class Item
 			_ = sb.Insert(0, item.Name);
 			_ = sb.Insert(0, DirectorySeparatorChar);
 
-		} while (!(item = new Item(device, item.ParentId)).IsRoot);
+		} while (!(item = new Item(device, item.ParentId!)).IsRoot);
 		return sb.ToString();
 	}
 

@@ -221,7 +221,7 @@ public static class MediaDeviceExtentions
 		{
 			foreach (MediaFileSystemInfo fsi in dir.EnumerateFileSystemInfos("*", SearchOption.AllDirectories))
 			{
-				string path = Path.Combine(destination, GetLocalPath(source, fsi.FullName));
+				string path = Path.Combine(destination, GetLocalPath(source, fsi.FullName!));
 				if (fsi.Attributes.HasFlag(MediaFileAttributes.Directory) || fsi.Attributes.HasFlag(MediaFileAttributes.FileObject))
 				{
 					if (!Directory.Exists(path))
@@ -240,7 +240,7 @@ public static class MediaDeviceExtentions
 		{
 			foreach (MediaFileInfo mfi in dir.EnumerateFiles())
 			{
-				string path = Path.Combine(destination, GetLocalPath(source, mfi.FullName));
+				string path = Path.Combine(destination, GetLocalPath(source, mfi.FullName!));
 				mfi.CopyTo(path);
 			}
 		}

@@ -14,15 +14,15 @@ public abstract class MediaFileSystemInfo
 	/// <summary>
 	///corresponding MediaDevice instance
 	/// </summary>
-	protected MediaDevice device { get; private set; }
+	protected MediaDevice Device { get; private set; }
 
 	internal Item item;
 
-	private MediaDirectoryInfo parent;
+	private MediaDirectoryInfo? parent;
 
 	internal MediaFileSystemInfo(MediaDevice device, Item item)
 	{
-		this.device = device;
+		this.Device = device;
 		this.item = item;
 		Refresh();
 	}
@@ -41,7 +41,7 @@ public abstract class MediaFileSystemInfo
 		{
 			if (parent == null && item.Parent != null)
 			{
-				parent = new MediaDirectoryInfo(device, item.Parent);
+				parent = new MediaDirectoryInfo(Device, item.Parent);
 			}
 
 			return parent;
@@ -51,12 +51,12 @@ public abstract class MediaFileSystemInfo
 	/// <summary>
 	/// Gets the full path of the directory or file.
 	/// </summary>
-	public string FullName => item.FullName;
+	public string? FullName => item.FullName;
 
 	/// <summary>
 	/// For files, gets the name of the file. For directories, gets the name of the last directory in the hierarchy if a hierarchy exists. Otherwise, the Name property gets the name of the directory.
 	/// </summary>
-	public string Name => item.Name;
+	public string? Name => item.Name;
 
 	/// <summary>
 	/// Gets the size, in bytes, of the current file.   
@@ -130,7 +130,7 @@ public abstract class MediaFileSystemInfo
 	/// <remarks>
 	/// A unique cross session object ID, that is not changing when device is disconnected.
 	/// </remarks>
-	public string PersistentUniqueId => item.PersistentUniqueId;
+	public string? PersistentUniqueId => item.PersistentUniqueId;
 
 	/// <summary>
 	/// Rename the folder of file
@@ -165,5 +165,13 @@ public abstract class MediaFileSystemInfo
 	/// </summary>
 	/// <param name="obj">The object to compare with the current object.</param>
 	/// <returns>true if the specified object is equal to the current object; otherwise, false.</returns>
-	public override bool Equals(object obj) => ((obj as MediaFileSystemInfo)?.Id) == Id;
+	public override bool Equals(object? obj)
+	{
+		if (obj is MediaFileSystemInfo other)
+		{
+			return Id == other.Id;
+		}
+
+		return false;
+	}
 }

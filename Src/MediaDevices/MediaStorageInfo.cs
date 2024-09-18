@@ -16,7 +16,7 @@ public class MediaStorageInfo
 	/// <summary>
 	/// Indicates the file system type e.g. "FAT32" or "NTFS" or "My Special File System"
 	/// </summary>
-	public string FileSystemType { get; internal set; }
+	public string FileSystemType { get; internal set; } = "";
 
 	/// <summary>
 	/// Indicates the total storage capacity in bytes.
@@ -36,12 +36,12 @@ public class MediaStorageInfo
 	/// <summary>
 	/// Contains a description of the storage.
 	/// </summary>
-	public string Description { get; internal set; }
+	public string Description { get; internal set; } = "";
 
 	/// <summary>
 	/// Contains the serial number of the storage.
 	/// </summary>
-	public string SerialNumber { get; internal set; }
+	public string SerialNumber { get; internal set; } = "";
 
 	/// <summary>
 	/// Specifies the maximum size of a single object (in bytes) that can be placed on this storage.

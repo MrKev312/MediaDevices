@@ -32,7 +32,7 @@ public class MediaFileInfo : MediaFileSystemInfo
 	/// <exception cref="MediaDevices.NotConnectedException">device is not connected.</exception>
 	public void CopyTo(string destFileName, bool overwrite = true)
 	{
-		if (!device.IsConnected)
+		if (!Device.IsConnected)
 		{
 			throw new NotConnectedException("Not connected");
 		}
@@ -52,7 +52,7 @@ public class MediaFileInfo : MediaFileSystemInfo
 	/// <exception cref="MediaDevices.NotConnectedException">device is not connected.</exception>
 	public void CopyIconTo(string destFileName, bool overwrite = true)
 	{
-		if (!device.IsConnected)
+		if (!Device.IsConnected)
 		{
 			throw new NotConnectedException("Not connected");
 		}
@@ -72,7 +72,7 @@ public class MediaFileInfo : MediaFileSystemInfo
 	/// <exception cref="MediaDevices.NotConnectedException">device is not connected.</exception>
 	public void CopyThumbnail(string destFileName, bool overwrite = true)
 	{
-		if (!device.IsConnected)
+		if (!Device.IsConnected)
 		{
 			throw new NotConnectedException("Not connected");
 		}
@@ -90,7 +90,7 @@ public class MediaFileInfo : MediaFileSystemInfo
 	/// <exception cref="MediaDevices.NotConnectedException">device is not connected.</exception>
 	public Stream OpenRead()
 	{
-		if (!device.IsConnected)
+		if (!Device.IsConnected)
 		{
 			throw new NotConnectedException("Not connected");
 		}
@@ -106,7 +106,7 @@ public class MediaFileInfo : MediaFileSystemInfo
 	/// <exception cref="MediaDevices.NotConnectedException">device is not connected.</exception>
 	public Stream OpenIcon()
 	{
-		if (!device.IsConnected)
+		if (!Device.IsConnected)
 		{
 			throw new NotConnectedException("Not connected");
 		}
@@ -122,7 +122,7 @@ public class MediaFileInfo : MediaFileSystemInfo
 	/// <exception cref="MediaDevices.NotConnectedException">device is not connected.</exception>
 	public Stream OpenThumbnail()
 	{
-		if (!device.IsConnected)
+		if (!Device.IsConnected)
 		{
 			throw new NotConnectedException("Not connected");
 		}
@@ -137,7 +137,7 @@ public class MediaFileInfo : MediaFileSystemInfo
 	/// <exception cref="MediaDevices.NotConnectedException">device is not connected.</exception>
 	public StreamReader OpenText()
 	{
-		if (!device.IsConnected)
+		if (!Device.IsConnected)
 		{
 			throw new NotConnectedException("Not connected");
 		}

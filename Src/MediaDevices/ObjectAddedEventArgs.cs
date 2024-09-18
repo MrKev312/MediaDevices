@@ -93,7 +93,7 @@ public class ObjectAddedEventArgs : MediaDeviceEventArgs
 	/// <summary>
 	/// Full file name of the added object
 	/// </summary>
-	public string ObjectFullFileName => Item.Create(MediaDevice, ObjectId).FullName;
+	public string? ObjectFullFileName => Item.Create(MediaDevice, ObjectId).FullName;
 
 	/// <summary>
 	/// Read stream of the added object
