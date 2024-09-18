@@ -9,7 +9,7 @@ namespace MediaDevices;
 /// </summary>
 public class MediaDeviceServiceContent
 {
-	private readonly MediaDeviceService service;
+	private readonly MediaDeviceService? service;
 
 	private MediaDeviceServiceContent()
 	{ }
@@ -24,7 +24,7 @@ public class MediaDeviceServiceContent
 
 	internal virtual void UpdateProperties()
 	{
-		if (service.content == null)
+		if (service?.content == null)
 		{
 			return;
 		}
@@ -75,11 +75,11 @@ public class MediaDeviceServiceContent
 	/// Get the content
 	/// </summary>
 	/// <returns>Content list</returns>
-	public IEnumerable<MediaDeviceServiceContent> GetContent() => ObjectId != null ? service.GetContent(ObjectId) : [];
+	public IEnumerable<MediaDeviceServiceContent> GetContent() => (ObjectId != null && service != null) ? service.GetContent(ObjectId) : [];
 
 	/// <summary>
 	/// Get all properties of the content
 	/// </summary>
 	/// <returns>List of properties</returns>
-	public IEnumerable<KeyValuePair<string, string>> GetAllProperties() => ObjectId != null ? service.GetAllProperties(ObjectId) : [];
+	public IEnumerable<KeyValuePair<string, string>> GetAllProperties() => (ObjectId != null && service != null) ? service.GetAllProperties(ObjectId) : [];
 }

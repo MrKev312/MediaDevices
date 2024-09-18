@@ -97,6 +97,12 @@ internal sealed class Item
 		{
 			collection.Add(ref propVariantPUID.Value);
 		}
+
+		if (device.deviceContent == null)
+		{
+			return null;
+		}
+
 		// request id collection           
 		device.deviceContent.GetObjectIDsFromPersistentUniqueIDs(collection, out IPortableDevicePropVariantCollection results);
 
@@ -198,7 +204,7 @@ internal sealed class Item
 			}
 
 			// get all predefined values
-			device.deviceProperties.GetValues(Id, keyCollection, out values);
+			device.deviceProperties!.GetValues(Id, keyCollection, out values);
 		}
 		catch (InvalidOperationException ex)
 		{
@@ -228,9 +234,9 @@ internal sealed class Item
 
 		// read all properties
 		// use a loop to prevent exceptions during calling GetValue for non existing values 
-		uint num = 0;
-		values.GetCount(ref num);
-		for (uint i = 0; i < num; i++)
+		uint count = 0;
+		values.GetCount(ref count);
+		for (uint i = 0; i < count; i++)
 		{
 			PropertyKey key = new();
 			using PropVariantFacade val = new();
@@ -350,6 +356,11 @@ internal sealed class Item
 
 	public IEnumerable<Item> GetChildren()
 	{
+		if (device.deviceContent == null)
+		{
+			yield break;
+		}
+
 		device.deviceContent.EnumObjects(0, Id, null, out IEnumPortableDeviceObjectIDs enumerator);
 		if (enumerator == null)
 		{
@@ -389,6 +400,11 @@ internal sealed class Item
 
 	public IEnumerable<Item> GetChildren(string? pattern, SearchOption searchOption = SearchOption.TopDirectoryOnly)
 	{
+		if (device.deviceContent == null)
+		{
+			yield break;
+		}
+
 		pattern ??= "";
 
 		device.deviceContent.EnumObjects(0, Id, null, out IEnumPortableDeviceObjectIDs enumerator);
@@ -459,7 +475,7 @@ internal sealed class Item
 				string id = string.Empty;
 				try
 				{
-					device.deviceContent.CreateObjectWithPropertiesOnly(deviceValues, ref id);
+					device.deviceContent!.CreateObjectWithPropertiesOnly(deviceValues, ref id);
 				}
 				catch (Exception ex)
 				{
@@ -504,7 +520,7 @@ internal sealed class Item
 		IPortableDevicePropVariantCollection results = (IPortableDevicePropVariantCollection)new PortableDevicePropVariantCollection();
 		// TODO: get the results back and handle failures correctly
 
-		device.deviceContent.Delete(recursive ? PORTABLE_DEVICE_DELETE_WITH_RECURSION : PORTABLE_DEVICE_DELETE_NO_RECURSION, objectIdCollection, ref results);
+		device.deviceContent!.Delete(recursive ? PORTABLE_DEVICE_DELETE_WITH_RECURSION : PORTABLE_DEVICE_DELETE_NO_RECURSION, objectIdCollection, ref results);
 
 		ComTrace.WriteObject(objectIdCollection);
 	}
@@ -571,7 +587,7 @@ internal sealed class Item
 			throw new InvalidOperationException("Id is null");
 		}
 
-		device.deviceContent.Transfer(out IPortableDeviceResources resources);
+		device.deviceContent!.Transfer(out IPortableDeviceResources resources);
 
 		uint optimalTransferSize = 0;
 
@@ -587,7 +603,7 @@ internal sealed class Item
 			throw new InvalidOperationException("Id is null");
 		}
 
-		device.deviceContent.Transfer(out IPortableDeviceResources resources);
+		device.deviceContent!.Transfer(out IPortableDeviceResources resources);
 
 		uint optimalTransferSize = 0;
 
@@ -603,7 +619,7 @@ internal sealed class Item
 			throw new InvalidOperationException("Id is null");
 		}
 
-		device.deviceContent.Transfer(out IPortableDeviceResources resources);
+		device.deviceContent!.Transfer(out IPortableDeviceResources resources);
 
 		uint optimalTransferSize = 0;
 
@@ -628,7 +644,7 @@ internal sealed class Item
 
 		uint num = 0u;
 		string? text = null;
-		device.deviceContent.CreateObjectWithPropertiesAndData(portableDeviceValues, out IStream wpdStream, ref num, ref text);
+		device.deviceContent!.CreateObjectWithPropertiesAndData(portableDeviceValues, out IStream wpdStream, ref num, ref text);
 
 		using StreamWrapper destinationStream = new(wpdStream);
 		stream.CopyTo(destinationStream);
@@ -641,7 +657,7 @@ internal sealed class Item
 
 		// with OBJECT_NAME does not work for Amazon Kindle Paperwhite
 		portableDeviceValues.SetStringValue(ref WPD.OBJECT_ORIGINAL_FILE_NAME, newName);
-		device.deviceProperties.SetValues(Id, portableDeviceValues, out IPortableDeviceValues result);
+		device.deviceProperties!.SetValues(Id, portableDeviceValues, out IPortableDeviceValues result);
 		ComTrace.WriteObject(result);
 
 		if (result.TryGetStringValue(WPD.OBJECT_ORIGINAL_FILE_NAME, out string check))
@@ -667,7 +683,7 @@ internal sealed class Item
 		using (PropVariantFacade val = PropVariantFacade.DateTimeToPropVariant(value))
 		{
 			portableDeviceValues.SetValue(ref WPD.OBJECT_DATE_CREATED, ref val.Value);
-			device.deviceProperties.SetValues(Id, portableDeviceValues, out IPortableDeviceValues result);
+			device.deviceProperties!.SetValues(Id, portableDeviceValues, out IPortableDeviceValues result);
 			ComTrace.WriteObject(result);
 		}
 
@@ -681,7 +697,7 @@ internal sealed class Item
 		using (PropVariantFacade val = PropVariantFacade.DateTimeToPropVariant(value))
 		{
 			portableDeviceValues.SetValue(ref WPD.OBJECT_DATE_MODIFIED, ref val.Value);
-			device.deviceProperties.SetValues(Id, portableDeviceValues, out IPortableDeviceValues result);
+			device.deviceProperties!.SetValues(Id, portableDeviceValues, out IPortableDeviceValues result);
 			ComTrace.WriteObject(result);
 		}
 
@@ -695,7 +711,7 @@ internal sealed class Item
 		using (PropVariantFacade val = PropVariantFacade.DateTimeToPropVariant(value))
 		{
 			portableDeviceValues.SetValue(ref WPD.OBJECT_DATE_AUTHORED, ref val.Value);
-			device.deviceProperties.SetValues(Id, portableDeviceValues, out IPortableDeviceValues result);
+			device.deviceProperties!.SetValues(Id, portableDeviceValues, out IPortableDeviceValues result);
 			ComTrace.WriteObject(result);
 		}
 

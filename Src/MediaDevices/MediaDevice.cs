@@ -29,7 +29,7 @@ public sealed class MediaDevice : IDisposable
 	private IPortableDeviceValues? deviceValues;
 	private string friendlyName = string.Empty;
 	private string? eventCookie;
-	private EventCallback eventCallback;
+	private EventCallback? eventCallback;
 
 	#endregion
 
@@ -85,31 +85,24 @@ public sealed class MediaDevice : IDisposable
 
 	#region static
 
-	private static readonly IPortableDeviceManager? deviceManager;
-	private static readonly IPortableDeviceServiceManager? serviceManager;
+	private static readonly IPortableDeviceManager deviceManager;
+	private static readonly IPortableDeviceServiceManager serviceManager;
 
 	private static List<MediaDevice> devices = [];
 	private static List<MediaDevice> privateDevices = [];
 
 	static MediaDevice()
 	{
-		try
-		{
-			deviceManager = (IPortableDeviceManager)new PortableDeviceManager();
-			serviceManager = (IPortableDeviceServiceManager)deviceManager;
+		deviceManager = (IPortableDeviceManager)new PortableDeviceManager();
+		serviceManager = (IPortableDeviceServiceManager)deviceManager;
 
-			//var x = new MediaDevMgr();
-			//var f = new MediaDevMgrClassFactory();
-			//IWMDeviceManager3 devManager = (IWMDeviceManager3)f;
+		//var x = new MediaDevMgr();
+		//var f = new MediaDevMgrClassFactory();
+		//IWMDeviceManager3 devManager = (IWMDeviceManager3)f;
 
-			//devManager.GetRevision(out var revision);
-			//devManager.GetDeviceCount(out var count);
-			//devManager.EnumDevices2(out var e);
-		}
-		catch (Exception ex)
-		{
-			Trace.TraceError(ex.ToString());
-		}
+		//devManager.GetRevision(out var revision);
+		//devManager.GetDeviceCount(out var count);
+		//devManager.EnumDevices2(out var e);
 
 		// #define WMDM_E_NOTCERTIFIED                     0x80045005L
 	}
@@ -298,7 +291,7 @@ public sealed class MediaDevice : IDisposable
 	/// <exception cref="NotConnectedException">device is not connected. only for setter</exception>
 	public string FriendlyName
 	{
-		get => IsConnected && deviceValues.TryGetStringValue(WPD.DEVICE_FRIENDLY_NAME, out string val)
+		get => IsConnected && deviceValues!.TryGetStringValue(WPD.DEVICE_FRIENDLY_NAME, out string val)
 				? val
 				: friendlyName;
 		set
@@ -311,7 +304,7 @@ public sealed class MediaDevice : IDisposable
 			// set new friendly name
 			IPortableDeviceValues devInValues = (IPortableDeviceValues)new PortableDeviceValues();
 			devInValues.SetStringValue(ref WPD.DEVICE_FRIENDLY_NAME, value);
-			deviceProperties.SetValues(Item.RootId, devInValues, out _);
+			deviceProperties!.SetValues(Item.RootId, devInValues, out _);
 
 			// reload device values with new friendly name 
 			deviceProperties.GetValues(Item.RootId, null, out deviceValues);
@@ -337,7 +330,7 @@ public sealed class MediaDevice : IDisposable
 	/// Manufacturer of the portable device.
 	/// </summary>
 	/// <remarks>Readable when not connected.</remarks>
-	public string Manufacturer { get; private set; }
+	public string? Manufacturer { get; private set; }
 
 	/// <summary>
 	/// Sync partner of the device.
@@ -352,7 +345,7 @@ public sealed class MediaDevice : IDisposable
 				throw new NotConnectedException("Not connected");
 			}
 
-			_ = deviceValues.TryGetStringValue(WPD.DEVICE_SYNC_PARTNER, out string val);
+			_ = deviceValues!.TryGetStringValue(WPD.DEVICE_SYNC_PARTNER, out string val);
 			return val;
 		}
 	}
@@ -370,7 +363,7 @@ public sealed class MediaDevice : IDisposable
 				return null;
 			}
 
-			_ = deviceValues.TryGetStringValue(WPD.DEVICE_FIRMWARE_VERSION, out string val);
+			_ = deviceValues!.TryGetStringValue(WPD.DEVICE_FIRMWARE_VERSION, out string val);
 			return val;
 		}
 	}
@@ -388,7 +381,7 @@ public sealed class MediaDevice : IDisposable
 				return null;
 			}
 
-			_ = deviceValues.TryGetSignedIntegerValue(WPD.DEVICE_POWER_LEVEL, out int val);
+			_ = deviceValues!.TryGetSignedIntegerValue(WPD.DEVICE_POWER_LEVEL, out int val);
 			return val;
 		}
 	}
@@ -406,7 +399,7 @@ public sealed class MediaDevice : IDisposable
 				throw new NotConnectedException("Not connected");
 			}
 
-			if (deviceValues.TryGetSignedIntegerValue(WPD.DEVICE_POWER_SOURCE, out int val))
+			if (deviceValues!.TryGetSignedIntegerValue(WPD.DEVICE_POWER_SOURCE, out int val))
 			{
 				return (PowerSource)val;
 			}
@@ -428,7 +421,7 @@ public sealed class MediaDevice : IDisposable
 				throw new NotConnectedException("Not connected");
 			}
 
-			_ = deviceValues.TryGetStringValue(WPD.DEVICE_PROTOCOL, out string val);
+			_ = deviceValues!.TryGetStringValue(WPD.DEVICE_PROTOCOL, out string val);
 			return val;
 		}
 	}
@@ -446,7 +439,7 @@ public sealed class MediaDevice : IDisposable
 				throw new NotConnectedException("Not connected");
 			}
 
-			_ = deviceValues.TryGetStringValue(WPD.DEVICE_MODEL, out string val);
+			_ = deviceValues!.TryGetStringValue(WPD.DEVICE_MODEL, out string val);
 			return val;
 		}
 	}
@@ -464,7 +457,7 @@ public sealed class MediaDevice : IDisposable
 				throw new NotConnectedException("Not connected");
 			}
 
-			_ = deviceValues.TryGetStringValue(WPD.DEVICE_SERIAL_NUMBER, out string val);
+			_ = deviceValues!.TryGetStringValue(WPD.DEVICE_SERIAL_NUMBER, out string val);
 			return val;
 		}
 	}
@@ -482,7 +475,7 @@ public sealed class MediaDevice : IDisposable
 				throw new NotConnectedException("Not connected");
 			}
 
-			if (deviceValues.TryGetBoolValue(WPD.DEVICE_SUPPORTS_NON_CONSUMABLE, out bool val))
+			if (deviceValues!.TryGetBoolValue(WPD.DEVICE_SUPPORTS_NON_CONSUMABLE, out bool val))
 			{
 				return val;
 			}
@@ -504,7 +497,7 @@ public sealed class MediaDevice : IDisposable
 				return null;
 			}
 
-			_ = deviceValues.TryGetDateTimeValue(WPD.DEVICE_DATETIME, out DateTime? val);
+			_ = deviceValues!.TryGetDateTimeValue(WPD.DEVICE_DATETIME, out DateTime? val);
 			return val;
 		}
 	}
@@ -522,7 +515,7 @@ public sealed class MediaDevice : IDisposable
 				throw new NotConnectedException("Not connected");
 			}
 
-			if (deviceValues.TryGetBoolValue(WPD.DEVICE_SUPPORTED_FORMATS_ARE_ORDERED, out bool val))
+			if (deviceValues!.TryGetBoolValue(WPD.DEVICE_SUPPORTED_FORMATS_ARE_ORDERED, out bool val))
 			{
 				return val;
 			}
@@ -544,7 +537,7 @@ public sealed class MediaDevice : IDisposable
 				return null;
 			}
 
-			_ = deviceValues.TryGetSignedIntegerValue(WPD.DEVICE_TYPE, out int val);
+			_ = deviceValues!.TryGetSignedIntegerValue(WPD.DEVICE_TYPE, out int val);
 			return (DeviceType)val;
 		}
 	}
@@ -563,7 +556,7 @@ public sealed class MediaDevice : IDisposable
 				throw new NotConnectedException("Not connected");
 			}
 
-			_ = deviceValues.TryGetUnsignedLargeIntegerValue(WPD.DEVICE_NETWORK_IDENTIFIER, out ulong val);
+			_ = deviceValues!.TryGetUnsignedLargeIntegerValue(WPD.DEVICE_NETWORK_IDENTIFIER, out ulong val);
 			return val;
 		}
 	}
@@ -581,7 +574,7 @@ public sealed class MediaDevice : IDisposable
 				return null;
 			}
 
-			_ = deviceValues.TryByteArrayValue(WPD.DEVICE_FUNCTIONAL_UNIQUE_ID, out byte[]? value);
+			_ = deviceValues!.TryByteArrayValue(WPD.DEVICE_FUNCTIONAL_UNIQUE_ID, out byte[]? value);
 			return value != null
 				? new Collection<byte>(value)
 				: null;
@@ -601,7 +594,7 @@ public sealed class MediaDevice : IDisposable
 				return null;
 			}
 
-			_ = deviceValues.TryByteArrayValue(WPD.DEVICE_MODEL_UNIQUE_ID, out byte[]? value);
+			_ = deviceValues!.TryByteArrayValue(WPD.DEVICE_MODEL_UNIQUE_ID, out byte[]? value);
 			return value != null
 				? new Collection<byte>(value)
 				: null;
@@ -621,7 +614,7 @@ public sealed class MediaDevice : IDisposable
 				throw new NotConnectedException("Not connected");
 			}
 
-			_ = deviceValues.TryGetSignedIntegerValue(WPD.DEVICE_TRANSPORT, out int val);
+			_ = deviceValues!.TryGetSignedIntegerValue(WPD.DEVICE_TRANSPORT, out int val);
 			return (DeviceTransport)val;
 		}
 	}
@@ -639,7 +632,7 @@ public sealed class MediaDevice : IDisposable
 				throw new NotConnectedException("Not connected");
 			}
 
-			_ = deviceValues.TryGetUnsignedIntegerValue(WPD.DEVICE_USE_DEVICE_STAGE, out uint val);
+			_ = deviceValues!.TryGetUnsignedIntegerValue(WPD.DEVICE_USE_DEVICE_STAGE, out uint val);
 			return (DeviceTransport)val;
 		}
 	}
@@ -657,7 +650,7 @@ public sealed class MediaDevice : IDisposable
 				throw new NotConnectedException("Not connected");
 			}
 
-			device.GetPnPDeviceID(out string pnPDeviceID);
+			device!.GetPnPDeviceID(out string pnPDeviceID);
 			return pnPDeviceID;
 		}
 	}
@@ -713,7 +706,7 @@ public sealed class MediaDevice : IDisposable
 		}
 
 		// open device
-		device.Open(DeviceId, clientInfo);
+		device!.Open(DeviceId, clientInfo);
 		device.Capabilities(out deviceCapabilities);
 		device.Content(out deviceContent);
 		deviceContent.Properties(out deviceProperties);
@@ -740,11 +733,11 @@ public sealed class MediaDevice : IDisposable
 
 		if (!string.IsNullOrEmpty(eventCookie))
 		{
-			device.Unadvise(eventCookie!);
+			device!.Unadvise(eventCookie!);
 			eventCookie = null;
 		}
 
-		device.Close();
+		device!.Close();
 		IsConnected = false;
 	}
 
@@ -759,7 +752,7 @@ public sealed class MediaDevice : IDisposable
 			throw new NotConnectedException("Not connected");
 		}
 
-		device.Cancel();
+		device!.Cancel();
 	}
 
 	/// <summary>
@@ -1545,7 +1538,7 @@ public sealed class MediaDevice : IDisposable
 
 		try
 		{
-			deviceCapabilities.GetSupportedCommands(out IPortableDeviceKeyCollection commands);
+			deviceCapabilities!.GetSupportedCommands(out IPortableDeviceKeyCollection commands);
 			return commands.ToEnum<Commands>();
 		}
 		catch (COMException ex)
@@ -1569,7 +1562,7 @@ public sealed class MediaDevice : IDisposable
 
 		try
 		{
-			deviceCapabilities.GetFunctionalCategories(out IPortableDevicePropVariantCollection categories);
+			deviceCapabilities!.GetFunctionalCategories(out IPortableDevicePropVariantCollection categories);
 			return categories.ToEnum<FunctionalCategory>();
 		}
 		catch (COMException ex)
@@ -1602,7 +1595,7 @@ public sealed class MediaDevice : IDisposable
 			}
 
 			Guid guid = guidNull.Value;
-			deviceCapabilities.GetFunctionalObjects(ref guid, out IPortableDevicePropVariantCollection objects);
+			deviceCapabilities!.GetFunctionalObjects(ref guid, out IPortableDevicePropVariantCollection objects);
 			ComTrace.WriteObject(objects);
 			return objects.ToStrings();
 		}
@@ -1635,7 +1628,7 @@ public sealed class MediaDevice : IDisposable
 			}
 
 			Guid guid = guidNull.Value;
-			deviceCapabilities.GetSupportedContentTypes(ref guid, out IPortableDevicePropVariantCollection types);
+			deviceCapabilities!.GetSupportedContentTypes(ref guid, out IPortableDevicePropVariantCollection types);
 			return types.ToEnum<ContentType>();
 		}
 		catch (COMException ex)
@@ -1659,7 +1652,7 @@ public sealed class MediaDevice : IDisposable
 
 		try
 		{
-			deviceCapabilities.GetSupportedEvents(out IPortableDevicePropVariantCollection events);
+			deviceCapabilities!.GetSupportedEvents(out IPortableDevicePropVariantCollection events);
 			return events.ToEnum<Events>();
 		}
 		catch (COMException ex)
@@ -1686,7 +1679,7 @@ public sealed class MediaDevice : IDisposable
 			throw new NotConnectedException("Not connected");
 		}
 
-		_ = Command.Create(WPD.COMMAND_COMMON_RESET_DEVICE).Send(device);
+		_ = Command.Create(WPD.COMMAND_COMMON_RESET_DEVICE).Send(device!);
 	}
 
 	/// <summary>
@@ -1712,7 +1705,7 @@ public sealed class MediaDevice : IDisposable
 			}
 
 			cmd.Add(WPD.PROPERTY_DEVICE_HINTS_CONTENT_TYPE, guid.Value);
-			if (!cmd.Send(device))
+			if (!cmd.Send(device!))
 			{
 				cmd.WriteResults();
 				return [];
@@ -1773,7 +1766,7 @@ public sealed class MediaDevice : IDisposable
 	{
 		Command cmd = Command.Create(WPD.COMMAND_STORAGE_EJECT);
 		cmd.Add(WPD.PROPERTY_STORAGE_OBJECT_ID, id);
-		return cmd.Send(device);
+		return cmd.Send(device!);
 	}
 
 	/// <summary>
@@ -1808,7 +1801,7 @@ public sealed class MediaDevice : IDisposable
 	{
 		Command cmd = Command.Create(WPD.COMMAND_STORAGE_FORMAT);
 		cmd.Add(WPD.PROPERTY_STORAGE_OBJECT_ID, id);
-		_ = cmd.Send(device);
+		_ = cmd.Send(device!);
 	}
 
 	/// <summary>
@@ -1851,7 +1844,7 @@ public sealed class MediaDevice : IDisposable
 		cmd.Add(WPD.PROPERTY_SMS_RECIPIENT, recipient);
 		cmd.Add(WPD.PROPERTY_SMS_MESSAGE_TYPE, (uint)SmsMessageType.Text);
 		cmd.Add(WPD.PROPERTY_SMS_TEXT_MESSAGE, text);
-		return cmd.Send(device);
+		return cmd.Send(device!);
 	}
 
 	/// <summary>
@@ -1892,7 +1885,7 @@ public sealed class MediaDevice : IDisposable
 
 		Command cmd = Command.Create(WPD.COMMAND_STILL_IMAGE_CAPTURE_INITIATE);
 		cmd.Add(WPD.PROPERTY_COMMON_COMMAND_TARGET, functionalObject);
-		return cmd.Send(device);
+		return cmd.Send(device!);
 	}
 
 	internal void CallEvent(IPortableDeviceValues eventParameters)
@@ -1993,7 +1986,7 @@ public sealed class MediaDevice : IDisposable
 		{
 			MediaStorageInfo info = new();
 
-			deviceProperties.GetSupportedProperties(storageObjectId, out IPortableDeviceKeyCollection ppKeys);
+			deviceProperties!.GetSupportedProperties(storageObjectId, out IPortableDeviceKeyCollection ppKeys);
 			ComTrace.WriteObject(ppKeys);
 			deviceProperties.GetValues(storageObjectId, keys, out IPortableDeviceValues values);
 
@@ -2054,7 +2047,7 @@ public sealed class MediaDevice : IDisposable
 		}
 
 		Command cmd = Command.Create(WPD.COMMAND_MTP_EXT_GET_SUPPORTED_VENDOR_OPCODES);
-		_ = cmd.Send(device);
+		_ = cmd.Send(device!);
 		IEnumerable<PropVariantFacade> list = cmd.GetPropVariants(WPD.PROPERTY_MTP_EXT_VENDOR_OPERATION_CODES);
 		return list.Select(p => p.ToInt());
 	}
@@ -2087,7 +2080,7 @@ public sealed class MediaDevice : IDisposable
 		Command cmd = Command.Create(WPD.COMMAND_MTP_EXT_EXECUTE_COMMAND_WITHOUT_DATA_PHASE);
 		cmd.Add(WPD.PROPERTY_MTP_EXT_OPERATION_CODE, opCode);
 		cmd.Add(WPD.PROPERTY_MTP_EXT_OPERATION_PARAMS, inputParams);
-		_ = cmd.Send(device);
+		_ = cmd.Send(device!);
 		respCode = cmd.GetInt(WPD.PROPERTY_MTP_EXT_RESPONSE_CODE);
 		return cmd.GetPropVariants(WPD.PROPERTY_MTP_EXT_RESPONSE_PARAMS).Select(p => p.ToInt());
 	}
@@ -2119,7 +2112,7 @@ public sealed class MediaDevice : IDisposable
 		Command cmd = Command.Create(WPD.COMMAND_MTP_EXT_EXECUTE_COMMAND_WITH_DATA_TO_READ);
 		cmd.Add(WPD.PROPERTY_MTP_EXT_OPERATION_CODE, opCode);
 		cmd.Add(WPD.PROPERTY_MTP_EXT_OPERATION_PARAMS, inputParams);
-		_ = cmd.Send(device);
+		_ = cmd.Send(device!);
 		List<PropVariantFacade> list = cmd.GetPropVariants(WPD.PROPERTY_MTP_EXT_VENDOR_OPERATION_CODES).ToList();
 		return list.Select(p => p.ToInt()); //.ToList();
 	}
@@ -2151,7 +2144,7 @@ public sealed class MediaDevice : IDisposable
 		Command cmd = Command.Create(WPD.COMMAND_MTP_EXT_EXECUTE_COMMAND_WITH_DATA_TO_WRITE);
 		cmd.Add(WPD.PROPERTY_MTP_EXT_OPERATION_CODE, opCode);
 		cmd.Add(WPD.PROPERTY_MTP_EXT_OPERATION_PARAMS, inputParams);
-		_ = cmd.Send(device);
+		_ = cmd.Send(device!);
 		List<PropVariantFacade> list = cmd.GetPropVariants(WPD.PROPERTY_MTP_EXT_VENDOR_OPERATION_CODES).ToList();
 		return list.Select(p => p.ToInt()); //.ToList();
 	}
@@ -2187,7 +2180,7 @@ public sealed class MediaDevice : IDisposable
 	{
 		Command cmd = Command.Create(WPD.COMMAND_MTP_EXT_END_DATA_TRANSFER);
 		cmd.Add(WPD.PROPERTY_MTP_EXT_TRANSFER_CONTEXT, context);
-		_ = cmd.Send(device);
+		_ = cmd.Send(device!);
 		respCode = cmd.GetInt(WPD.PROPERTY_MTP_EXT_RESPONSE_CODE);
 		return cmd.GetPropVariants(WPD.PROPERTY_MTP_EXT_RESPONSE_PARAMS).Select(p => p.ToInt());
 	}
@@ -2205,7 +2198,7 @@ public sealed class MediaDevice : IDisposable
 		}
 
 		Command cmd = Command.Create(WPD.COMMAND_MTP_EXT_GET_VENDOR_EXTENSION_DESCRIPTION);
-		_ = cmd.Send(device);
+		_ = cmd.Send(device!);
 		string description = cmd.GetString(WPD.PROPERTY_MTP_EXT_VENDOR_EXTENSION_DESCRIPTION);
 		return description;
 	}

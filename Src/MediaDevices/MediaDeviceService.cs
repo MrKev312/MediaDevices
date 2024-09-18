@@ -13,7 +13,7 @@ namespace MediaDevices;
 /// </summary>
 public class MediaDeviceService : IDisposable
 {
-	internal MediaDevice device;
+	internal MediaDevice? device;
 	internal IPortableDeviceService? privateService = (IPortableDeviceService)new PortableDeviceService();
 	//protected IPortableDeviceValues values;
 	internal IPortableDeviceServiceCapabilities? capabilities;
